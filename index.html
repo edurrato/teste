@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alvorecer RPG — Mesa Virtual</title>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+:root{--bg:#12121a;--pn:#1b1b27;--pn2:#242436;--ink:#ece8df;--mut:#9b97ab;--ln:#33344a;--dawn:#f08a3c;--blue:#3b82f6;--good:#4cc38a;--bad:#ef6a5a;
+--hero:#5aa0f0;--capanga:#8d8d9c;--vilao:#ef5a7c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,'Segoe UI',sans-serif}
+h1,h2,h3{margin:0;font-family:'Arial Narrow',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em}
+h3{font-size:15px;color:var(--dawn);margin-bottom:8px}
+button,input,select{font:inherit;color:inherit}
+input,select{background:var(--pn2);border:1px solid var(--ln);border-radius:4px;padding:6px 8px;min-width:0;width:100%}
+button{background:var(--pn2);border:1px solid var(--ln);border-radius:4px;padding:6px 11px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--dawn)} button:disabled{opacity:.4}
+.pri{background:var(--dawn);color:#1a1006;border-color:var(--dawn);font-weight:700}
+.bad{color:var(--bad);border-color:var(--bad)} .sm{padding:2px 8px}
+.mut{color:var(--mut);font-size:13px} .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap} .row>*{flex:1} .row>button,.row>.f0{flex:0 0 auto}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:12px;margin-bottom:12px}
+label{display:block;font-size:12px;color:var(--mut);margin:8px 0 2px}
+#login{max-width:380px;margin:8vh auto;padding:20px}
+#login h1{font-size:30px;color:var(--dawn);margin-bottom:4px}
+#err{color:var(--bad);min-height:20px;margin-top:8px}
+header{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+header h2{color:var(--dawn);font-size:20px}
+.pill{border:1px solid var(--ln);border-radius:99px;padding:2px 10px;font-size:12.5px;background:var(--pn);color:var(--mut)}
+main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:12px;padding:12px;max-width:1500px;margin:0 auto;align-items:start}
+@media(max-width:980px){main{grid-template-columns:minmax(0,1fr)}}
+/* GRID: proporção quadrada 1:1, células = 100%/n (quadradas por construção) */
+.boardwrap{max-width:min(100%,82vh);margin:0 auto}
+.board{position:relative;width:100%;aspect-ratio:1/1;background-color:#171724;border:2px solid #5a5c7c;touch-action:manipulation;user-select:none;overflow:hidden;
+background-image:linear-gradient(#2c2d42 1px,transparent 1px),linear-gradient(90deg,#2c2d42 1px,transparent 1px);
+background-size:calc(100%/var(--n)) calc(100%/var(--n))}
+.cell{position:absolute;width:calc(100%/var(--n));height:calc(100%/var(--n));aspect-ratio:1/1}
+.hl{background:rgba(59,130,246,.45);outline:1px solid #60a5fa;outline-offset:-1px;cursor:pointer;z-index:2}
+.cov{background:repeating-linear-gradient(45deg,#4a4256,#4a4256 6px,#3a3446 6px,#3a3446 12px);border:2px solid #8a8170;z-index:1;font-size:11px;color:#ddd;display:grid;place-items:center;overflow:hidden}
+.cov.on{border-color:var(--dawn)}
+.tok{z-index:4;padding:8%;cursor:pointer}
+.tok>div{width:100%;height:100%;border-radius:50%;border:3px solid var(--c);background:var(--c) center/cover;display:grid;place-items:center;font-weight:700;color:#fff;font-size:clamp(9px,1.6vw,16px);box-shadow:0 2px 6px #000a}
+.tok.sel>div{box-shadow:0 0 0 3px var(--blue),0 0 14px var(--blue)}
+.tok .nm{position:absolute;left:0;right:0;bottom:-2px;text-align:center;font-size:9px;line-height:1;text-shadow:0 0 3px #000,0 0 3px #000;pointer-events:none;white-space:nowrap;overflow:hidden}
+.bar{height:8px;background:var(--pn2);border-radius:4px;overflow:hidden;margin-top:3px}.bar i{display:block;height:100%;background:var(--bad)}.bar.p i{background:var(--blue)}
+.stat{display:flex;gap:6px;align-items:center}.stat b{min-width:70px;font-size:13px}
+.hand{display:flex;gap:8px;flex-wrap:wrap}.pc{width:54px;height:78px;border-radius:6px;background:#f3efe8;color:#111;display:grid;place-items:center;font-size:20px;font-weight:700;border:2px solid #fff;cursor:pointer}.pc.r{color:#c0392b}
+.avprev{width:64px;height:64px;border-radius:50%;background:var(--pn2) center/cover;border:2px solid var(--ln);flex:0 0 64px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--mut)}.dot.on{background:var(--good)}
+.list>div{display:flex;gap:6px;align-items:center;padding:3px 0;border-bottom:1px solid var(--ln)}.list>div>span{flex:1}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN: cadeiras e senhas ============ -->
+<div id="login" class="card">
+  <h1>Alvorecer RPG</h1><div class="mut">Mesa Virtual Tática · Fase 1</div>
+  <label>Código da mesa (o Mestre cria; jogadores usam o mesmo)</label>
+  <input id="lcode" value="mesa1" maxlength="24">
+  <label>Cadeira</label>
+  <select id="lseat"></select>
+  <label>Senha</label>
+  <input id="lpw" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+  <div style="margin-top:12px"><button class="pri" id="lgo" style="width:100%">Entrar</button></div>
+  <div id="err"></div>
+  <p class="mut">Senhas padrão: Mestre = <b>mestre</b>; Jogador N = <b>jogadorN</b>. O Mestre as altera dentro da mesa. O Mestre deve entrar primeiro (ele hospeda a mesa).</p>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" hidden>
+  <header>
+    <h2>Alvorecer · Mesa</h2>
+    <div class="row f0"><span class="pill" id="pRole"></span><span class="pill" id="pNet"></span><button class="sm" id="out">Sair</button></div>
+  </header>
+  <div id="yt"></div>
+  <main>
+    <section>
+      <div class="boardwrap"><div class="board" id="board"></div></div>
+      <div class="mut" id="hint" style="text-align:center;margin-top:6px"></div>
+    </section>
+    <aside>
+      <div class="card" id="sheet"></div>
+      <div class="card" id="cards"></div>
+      <div class="card" id="master" hidden></div>
+    </aside>
+  </main>
+</div>
+
+<script>
+/* =====================================================================
+   MÓDULO 0 — DADOS DO SISTEMA (extraídos do Alvorecer_Mesa_Virtual)
+   ===================================================================== */
+const ARCH={'O Armado':{v:14,p:4,tr:['O Portador','O Blindado']},'O Vigilante':{v:12,p:3,tr:['O Punitivo','O Pugilista']},
+'O Arcano':{v:9,p:5,tr:['O Conjurador','O Construtor']},'O Psíquico':{v:8,p:5,tr:['O Mentalista','O Espectro']},
+'O Cinético':{v:11,p:4,tr:['O Acrobata','O Velocista']},'O Metamorfo':{v:14,p:3,tr:['O Elementar','O Monstro']},
+'O Farol':{v:14,p:3,tr:['O Solar','O Cósmico']}};
+const KIND={hero:{n:'Herói',c:'#5aa0f0'},capanga:{n:'Capanga',c:'#8d8d9c'},vilao:{n:'Vilão',c:'#ef5a7c'}};
+const pwOk=(a,b)=>String(a??'').trim().toLowerCase()===String(b??'').trim().toLowerCase();
+const SEATS=12, $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* =====================================================================
+   MÓDULO 1 — ESTADO (autoridade = Mestre) + REGRAS DE AÇÃO
+   Para a fase 2 (cartas/regras): adicione novos `case` em apply().
+   ===================================================================== */
+let S=null, me={seat:-1}, sel=null, selCov=null, placing=false, aud=null;
+const net={peer:null,conns:{},conn:null};
+
+function newState(){const s={n:20,free:false,cover:[],chars:{},priv:{},pw:{},on:{},nid:1};
+  s.pw[0]='mestre';for(let i=1;i<=SEATS;i++)s.pw[i]='jogador'+i;return s}
+function mkChar(o){return Object.assign({id:'c'+(S.nid++),name:'?',secret:'',theme:'',kind:'hero',seat:0,x:0,y:0,mv:6,mvmax:6,avatar:'',
+  vigor:10,vmax:10,pulso:3,pmax:3,arch:'',trilha:''},o)}
+function ensureSeat(seat){ // cria herói + baralho privado da cadeira
+  if(!S.chars['h'+seat])S.chars['h'+seat]=mkChar({id:'h'+seat,name:'Herói '+seat,seat,x:(seat-1)%S.n,y:S.n-1});
+  if(!S.priv[seat]){const deck=[];for(const s of '♠♥♦♣')for(const r of ['A','2','3','4','5','6','7','8','9','10','J','Q','K'])deck.push(r+s);
+    S.priv[seat]={deck:shuffle(deck),hand:[],disc:[]}}}
+
+/* grid: movimento em 8 direções, custo 1 por célula (Chebyshev); coberturas e tokens bloqueiam */
+function blocked(x,y,except){return S.cover.some(v=>x>=v.x&&x<v.x+v.w&&y>=v.y&&y<v.y+v.h)||Object.values(S.chars).some(o=>o.id!==except&&o.x===x&&o.y===y)}
+function reach(c,free){const lim=free?999:c.mv,d=new Map([[c.x+','+c.y,0]]),q=[[c.x,c.y]];
+  while(q.length){const[x,y]=q.shift(),k=d.get(x+','+y);if(k>=lim)continue;
+    for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){if(!dx&&!dy)continue;const nx=x+dx,ny=y+dy,key=nx+','+ny;
+      if(nx<0||ny<0||nx>=S.n||ny>=S.n||d.has(key)||blocked(nx,ny,c.id))continue;d.set(key,k+1);q.push([nx,ny])}}
+  d.delete(c.x+','+c.y);return d}
+
+function apply(seat,a){ // seat 0 = Mestre. Todas as mutações passam por aqui (validação central).
+  const M=seat===0,c=S.chars[a.id],own=c&&(M||c.seat===seat),tgt=M?(a.seat||0):seat,P=S.priv[tgt];
+  switch(a.t){
+    case 'move':{if(!own)return;const cost=reach(c,M&&S.free).get(a.x+','+a.y);if(cost===undefined)return;c.x=a.x;c.y=a.y;if(!(M&&S.free))c.mv-=cost;break}
+    case 'patch':{if(!own)return;const ok=['name','secret','theme','avatar','vigor','vmax','pulso','pmax','arch','trilha'];if(M)ok.push('mv','mvmax','kind');
+      for(const k of ok)if(k in a.p){let v=a.p[k];if(k==='avatar'&&String(v).length>90000)continue;if(typeof c[k]==='number')v=Math.max(0,Math.floor(+v)||0);c[k]=v}break}
+    case 'draw':{if(!P)return;while(P.hand.length<3){if(!P.deck.length){if(!P.disc.length)break;P.deck=shuffle(P.disc);P.disc=[]}P.hand.push(P.deck.pop())}break}
+    case 'discard':{if(!P||!(a.i in P.hand))return;P.disc.push(P.hand.splice(a.i,1)[0]);break}
+    case 'reshuffle':{if(!P)return;P.deck=shuffle([...P.deck,...P.disc,...P.hand]);P.disc=[];P.hand=[];break}
+    /* ---- apenas Mestre ---- */
+    case 'addchar':{if(!M)return;const k=a.kind,n=Object.values(S.chars).filter(o=>o.kind===k).length+1;const ch=mkChar({kind:k,name:KIND[k].n+' '+n,x:Math.floor(S.n/2),y:1});S.chars[ch.id]=ch;break}
+    case 'delchar':{if(!M||!c||c.seat)return;delete S.chars[a.id];break}
+    case 'newturn':{if(!M)return;Object.values(S.chars).forEach(o=>o.mv=o.mvmax);break}
+    case 'free':{if(!M)return;S.free=!!a.v;break}
+    case 'size':{if(!M)return;S.n=Math.min(40,Math.max(8,Math.floor(+a.n)||20));break}
+    case 'pw':{if(!M)return;S.pw[a.seat]=String(a.v).slice(0,40);break}
+    case 'cvadd':{if(!M)return;S.cover.push({id:'v'+(S.nid++),x:a.x,y:a.y,w:2,h:2,label:''});break}
+    case 'cvset':{if(!M)return;const v=S.cover.find(o=>o.id===a.id);if(!v)return;
+      for(const k of['x','y','w','h'])if(k in a.p)v[k]=Math.max(k[0]==='w'||k[0]==='h'?1:0,Math.min(S.n-(k==='w'||k==='h'?0:1),Math.floor(+a.p[k])||0));
+      if('label' in a.p)v.label=String(a.p.label).slice(0,20);break}
+    case 'cvdel':{if(!M)return;S.cover=S.cover.filter(o=>o.id!==a.id);break}
+  }
+}
+function act(a){ if(me.seat===0){apply(0,a);push()} else if(net.conn&&net.conn.open)net.conn.send({t:'act',a}) }
+
+/* =====================================================================
+   MÓDULO 2 — REDE P2P (PeerJS). Mestre = host; jogadores conectam nele.
+   Privacidade: o Mestre envia a cada jogador apenas o baralho/mão/descarte DELE.
+   ===================================================================== */
+function view(seat){const v=JSON.parse(JSON.stringify(S));delete v.pw;
+  if(seat){Object.values(v.chars).forEach(c=>{if(c.seat!==seat)c.secret=''});const p=v.priv[seat];v.priv={};if(p)v.priv[seat]=p}return v}
+function push(){
+  if(me.seat===0){try{localStorage.setItem('alv-state',JSON.stringify(S))}catch(e){}
+    Object.values(net.conns).forEach(c=>c.open&&c.send({t:'state',s:view(c.seat)}))}
+  render()}
+function hostOnData(conn,d){
+  if(d.t==='login'){
+    const seat=+d.seat;
+    if(!(seat>=1&&seat<=SEATS)||!pwOk(S.pw[seat],d.pw))return conn.send({t:'err',m:'Senha incorreta.'});
+    if(net.conns[seat]&&net.conns[seat].open&&net.conns[seat]!==conn)return conn.send({t:'err',m:'Cadeira já ocupada.'});
+    conn.seat=seat;net.conns[seat]=conn;S.on[seat]=true;ensureSeat(seat);push();
+  }else if(d.t==='act'&&conn.seat){apply(conn.seat,d.a);push()}
+}
+function startHost(code){
+  net.peer=new Peer('alvorecer-rpg-'+code.toLowerCase());
+  net.peer.on('open',()=>{showApp();$('#pNet').textContent='Mesa "'+code+'" aberta'});
+  net.peer.on('error',e=>loginErr(e.type==='unavailable-id'?'Esse código já está em uso (feche outra aba do Mestre ou troque o código).':'Erro de rede: '+e.type));
+  net.peer.on('connection',conn=>{
+    if(Object.values(net.conns).filter(c=>c.open).length>=SEATS&&!conn.seat){conn.on('open',()=>{conn.send({t:'err',m:'Mesa cheia.'});conn.close()});return}
+    conn.on('data',d=>hostOnData(conn,d));
+    conn.on('close',()=>{if(conn.seat&&net.conns[conn.seat]===conn){delete net.conns[conn.seat];delete S.on[conn.seat];push()}});
+  });
+}
+function startClient(code,seat,pw){
+  net.peer=new Peer();
+  net.peer.on('error',e=>loginErr(e.type==='peer-unavailable'?'Mesa não encontrada. O Mestre já entrou?':'Erro de rede: '+e.type));
+  net.peer.on('open',()=>{const c=net.conn=net.peer.connect('alvorecer-rpg-'+code.toLowerCase(),{reliable:true});
+    c.on('open',()=>c.send({t:'login',seat,pw}));
+    c.on('data',d=>{if(d.t==='err')loginErr(d.m);else if(d.t==='state'){S=d.s;if($('#app').hidden){showApp();$('#pNet').textContent='Conectado à mesa "'+code+'"'}render()}});
+    c.on('close',()=>{$('#pNet').textContent='⚠ Desconectado';$('#hint').textContent='Conexão perdida. Saia e entre novamente.'})});
+}
+
+/* =====================================================================
+   MÓDULO 3 — LOGIN
+   ===================================================================== */
+$('#lseat').innerHTML='<option value="0">Mestre</option>'+Array.from({length:SEATS},(_,i)=>`<option value="${i+1}">Jogador ${i+1}</option>`).join('');
+function loginErr(m){clearTimeout(net.to);$('#err').style.color='';$('#err').textContent=m;if(net.peer&&!S)try{net.peer.destroy()}catch(e){}; if(S&&me.seat>0){$('#app').hidden=true;$('#login').hidden=false;S=null}}
+function showApp(){clearTimeout(net.to);$('#err').textContent='';$('#login').hidden=true;$('#app').hidden=false;$('#pRole').textContent=me.seat?'Jogador '+me.seat:'Mestre';$('#master').hidden=me.seat!==0;render()}
+$('#lgo').onclick=()=>{
+  const code=$('#lcode').value.trim().replace(/[^\w-]/g,''),seat=+$('#lseat').value,pw=$('#lpw').value;$('#err').textContent='';
+  if(!code)return loginErr('Informe o código da mesa.');
+  if(typeof Peer==='undefined')return loginErr('Biblioteca PeerJS não carregou (CDN bloqueada/sem internet).');
+  $('#err').style.color='var(--mut)';$('#err').textContent='Conectando…';
+  clearTimeout(net.to);net.to=setTimeout(()=>{if($('#app').hidden){$('#err').style.color='';$('#err').textContent=(window.top!==window?'Esta prévia embutida bloqueia conexões externas (WebRTC). Abra o arquivo no navegador ou publique no GitHub Pages.':'Sem resposta do servidor PeerJS. Verifique a internet, tente de novo, e confirme que o Mestre já entrou com o mesmo código.');try{net.peer.destroy()}catch(e){}}},12000);
+  me.seat=seat;
+  if(seat===0){ // Mestre: restaura estado salvo (se houver)
+    try{S=JSON.parse(localStorage.getItem('alv-state'))}catch(e){}
+    if(!S||!S.pw)S=newState();
+    if(!pwOk(S.pw[0],pw)){S=null;return loginErr('Senha do Mestre incorreta.')}
+    S.on={};startHost(code)}
+  else startClient(code,seat,pw)};
+$('#out').onclick=()=>location.reload();
+
+/* =====================================================================
+   MÓDULO 4 — GRID TÁTICO + TOKENS
+   ===================================================================== */
+const canCtl=c=>c&&(me.seat===0||c.seat===me.seat);
+function renderBoard(){
+  const b=$('#board'),n=S.n,u=100/n;b.style.setProperty('--n',n);
+  const pos=(x,y)=>`left:${x*u}%;top:${y*u}%`;let h='';
+  S.cover.forEach(v=>h+=`<div class="cov${v.id===selCov?' on':''}" data-cv="${v.id}" style="${pos(v.x,v.y)};width:${v.w*u}%;height:${v.h*u}%">${esc(v.label)}</div>`);
+  const c=S.chars[sel];
+  if(c&&canCtl(c))reach(c,me.seat===0&&S.free).forEach((_,k)=>{const[x,y]=k.split(',');h+=`<div class="cell hl" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`});
+  Object.values(S.chars).forEach(o=>{const col=KIND[o.kind].c;
+    h+=`<div class="cell tok${o.id===sel?' sel':''}" data-id="${o.id}" style="${pos(o.x,o.y)}" title="${esc(o.name)}"><div style="--c:${col};${o.avatar?`background-image:url(${o.avatar})`:''}">${o.avatar?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}</span></div>`});
+  b.innerHTML=h;
+  $('#hint').textContent=placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?`${c.name}: movimento restante ${me.seat===0&&S.free?'livre':c.mv} · clique numa célula azul para mover, ou no token para desmarcar.`:''):'Clique no seu token para ver o alcance de movimento.'}
+$('#board').addEventListener('click',e=>{
+  const r=e.currentTarget.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/r.width*S.n),y=Math.floor((e.clientY-r.top)/r.height*S.n);
+  if(x<0||y<0||x>=S.n||y>=S.n)return;
+  if(placing){placing=false;act({t:'cvadd',x:Math.min(x,S.n-2),y:Math.min(y,S.n-2)});return}
+  const tok=Object.values(S.chars).find(o=>o.x===x&&o.y===y);
+  if(tok){ if(canCtl(tok)){sel=sel===tok.id?null:tok.id;selCov=null} renderAll();return}
+  if(sel&&e.target.classList.contains('hl')){act({t:'move',id:sel,x,y});return}
+  if(me.seat===0){const v=S.cover.find(o=>x>=o.x&&x<o.x+o.w&&y>=o.y&&y<o.y+o.h);
+    if(v){selCov=v.id;sel=null}else if(selCov){act({t:'cvset',id:selCov,p:{x,y}});return}
+    renderAll()}
+});
+
+/* =====================================================================
+   MÓDULO 5 — FICHA (Nome, Identidade Secreta, Música Tema, Vigor/Pulso/Trilha, Avatar)
+   ===================================================================== */
+function loadAvatar(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{
+  const z=128,cv=document.createElement('canvas');cv.width=cv.height=z;const g=cv.getContext('2d');g.fillStyle='#222';g.fillRect(0,0,z,z);
+  const s=Math.min(im.width,im.height);g.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,z,z);cb(cv.toDataURL('image/jpeg',.82))};im.src=r.result};r.readAsDataURL(file)}
+function stopTheme(){if(aud){aud.pause();aud=null}$('#yt').innerHTML=''}
+function playTheme(t){stopTheme();t=(t||'').trim();const y=t.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
+  if(y)$('#yt').innerHTML=`<iframe width="100%" height="70" src="https://www.youtube.com/embed/${y[1]}?autoplay=1" allow="autoplay;encrypted-media" style="border:0"></iframe>`;
+  else if(/^https?:\/\//.test(t)){aud=new Audio(t);aud.loop=true;aud.play().catch(()=>{$('#hint').textContent='Não foi possível tocar esse link (use mp3/ogg direto ou YouTube).'})}}
+function pb(label,v,m,cls){return `<div class="stat"><b>${label} ${v}/${m}</b><div class="bar ${cls}" style="flex:1"><i style="width:${m?Math.min(100,v/m*100):0}%"></i></div></div>`}
+function renderSheet(){
+  const el=$('#sheet');if(el.contains(document.activeElement)&&document.activeElement.matches('input,select'))return;
+  const c=S.chars[sel]||(me.seat&&S.chars['h'+me.seat]);
+  if(!c){el.innerHTML='<h3>Ficha</h3><div class="mut">Selecione um token.</div>';return}
+  const can=canCtl(c),d=can?'':'disabled',A=ARCH[c.arch],M=me.seat===0;
+  el.innerHTML=`<h3>Ficha · ${esc(KIND[c.kind].n)}</h3>
+  <div class="row"><div class="avprev f0" style="${c.avatar?`background-image:url(${c.avatar})`:''}"></div>
+    <div><label style="margin-top:0">Avatar (PNG/JPG)</label><input type="file" id="av" accept="image/png,image/jpeg" ${d}></div></div>
+  <label>Nome do Herói</label><input data-f="name" value="${esc(c.name)}" ${d}>
+  ${c.kind==='hero'?`<label>Identidade Secreta</label><input data-f="secret" value="${esc(c.secret)}" ${d} placeholder="${can?'':'(oculta)'}">`:''}
+  <label>Música Tema (link mp3/ogg ou YouTube; ou texto)</label>
+  <div class="row"><input data-f="theme" value="${esc(c.theme)}" ${d}><button class="f0" id="play">▶</button><button class="f0" id="stop">■</button></div>
+  <label>Arquétipo / Trilha</label>
+  <div class="row"><select data-f="arch" ${d}><option value="">—</option>${Object.keys(ARCH).map(a=>`<option ${a===c.arch?'selected':''}>${a}</option>`).join('')}</select>
+  <select data-f="trilha" ${d}><option value="">—</option>${(A?A.tr:[]).map(t=>`<option ${t===c.trilha?'selected':''}>${t}</option>`).join('')}</select></div>
+  <label>Vigor / Pulso</label>${pb('Vigor',c.vigor,c.vmax,'')}
+  <div class="row"><button class="sm f0" data-adj="vigor" data-d="-1" ${d}>−</button><button class="sm f0" data-adj="vigor" data-d="1" ${d}>+</button>
+  <input type="number" data-f="vmax" value="${c.vmax}" ${d} style="max-width:70px" title="Vigor máx."></div>
+  ${pb('Pulso',c.pulso,c.pmax,'p')}
+  <div class="row"><button class="sm f0" data-adj="pulso" data-d="-1" ${d}>−</button><button class="sm f0" data-adj="pulso" data-d="1" ${d}>+</button>
+  <input type="number" data-f="pmax" value="${c.pmax}" ${d} style="max-width:70px" title="Pulso máx."></div>
+  ${M?`<label>Movimento (restante / por turno)</label><div class="row"><input type="number" data-f="mv" value="${c.mv}"><input type="number" data-f="mvmax" value="${c.mvmax}"></div>
+  <label>Tipo</label><select data-f="kind">${Object.keys(KIND).map(k=>`<option value="${k}" ${k===c.kind?'selected':''}>${KIND[k].n}</option>`).join('')}</select>`:`<div class="mut" style="margin-top:8px">Movimento: ${c.mv}/${c.mvmax}</div>`}`;
+  el.dataset.cid=c.id;
+}
+$('#sheet').addEventListener('change',e=>{const id=$('#sheet').dataset.cid,t=e.target;
+  if(t.id==='av'&&t.files[0])return loadAvatar(t.files[0],u=>act({t:'patch',id,p:{avatar:u}}));
+  const f=t.dataset.f;if(!f)return;let p={[f]:t.value};
+  if(f==='arch'){const A=ARCH[t.value];p=A?{arch:t.value,trilha:'',vmax:A.v,vigor:A.v,pmax:A.p,pulso:A.p}:{arch:'',trilha:''}}
+  act({t:'patch',id,p});
+  if(f==='theme'||f==='name')setTimeout(renderAll,0)});
+$('#sheet').addEventListener('click',e=>{const id=$('#sheet').dataset.cid,c=S.chars[id],t=e.target;
+  if(t.id==='play')playTheme(c.theme);if(t.id==='stop')stopTheme();
+  if(t.dataset.adj){const k=t.dataset.adj,m=k==='vigor'?c.vmax:c.pmax;act({t:'patch',id,p:{[k]:Math.min(m,Math.max(0,c[k]+ +t.dataset.d))}})}});
+
+/* =====================================================================
+   MÓDULO 6 — CARTAS (privadas: só o dono e o Mestre). Baralho padrão de 52 é PLACEHOLDER;
+   na fase 2 substitua por cartas do sistema em ensureSeat() e adicione regras em apply().
+   ===================================================================== */
+let cseat=1;
+function renderCards(){
+  const el=$('#cards'),M=me.seat===0,seat=M?cseat:me.seat;
+  if(el.contains(document.activeElement)&&document.activeElement.matches('select'))return;
+  const P=S.priv[seat];
+  const sel_=M?`<select id="cs">${Array.from({length:SEATS},(_,i)=>`<option value="${i+1}" ${i+1===seat?'selected':''}>Jogador ${i+1}${S.on[i+1]?' ●':''}</option>`).join('')}</select>`:'';
+  if(!P){el.innerHTML=`<h3>Cartas</h3>${sel_}<div class="mut">${M?'Essa cadeira ainda não entrou.':'Sem baralho.'}</div>`;return}
+  el.innerHTML=`<h3>Cartas ${M?'(Mestre vê todas)':'(privadas)'}</h3>${sel_}
+  <div class="mut">Baralho: ${P.deck.length} · Descarte: ${P.disc.length}</div>
+  <div class="hand" style="margin:8px 0;min-height:80px">${P.hand.map((x,i)=>`<div class="pc ${/[♥♦]/.test(x)?'r':''}" data-i="${i}" title="Clique para descartar">${x}</div>`).join('')||'<span class="mut">Mão vazia</span>'}</div>
+  <div class="row"><button data-c="draw" class="pri">Comprar até 3</button><button data-c="reshuffle">Reembaralhar tudo</button></div>
+  <div class="mut" style="margin-top:6px">Descarte: ${P.disc.slice(-12).join(' ')||'—'}</div>`}
+$('#cards').addEventListener('change',e=>{if(e.target.id==='cs'){cseat=+e.target.value;renderCards()}});
+$('#cards').addEventListener('click',e=>{const seat=me.seat===0?cseat:me.seat,t=e.target.closest('[data-i],[data-c]');if(!t)return;
+  if(t.dataset.c)act({t:t.dataset.c,seat});else act({t:'discard',seat,i:+t.dataset.i})});
+
+/* =====================================================================
+   MÓDULO 7 — PAINEL DO MESTRE (NPCs, coberturas, senhas, grid)
+   ===================================================================== */
+function renderMaster(){
+  const el=$('#master');if(el.hidden||el.contains(document.activeElement)&&document.activeElement.matches('input'))return;
+  const v=S.cover.find(o=>o.id===selCov);
+  el.innerHTML=`<h3>Mestre</h3>
+  <div class="row"><button class="pri" data-m="newturn">Novo turno (restaura mov.)</button></div>
+  <label><input type="checkbox" id="free" ${S.free?'checked':''} style="width:auto"> Movimento livre do Mestre (ignora limite)</label>
+  <label>Tamanho do grid (N × N células quadradas)</label><input type="number" id="gn" value="${S.n}" min="8" max="40">
+  <h3 style="margin-top:14px">Personagens</h3>
+  <div class="row"><button data-add="hero">+ Herói</button><button data-add="capanga">+ Capanga</button><button data-add="vilao">+ Vilão</button></div>
+  <div class="list" style="margin-top:6px">${Object.values(S.chars).map(c=>`<div><span style="color:${KIND[c.kind].c}">${esc(c.name)}</span>
+    <button class="sm" data-pick="${c.id}">Ficha</button>${c.seat?'':`<button class="sm bad" data-del="${c.id}">✕</button>`}</div>`).join('')}</div>
+  <h3 style="margin-top:14px">Coberturas</h3>
+  <div class="row"><button data-m="cvnew">+ Nova (clique no grid)</button>${v?'<button data-m="cvdel" class="bad">Remover</button>':''}</div>
+  ${v?`<div class="row" style="margin-top:6px"><span class="f0 mut">Largura</span><input type="number" data-cv="w" value="${v.w}" min="1"><span class="f0 mut">Altura</span><input type="number" data-cv="h" value="${v.h}" min="1"></div>
+  <input data-cv="label" value="${esc(v.label)}" placeholder="Rótulo" style="margin-top:6px"><div class="mut">Clique numa célula livre para mover a cobertura selecionada.</div>`:'<div class="mut">Clique numa cobertura para editar largura × altura.</div>'}
+  <h3 style="margin-top:14px">Senhas das cadeiras</h3>
+  <div class="list">${Array.from({length:SEATS+1},(_,i)=>`<div><span class="dot ${i===0||S.on[i]?'on':''}"></span><span>${i?'Jogador '+i:'Mestre'}</span><input data-pw="${i}" value="${esc(S.pw[i])}" style="width:130px"></div>`).join('')}</div>`}
+$('#master').addEventListener('click',e=>{const t=e.target,d=t.dataset;
+  if(d.m==='newturn')act({t:'newturn'});
+  if(d.m==='cvnew'){placing=true;renderBoard()}
+  if(d.m==='cvdel'){act({t:'cvdel',id:selCov});selCov=null}
+  if(d.add)act({t:'addchar',kind:d.add});
+  if(d.del){if(sel===d.del)sel=null;act({t:'delchar',id:d.del})}
+  if(d.pick){sel=d.pick;selCov=null;renderAll()}});
+$('#master').addEventListener('change',e=>{const t=e.target,d=t.dataset;
+  if(t.id==='free')act({t:'free',v:t.checked});if(t.id==='gn')act({t:'size',n:t.value});
+  if(d.pw!==undefined)act({t:'pw',seat:+d.pw,v:t.value});
+  if(d.cv)act({t:'cvset',id:selCov,p:{[d.cv]:t.value}})});
+
+/* ===================================================================== */
+function renderAll(){renderBoard();renderSheet();renderCards();renderMaster()}
+function render(){if(!S)return;if(sel&&!S.chars[sel])sel=null;renderAll()}
+</script>
+</body>
+</html>
