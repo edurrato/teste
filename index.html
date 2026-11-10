@@ -244,7 +244,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .hrow{display:flex;justify-content:center;align-items:flex-end;gap:16px;flex-wrap:wrap}
 .hcs{display:flex;gap:4px;align-items:flex-end;justify-content:center;padding-top:8px}
 .hcs.fxs{gap:6px;border-left:2px dashed var(--ln);padding-left:12px}
-.hc{width:clamp(112px,13vw,150px);height:clamp(158px,18.5vw,208px);flex:0 0 auto;background:#f3efe8;color:#1b1a22;border:3px solid var(--th,#f08a3c);border-radius:10px;padding:7px;display:flex;flex-direction:column;gap:4px;cursor:pointer;position:relative;transform:rotate(var(--r,0deg));transform-origin:50% 120%;transition:transform .18s,box-shadow .18s,filter .18s;box-shadow:0 4px 10px #000a;overflow:hidden}
+.hc{width:clamp(112px,13vw,150px);height:clamp(158px,18.5vw,208px);flex:0 0 auto;background:#f3efe8;color:#1b1a22;border:3px solid var(--th,#f08a3c);border-radius:10px;padding:7px;display:flex;flex-direction:column;gap:4px;cursor:pointer;position:relative;transform:translateY(var(--dy,0px)) rotate(var(--r,0deg));transform-origin:50% 120%;transition:transform .18s,box-shadow .18s,filter .18s;box-shadow:0 4px 10px #000a;overflow:hidden}
 .hc.rara{box-shadow:0 0 0 2px #fff3,0 4px 10px #000a}.hc.epica{box-shadow:0 0 14px var(--th),0 4px 10px #000a}
 .hc:hover{transform:translateY(-26px) scale(1.18) rotate(0deg);z-index:6;box-shadow:0 12px 26px #000c,0 0 16px var(--th,#f08a3c);overflow:visible;height:auto;min-height:clamp(158px,18.5vw,208px)}
 .hc.sel{transform:translateY(-34px) scale(1.2) rotate(0deg);z-index:7;border-color:#ff4d5e;box-shadow:0 0 20px #ff4d5e,0 12px 26px #000c;height:auto;min-height:clamp(158px,18.5vw,208px);overflow:visible}
@@ -296,6 +296,8 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .isoz.iso .cell.hl,.isoz.iso .cov{transform:translateZ(1px)}
 .isoz.iso .cov{box-shadow:-1px -1px 0 #3a3446,-2px -2px 0 #352f40,-3px -3px 0 #302a3a,-4px -4px 0 #2b2534,-5px -5px 0 #26202e,-6px -6px 0 #211b28,-7px -7px 0 #1c1722,-8px -8px 0 #17121c}
 .isoz.iso .fx{transform:translate(-50%,-50%) translateZ(30px) rotateZ(-45deg) rotateX(-58deg) scale(1.4);transform-origin:50% 50%}
+
+.hcs:not(.fxs){position:relative;min-width:300px;min-height:200px;justify-content:center}.hcs:not(.fxs)::before{content:"";position:absolute;inset:6px 0 0;border-radius:50%/40%;background:radial-gradient(ellipse,#2b5a3d55,transparent 70%);z-index:-1}
 </style>
 </head>
 <body>
@@ -974,10 +976,9 @@ const canMove=c=>me.seat===0||S.scene!=='combate'||(S.cb&&S.cb.order[S.cb.i]===c
 const myTurn=()=>S.scene==='combate'&&S.cb&&me.seat>0&&(S.chars[S.cb.order[S.cb.i]]||{}).seat===me.seat;
 function toast(m,cls){const t=$('#toast');t.textContent=m;t.className=cls||'';t.hidden=true;void t.offsetWidth;t.hidden=false;clearTimeout(toast.to);toast.to=setTimeout(()=>t.hidden=true,2200)}
 /* ---- eventos que chegam pelo estado ---- */
-function sceneEvt(){if(scnSeen===null)scnSeen=S.scn?S.scn.id:0;if(!S.scn||S.scn.id===scnSeen)return null;scnSeen=S.scn.id;if(S.scn.cmb&&S.cb)introPlaying=true;return S.scn}
+function sceneEvt(){if(dealtTn===null)dealtTn=S.tn?S.tn.id:0;if(scnSeen===null)scnSeen=S.scn?S.scn.id:0;if(!S.scn||S.scn.id===scnSeen)return null;scnSeen=S.scn.id;if(S.scn.cmb&&S.cb)introPlaying=true;return S.scn}
 function turnEvt(){if(tnSeen===null)tnSeen=S.tn?S.tn.id:0;if(!S.tn||S.tn.id===tnSeen)return;tnSeen=S.tn.id;if(introPlaying)return;
   const c=S.chars[S.tn.cid];if(!c)return;const mine=c.seat&&c.seat===me.seat;toast(mine?'⚡ SEU TURNO!':'▶ Turno de '+c.name,mine?'mine':'');if(mine)SFX.confirm();
-  if(c.seat&&c.seat===handSeat())setTimeout(dealAnim,60);
   const a=document.querySelector('.ic.act');if(a)try{a.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}catch(e){}}
 function hitEvt(){const f=$('#fxl');if(!f||!S)return;f.style.setProperty('--n',S.n);if(hitSeen===null)hitSeen=S.hit?S.hit.id:0;if(!S.hit||S.hit.id===hitSeen)return;hitSeen=S.hit.id;
   S.hit.list.slice().forEach((h,k)=>setTimeout(()=>{const c=S.chars[h.cid];if(!c)return;if(h.n>0)shakeAt[h.cid]=performance.now();spawnFx(c,h);renderBoard()},k*200))}
@@ -1001,7 +1002,7 @@ function showTitle(mode){return new Promise(res=>{const d=SCN[mode],el=$('#scn')
   el.hidden=true;void el.offsetWidth;el.hidden=false;
   ({mundano:()=>[392,494,587].forEach((f,i)=>tone(f,i*.12,.5,'sine',.1)),missao:()=>[330,440,554,659].forEach((f,i)=>tone(f,i*.1,.35,'triangle',.1)),combate:()=>{tone(90,0,.6,'sawtooth',.14,40);[220,330,440].forEach((f,i)=>tone(f,.2+i*.1,.3,'square',.07))}})[mode]();
   setTimeout(()=>{el.hidden=true;res()},2300)})}
-async function runScene(sc){try{await showTitle(sc.mode);if(sc.cmb&&S.cb&&S.scene==='combate')await combatIntro()}catch(e){console.error(e)}introPlaying=false;renderInit();renderHand();if(handSeat())setTimeout(dealAnim,60)}
+async function runScene(sc){try{await showTitle(sc.mode);if(sc.cmb&&S.cb&&S.scene==='combate')await combatIntro()}catch(e){console.error(e)}introPlaying=false;renderInit();renderHand()}
 /* ---- animação do baralho de iniciativa ---- */
 function tarotHTML(id,ph){const c=S.chars[id],ini=(S.cb&&S.cb.ini[id])||{};const col=c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c;
   return `<div class="tc face" style="--c:${col}${ph!=null?';animation-delay:-'+ph+'ms':''}"><span class="tn">${ini.n??'?'}</span><span class="tk">${c.kind==='vilao'?'☠':c.kind==='capanga'?'⚔':'★'}</span><div class="tp" style="${c.avatar?`background-image:url(${c.avatar})`:''}">${c.avatar?'':esc(c.name.slice(0,2).toUpperCase())}</div><div class="tnm">${esc(c.name)}</div><div class="tsb">${esc(c.kind==='hero'?(c.trilha||KIND.hero.n):KIND[c.kind].n)}</div><div class="thp"><i style="width:${c.vmax?Math.min(100,c.vigor/c.vmax*100):0}%"></i></div>${ini.tie?'<span class="ttie" title="Empate resolvido por sorteio">⚖</span>':''}</div>`}
@@ -1074,17 +1075,18 @@ $('#sheet').addEventListener('click',e=>{const d=e.target.dataset,id=$('#sheet')
   aim={seat:0,cid:c.id,sp:{kind:'line',r:Math.max(1,NA.r)},name:'Ataque de '+c.name,npc:true,n:NA.n,dt:NA.dt,r:Math.max(1,NA.r)};sel=c.id;
   if(!aimCells(c,aim.sp).length){aim=null;SFX.err();return}renderAll()});
 /* ---- MÃO DO COMBATE (abaixo do tabuleiro) ---- */
-let hsel=null,handKey='';
+let hsel=null,handKey='',dealtTn=null;
 function handSeat(){if(S.scene!=='combate'||!S.cb)return 0;if(me.seat>0)return me.seat;const c=S.chars[S.cb.order[S.cb.i]];return c&&c.seat?c.seat:0}
 function renderHand(){const el=$('#handbar'),seat=handSeat(),P=seat&&S.priv[seat],ch=seat&&S.chars['h'+seat];
   if(!P||!ch||ch.ready===false){el.hidden=true;el.innerHTML='';handKey='';return}
   const X=ctxM(ch),fixed=fixedList(ch),n=P.hand.length;
+  let deal=false;if(S.tn&&S.tn.id!==dealtTn&&!introPlaying){deal=S.tn.cid===ch.id;dealtTn=S.tn.id}
   const key=JSON.stringify([seat,P.hand,P.deck.length,P.disc.length,P.disc[P.disc.length-1],ch.pulso,ch.pmax,X.turn,X.pend,hsel,aim&&[aim.i,aim.fx,aim.seat],ch.phase,ch.form,ch.name,introPlaying]);
-  if(key===handKey&&!el.hidden)return;handKey=key;el.hidden=false;if(hsel!==null&&hsel>=n)hsel=null;
+  if(key===handKey&&!el.hidden&&!deal)return;handKey=key;el.hidden=false;if(hsel!==null&&hsel>=n)hsel=null;
   const cardH=(id,i)=>{const c=CARDS[id],req=reqOk(ch,c);let why='';
     if(c.x)why='Reação: só pode ser usada quando você for atacado';else if(!X.turn)why='Aguarde o seu turno';else if(X.pend)why='Resolva o ataque pendente';else if(!req)why='Vire a carta Tangível/Intangível';else if(ch.pulso<c.c)why='Pulso insuficiente';
-    const on=(aim&&aim.i===i&&!aim.fx&&!aim.npc&&aim.seat===seat)||hsel===i,rot=((i-(n-1)/2)*4).toFixed(1),lock=humanLock(ch,c);
-    return `<div class="hc ${c.r}${why?' off':''}${on?' sel':''}${c.x?' rx':''}" data-hi="${i}" data-why="${esc(why)}" style="--r:${rot}deg"><div class="hh"><span class="cost">${c.c}</span><b>${esc(c.n.split(' / ')[0])}</b><span class="sg s-${c.s}">${SG[c.s]}</span></div>
+    const on=(aim&&aim.i===i&&!aim.fx&&!aim.npc&&aim.seat===seat)||hsel===i,rot=(((i*37+3)%13-6)*0.9).toFixed(1),dy=((i*53)%9-3),lock=humanLock(ch,c);
+    return `<div class="hc ${c.r}${why?' off':''}${on?' sel':''}${c.x?' rx':''}" data-hi="${i}" data-why="${esc(why)}" style="--r:${rot}deg;--dy:${dy}px"><div class="hh"><span class="cost">${c.c}</span><b>${esc(c.n.split(' / ')[0])}</b><span class="sg s-${c.s}">${SG[c.s]}</span></div>
       <div class="ht">${esc(lock?'Forma Humana: só 1 de dano desarmado comum.':dtxt(c.t,ch))}</div><div class="hf">${RAR[c.r]}${c.x?' · 🛡 Reação':''}${why&&!c.x?' · '+esc(why):''}</div>
       ${on?(hsel===i?`<button class="pri sm hbtn" data-hplay="${i}">Jogar</button>`:'<div class="hhint">Clique numa casa vermelha</div>'):''}</div>`};
   const fxH=fixed.map(f=>{if(f.flip){const ph=ch.phase||'tangivel',ok=ch.pulso>=2&&X.turn&&!X.pend;return `<div class="hc fx${ok?'':' off'}" data-hflip="1" data-why="${ok?'':'Precisa de 2 Pulso e do seu turno'}"><div class="hh"><span class="cost">2</span><b>${ph==='tangivel'?'☀ Tangível':'☾ Intangível'}</b></div><div class="ht">Carta fixa: virar para ${ph==='tangivel'?'Intangível':'Tangível'}.</div><div class="hf">Fixa</div></div>`}
@@ -1093,10 +1095,11 @@ function renderHand(){const el=$('#handbar'),seat=handSeat(),P=seat&&S.priv[seat
   el.innerHTML=`<div class="hlab">🃏 Mão de <b>${esc(ch.name)}</b> · ${X.turn?'<b style="color:#ffd24a">SEU TURNO</b>':'aguarde o turno'} · Pulso ${ch.pulso}/${ch.pmax}</div>
   <div class="hrow"><div class="pile"><div class="pbk"></div><span class="pn">${P.deck.length}</span><div class="pl">Baralho</div></div>
   <div class="hcs">${P.hand.map(cardH).join('')||'<span class="mut">Mão vazia</span>'}</div>${fxH?`<div class="hcs fxs">${fxH}</div>`:''}
-  <div class="pile d">${top?`<div class="pt"><b>${esc(top.n.split(' / ')[0])}</b></div>`:'<div class="pt mut">vazio</div>'}<span class="pn">${P.disc.length}</span><div class="pl">Descarte</div></div></div>`}
+  <div class="pile d">${top?`<div class="pt"><b>${esc(top.n.split(' / ')[0])}</b></div>`:'<div class="pt mut">vazio</div>'}<span class="pn">${P.disc.length}</span><div class="pl">Descarte</div></div></div>`;
+  if(deal)dealAnim()}
 function dealAnim(){const el=$('#handbar');if(el.hidden)return;const dk=el.querySelector('.pile:not(.d)');if(!dk)return;const r=dk.getBoundingClientRect();
-  el.querySelectorAll('.hcs:not(.fxs) .hc').forEach((c,i)=>{const q=c.getBoundingClientRect(),fin=getComputedStyle(c).transform;
-    c.animate([{transform:`translate(${r.left+r.width/2-q.left-q.width/2}px,${r.top+r.height/2-q.top-q.height/2}px) scale(.3) rotate(-25deg)`,opacity:0},{transform:fin,opacity:1}],{duration:520,delay:i*200,easing:'cubic-bezier(.2,.8,.3,1)',fill:'backwards'});setTimeout(()=>SFX.card(),i*200)})}
+  el.querySelectorAll('.hcs:not(.fxs) .hc').forEach((c,i)=>{const q=c.getBoundingClientRect(),fin=getComputedStyle(c).transform,dx=r.left+r.width/2-q.left-q.width/2,dy=r.top+r.height/2-q.top-q.height/2;
+    c.animate([{transform:`translate(${dx}px,${dy}px) scale(.35) rotate(-30deg) rotateY(180deg)`,opacity:0,offset:0},{transform:`translate(${dx*.55}px,${dy*.55-70}px) scale(.8) rotate(12deg) rotateY(90deg)`,opacity:1,offset:.45},{transform:fin,opacity:1,offset:1}],{duration:620,delay:i*380,easing:'cubic-bezier(.25,.8,.3,1)',fill:'backwards'});setTimeout(()=>{SFX.card()},i*380+120)})}
 $('#handbar').addEventListener('click',e=>{const seat=handSeat(),ch=S.chars['h'+seat],P=S.priv[seat];if(!ch||!P)return;
   const pb_=e.target.closest('[data-hplay]');if(pb_){const i=+pb_.dataset.hplay;hsel=null;act({t:'play',seat,i});return}
   const c=e.target.closest('.hc');if(!c)return;
