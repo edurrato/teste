@@ -231,6 +231,13 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 #sheet hr{border:0;border-top:1px dashed #a89f84;margin:10px 0}
 #sheet .sec{font:700 12px 'Arial Narrow',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#2a2a3a;margin:12px 0 2px;border-bottom:1px solid #c9bf9f;border-left:8px solid var(--th);padding-left:6px;box-shadow:-1px 0 0 #2a2a3a55}
 #sheet .redact{background:#2a2a3a10}
+
+#scenebar{position:sticky;top:0;z-index:25;background:linear-gradient(#0d0d16f2,#12121af2);border-bottom:2px solid var(--dawn);padding:10px 14px;margin:0;backdrop-filter:blur(6px);align-items:center;box-shadow:0 6px 16px #0008}
+.sclab{font:900 16px 'Arial Narrow',Oswald,sans-serif;letter-spacing:.2em;color:var(--dawn);padding-right:6px}
+.scb{font-size:18px;padding:12px 16px;border-width:3px;color:var(--c);background:#1b1b27}
+.scb span{font-size:24px}
+.scb.on{background:var(--c);color:#14101a;box-shadow:0 0 22px var(--c)}
+.scb:hover:not(.on){background:#262638;box-shadow:0 0 12px -2px var(--c)}
 </style>
 </head>
 <body>
@@ -259,10 +266,11 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
     <h2>Alvorecer · Mesa</h2>
     <div class="row f0"><span class="pill" id="pScene"></span><span class="pill" id="pRole"></span><span class="pill" id="pNet"></span><button class="sm" id="out">Sair</button></div>
   </header>
+  <div id="scenebar"></div>
   <div id="yt"></div>
   <main>
     <section>
-      <div id="scenebar"></div><div class="tools" id="tools"></div>
+      <div class="tools" id="tools"></div>
       <div id="initbar" hidden></div>
       <div class="boardwrap"><div class="board" id="board"></div><div id="fxl"></div></div>
       <div class="mut" id="hint" style="text-align:center;margin-top:6px"></div>
@@ -964,7 +972,7 @@ async function combatIntro(){const my=++introId,ok=()=>my===introId;const ov=$('
 $('#shuf').addEventListener('click',()=>endIntro());
 /* ---- cena: barra do mestre / pílula ---- */
 function renderScene(){const m=S.scene||'mundano',d=SCN[m],p=$('#pScene');p.textContent=d.i+' '+d.t;p.style.color=d.c;$('#board').dataset.scene=m;const sb=$('#scenebar');
-  sb.innerHTML=me.seat===0?Object.entries(SCN).map(([k,v])=>`<button class="scb${k===m?' on':''}" data-scn="${k}" style="--c:${v.c}"><span>${v.i}</span>${v.t}</button>`).join(''):`<div class="mut scinfo" style="color:${d.c}">${d.i} <b>${d.t}</b> — ${d.sub}</div>`}
+  sb.innerHTML=me.seat===0?Object.entries(SCN).map(([k,v])=>`<button class="scb${k===m?' on':''}" data-scn="${k}" style="--c:${v.c}"><span>${v.i}</span>${v.t}</button>`).join('').replace(/^/,'<div class="sclab">🎬 CENA</div>'):`<div class="mut scinfo" style="color:${d.c}">${d.i} <b>${d.t}</b> — ${d.sub}</div>`}
 $('#scenebar').addEventListener('click',e=>{const b=e.target.closest('[data-scn]');if(b&&b.dataset.scn!==S.scene)act({t:'scene',m:b.dataset.scn})});
 /* ---- barra de iniciativa ---- */
 function renderInit(){const el=$('#initbar');if(!S.cb||S.scene!=='combate'){el.hidden=true;el.innerHTML='';return}
