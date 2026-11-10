@@ -298,6 +298,28 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .isoz.iso .fx{transform:translate(-50%,-50%) translateZ(30px) rotateZ(-45deg) rotateX(-58deg) scale(1.4);transform-origin:50% 50%}
 
 .hcs:not(.fxs){position:relative;min-width:300px;min-height:200px;justify-content:center}.hcs:not(.fxs)::before{content:"";position:absolute;inset:6px 0 0;border-radius:50%/40%;background:radial-gradient(ellipse,#2b5a3d55,transparent 70%);z-index:-1}
+
+/* --- v3: baralho em fileira (mundano/missão), HUD do turno, ocultar ficha --- */
+.hrow.dk{flex-wrap:nowrap;align-items:flex-end;gap:10px;padding-bottom:22px}
+.deckrow{flex:1 1 0;min-width:0;display:flex;align-items:flex-end;overflow-x:auto;overflow-y:hidden;padding:70px 14px 56px;margin:-34px 0 -46px;scrollbar-width:thin}
+.deckrow>.hc{flex:0 0 auto}.deckrow>*+*{margin-left:var(--ml,8px)}
+.deckrow>.hc.fx{border-style:dashed;width:clamp(112px,13vw,150px);height:clamp(158px,18.5vw,208px)}
+.deckrow .hc.comum{border-color:#9a968d}.deckrow .hc.rara{border-color:#4f9be8}.deckrow .hc.epica{border-color:#c77dff}
+.deckrow .hc:hover,.deckrow .hc.sel{transform:translateY(-22px) scale(1.12) rotate(0deg)}
+.hlab .sm{margin-left:6px;vertical-align:middle}
+#hud{position:sticky;bottom:6px;z-index:22;margin-top:10px;padding:8px 12px 10px;border:2px solid var(--hc,#ffd24a);border-radius:12px;background:linear-gradient(#17141fee,#0d0b14f4);box-shadow:0 0 18px -4px var(--hc,#ffd24a),0 6px 18px #000a;backdrop-filter:blur(6px)}#hud[hidden]{display:none}
+.hudn{text-align:center;font:700 12px 'Arial Narrow',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ffd24a;margin-bottom:6px}
+.hudr{display:flex;align-items:center;gap:12px}
+.hbx{flex:1 1 0;min-width:0}.hbl{display:flex;justify-content:space-between;align-items:baseline;font:700 13px 'Arial Narrow',sans-serif;letter-spacing:.12em;text-transform:uppercase}.hbl span{font-size:18px;letter-spacing:0}
+.hbt{height:22px;border-radius:11px;background:#0008;border:2px solid #fff3;overflow:hidden}.hbt i{display:block;height:100%;border-radius:9px;transition:width .35s}
+.hbx.v .hbl{color:#ff8a7a}.hbx.v .hbt{border-color:#ef6a5a}.hbx.v .hbt i{background:linear-gradient(#ff7b6b,#c9372a);box-shadow:0 0 10px #ef6a5a}
+.hbx.p .hbl{color:#7db6ff}.hbx.p .hbt{border-color:#3b82f6}.hbx.p .hbt i{background:linear-gradient(#6aa8ff,#2759c9);box-shadow:0 0 10px #3b82f6}
+.hstp{flex:0 0 auto;min-width:96px;text-align:center;padding:4px 12px;border-radius:12px;border:2px solid #ffd24a;background:#ffd24a14}.hstp.zero{border-color:#7a7a92;background:#0003;opacity:.75}
+.hsn{display:flex;gap:6px;justify-content:center;align-items:center;font-size:30px;line-height:1}.hsn b{font:900 34px/1 'Arial Narrow',Oswald,sans-serif;color:#ffd24a}.hstp.zero .hsn b{color:#9b97ab}
+.hsl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#cfc9b8;margin-top:2px}
+.hsp{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-top:4px;max-width:130px}.hsp i{width:8px;height:8px;border-radius:50%;border:1.5px solid #ffd24a;background:transparent}.hsp i.f{background:#ffd24a}
+@media(max-width:560px){.hudr{gap:6px}.hstp{min-width:74px;padding:3px 6px}.hsn b{font-size:26px}.hbl span{font-size:15px}}
+#sheet .clipb .shide{position:absolute;top:10px;right:12px;z-index:3;font-size:12px;padding:2px 8px}
 </style>
 </head>
 <body>
@@ -336,6 +358,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
       <div id="isoz" class="isoz iso"><div class="boardwrap"><div class="board" id="board"></div><div id="fxl"><i class="pr" style="left:0;top:0"></i><i class="pr" style="left:100%;top:0"></i><i class="pr" style="left:0;top:100%"></i></div></div></div>
       <div class="mut" id="hint" style="text-align:center;margin-top:6px"></div>
       <div id="handbar" hidden></div>
+      <div id="hud" hidden></div>
     </section>
     <aside>
       <div class="tabs" id="tabs"></div>
@@ -494,11 +517,13 @@ function affected(c,sp,x,y){
   if(sp.kind==='line'&&sp.pierce){const o=[],dx=Math.sign(x-c.x),dy=Math.sign(y-c.y);for(let a=c.x+dx,b=c.y+dy;;a+=dx,b+=dy){o.push([a,b]);if(a===x&&b===y)break}return o}
   return[[x,y]]}
 
-/* grid: cada token ocupa 1 casa. Movimento em linha reta, em cruz (4 direções), custo 1 por casa; coberturas e tokens bloqueiam o caminho */
+/* grid: cada token ocupa 1 casa. Movimento livre por qualquer caminho (4 direções, sem diagonal), custo 1 por casa até o limite de passos; coberturas e tokens bloqueiam o caminho */
 function blocked(x,y,except){return S.cover.some(v=>x>=v.x&&x<v.x+v.w&&y>=v.y&&y<v.y+v.h)||Object.values(S.chars).some(o=>o.id!==except&&o.ready!==false&&o.x===x&&o.y===y)}
 function reach(c,free){const d=new Map();
   if(free){for(let x=0;x<S.n;x++)for(let y=0;y<S.n;y++)if(!(x===c.x&&y===c.y)&&!blocked(x,y,c.id))d.set(x+','+y,1);return d}
-  const lim=S.scene==='combate'?c.mv:S.n;for(const[dx,dy]of DIRS)for(let k=1;k<=lim;k++){const x=c.x+dx*k,y=c.y+dy*k;if(x<0||y<0||x>=S.n||y>=S.n||blocked(x,y,c.id))break;d.set(x+','+y,k)}
+  const lim=S.scene==='combate'?c.mv:Infinity,seen=new Set([c.x+','+c.y]);let fr=[[c.x,c.y]],k=0;
+  while(fr.length&&k<lim){k++;const nx=[];for(const[px,py]of fr)for(const[dx,dy]of DIRS){const x=px+dx,y=py+dy,key=x+','+y;
+    if(x<0||y<0||x>=S.n||y>=S.n||seen.has(key)||blocked(x,y,c.id))continue;seen.add(key);d.set(key,k);nx.push([x,y])}fr=nx}
   return d}
 
 const trSnap=c=>({m:c.vmax>0&&c.vigor*2<=c.vmax,p:c.pulso===0,k:Object.values(S.chars).filter(o=>o.id!==c.id&&o.kind==='hero'&&o.ready!==false&&o.vigor===0).length,v:c.vigor});
@@ -742,7 +767,7 @@ function renderBoard(){hitEvt();$('#isoz').classList.toggle('iso',isoOn());
     h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)}" title="${esc(o.name)}"><div style="--c:${col};${o.avatar?`background-image:url(${o.avatar})`:''}">${o.avatar?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}</span></div>`});
   if(S.fx){if(fxSeen===null)fxSeen=S.fx.id;if(S.fx.id!==fxSeen){fxSeen=S.fx.id;S.fx.cells.forEach(([x,y])=>h+=`<div class="cell flash" style="${pos(x,y)}"></div>`)}}
   b.innerHTML=h;
-  $('#hint').textContent=aim?`Alvo: ${aim.name} — clique numa casa vermelha para atacar (1 casa = 3 m). Fogo amigo ativo: aliados na área também são atingidos. Esc ou clique fora cancela.`:placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?(canMove(c)?`${c.name}: movimento ${S.scene==='combate'&&!(me.seat===0&&S.free)?'restante '+c.mv:'livre (sem limite)'} · em cruz: clique numa casa azul para mover, ou no token para desmarcar.`:'Aguarde o seu turno para se mover.'):''):'Clique no seu token para ver o alcance de movimento.'}
+  $('#hint').textContent=aim?`Alvo: ${aim.name} — clique numa casa vermelha para atacar (1 casa = 3 m). Fogo amigo ativo: aliados na área também são atingidos. Esc ou clique fora cancela.`:placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?(canMove(c)?`${c.name}: movimento ${S.scene==='combate'&&!(me.seat===0&&S.free)?'restante '+c.mv:'livre (sem limite)'} · caminho livre, sem diagonais: clique numa casa azul para mover, ou no token para desmarcar.`:'Aguarde o seu turno para se mover.'):''):'Clique no seu token para ver o alcance de movimento.'}
 $('#board').addEventListener('click',e=>{
   const tk=e.target.closest('.tok'),hc=e.target.closest('.cell[data-x]');let x,y;if(tk&&S.chars[tk.dataset.id]){x=S.chars[tk.dataset.id].x;y=S.chars[tk.dataset.id].y}else if(hc){x=+hc.dataset.x;y=+hc.dataset.y}else{[x,y]=cellAt(e)}
   if(x<0||y<0||x>=S.n||y>=S.n)return;
@@ -774,12 +799,15 @@ function classSheet(c,M,d){let h='';
     <div class="mut" style="margin-top:4px">${esc((TRG[c.trigger]||{}).d||'')} Forma atual: <b>${c.form==='monstro'?'🦖 Monstro':'🧍 Humana'}</b>.</div>${M&&c.seat?`<button class="sm" style="margin-top:4px" data-form="${c.form==='monstro'?'humana':'monstro'}">${c.form==='monstro'?'Voltar à Forma Humana':'Forçar transformação'}</button>`:''}`;
   return h}
 function pips(label,v,m,cls){if(m>24||m<1)return pb(label,v,m,cls);return `<div class="stat"><b>${label} ${v}/${m}</b></div><div class="pips ${cls}">${Array.from({length:m},(_,k)=>`<i class="${k<v?'f':''}"></i>`).join('')}</div>`}
+let sheetHide=(()=>{try{return localStorage.getItem('alv-sheet')==='0'}catch(e){return false}})();
+function setSheetHide(v){sheetHide=v;try{localStorage.setItem('alv-sheet',v?'0':'1')}catch(e){}if(!v)tab='ficha';renderAll()}
 function renderSheet(){
   const el=$('#sheet');if(el.contains(document.activeElement)&&document.activeElement.matches('input,select'))return;
+  if(sheetHide){el.innerHTML='<button class="sm" data-shshow="1" style="width:100%;padding:8px">📋 Mostrar ficha (prancheta)</button>';return}
   const c=S.chars[sel]||(me.seat&&S.chars['h'+me.seat]);
   if(!c){el.innerHTML='<div class="clipb"><div class="clipm"></div><div class="paper"><div class="pt">Ficha</div><div class="mut">Selecione um token para abrir a ficha.</div></div></div>';return}
   const can=canCtl(c),d=can?'':'disabled',A=ARCH[c.arch],M=me.seat===0,B=BIRTHS.find(b=>b.name===c.birth);
-  el.innerHTML=`<div class="clipb"><div class="clipm"></div><div class="paper">
+  el.innerHTML=`<div class="clipb"><button class="sm shide" data-shide="1" title="Ocultar a ficha">✕ Ocultar</button><div class="clipm"></div><div class="paper">
   <div class="ph"><div><div class="pt">Alvorecer RPG</div><div class="ps">Ficha de ${esc(KIND[c.kind].n)} · Prancheta</div></div><div class="stamp">${esc(KIND[c.kind].n)}</div></div>
   <div class="row" style="align-items:flex-start;flex-wrap:nowrap">
     <div style="flex:1;min-width:0"><label style="margin-top:0">Nome do Herói</label><input data-f="name" value="${esc(c.name)}" ${d} style="font-size:24px">
@@ -807,10 +835,11 @@ function renderSheet(){
   <div class="sec">Ataque do Mestre</div><div class="mut">Ataca em linha reta (cruz). Fogo amigo vale: qualquer um no alcance sofre o dano.</div>
   <div class="row"><div><label>Dano</label><input type="number" id="na-n" value="${NA.n}" min="0"></div><div><label>Tipo</label><select id="na-dt">${DT2.map(t=>`<option ${t===NA.dt?'selected':''}>${t}</option>`).join('')}</select></div><div><label>Alcance (casas)</label><input type="number" id="na-r" value="${NA.r}" min="1" max="12"></div></div>
   <button style="margin-top:8px;width:100%" data-npcatk="1">⚔ Atacar com ${esc(c.name)}</button>${c.seat?`<div class="sec">Administração</div><div class="row"><button data-reset="${c.id}">↺ Resetar ficha</button><button data-wipe="${c.id}" class="bad">🗑 Apagar ficha</button></div>`:''}`
-  :`<div class="mut" style="margin-top:8px">${S.scene==='combate'?`Movimento: ${c.mv}/${c.mvmax}`:'Movimento livre em cruz (sem limite nesta cena).'}</div>`}
+  :`<div class="mut" style="margin-top:8px">${S.scene==='combate'?`Movimento: ${c.mv}/${c.mvmax}`:'Movimento livre, sem diagonais (sem limite nesta cena).'}</div>`}
   </div></div>`;
   el.dataset.cid=c.id;
 }
+$('#sheet').addEventListener('click',e=>{if(e.target.closest('[data-shide]'))setSheetHide(true);else if(e.target.closest('[data-shshow]'))setSheetHide(false)});
 $('#sheet').addEventListener('change',e=>{const id=$('#sheet').dataset.cid,t=e.target;
   if(t.id==='av'&&t.files[0])return loadAvatar(t.files[0],u=>act({t:'patch',id,p:{avatar:u}}));
   const f=t.dataset.f;if(!f)return;let p={[f]:t.value};
@@ -848,7 +877,7 @@ function renderCards(){
   const P=S.priv[seat],ch=S.chars['h'+seat],SC=S.scene||'mundano',D=SCN[SC],X=ctxM(ch);
   const sel_=M?`<select id="cs">${Array.from({length:SEATS},(_,i)=>`<option value="${i+1}" ${i+1===seat?'selected':''}>Jogador ${i+1}${S.on[i+1]?' ●':''}</option>`).join('')}</select>`:'';
   const log=`<h3 style="margin-top:12px">Jogadas recentes</h3><div class="mut">${S.log.slice(-15).reverse().map(esc).join('<br>')||'—'}</div>`;
-  const info=`<div class="modeinfo" style="--c:${D.c}">${D.i} <b>${D.t}</b> — ${SC==='mundano'?'baralho completo, sem gasto de Pulso, cartas não vão ao descarte.':SC==='missao'?'baralho completo; jogar gasta Pulso e a carta vai para o descarte.':'mão de 3 cartas (renova no seu turno); Pulso, turnos e movimento limitado.'}</div>`;
+  const info=`<div class="modeinfo" style="--c:${D.c}">${D.i} <b>${D.t}</b> — ${SC==='mundano'?'baralho completo em fileira; uso ilimitado, sem gasto de Pulso e as cartas não saem da mão.':SC==='missao'?'baralho completo; jogar gasta Pulso e a carta vai para o descarte.':'mão de 3 cartas (renova no seu turno); Pulso, turnos e movimento limitado.'}</div>`;
   if(!P){el.innerHTML=`<h3>Cartas</h3>${info}${sel_}<div class="mut">${M?'Essa cadeira ainda não entrou.':'Sem baralho.'}</div>${log}`;return}
   const tot=P.deck.length+P.hand.length+P.disc.length,fixed=fixedList(ch);
   const btns=(X.cb&&M?`<button data-c="draw" data-sfx="card" class="pri" ${tot?'':'disabled'}>Comprar até 3</button>`:'')+((X.cb&&!M)?'':`<button data-c="reshuffle" ${tot?'':'disabled'}>${X.cb?'Reembaralhar tudo':'Recuperar descarte'}</button>`);
@@ -856,14 +885,14 @@ function renderCards(){
   <div class="mut">${ch?esc(ch.name)+' · ':''}Pulso ${ch?ch.pulso+'/'+ch.pmax:'—'}${X.cb?' · Baralho '+P.deck.length:''}${X.spend?' · Descarte '+P.disc.length:''}${X.cb&&!X.turn?' · <b>aguarde seu turno</b>':''}</div>
   ${tot?'':'<div class="mut" style="margin:8px 0">Escolha Arquétipo, Trilha e Nascimento na ficha: o baralho é montado automaticamente (15 cartas).</div>'}
   ${ch&&ch.trilha==='O Monstro'?`<div class="mut" style="margin-top:6px">${(ch.form||'humana')==='monstro'?'🦖 <b>Forma Monstro</b> — baralho da Besta desperto.':'🧍 <b>Forma Humana</b> — Mini-Baralho de Contenção. Gatilho: <b>'+esc((TRG[ch.trigger]||TRG.metade).n)+'</b>.'}</div>`:''}
-  ${fixed.length?`<div class="fxh">Cartas fixas</div>`+fixed.map(f=>fixedHTML(f,ch,seat)).join(''):''}
-  <div class="fxh">${X.cb?'Mão':'Baralho completo'}</div><div style="margin:4px 0 8px">${P.hand.map((x,i)=>cardHTML(x,i,ch)).join('')||(tot?'<span class="mut">Mão vazia</span>':'')}</div>
+  ${X.cb?`${fixed.length?`<div class="fxh">Cartas fixas</div>`+fixed.map(f=>fixedHTML(f,ch,seat)).join(''):''}
+  <div class="fxh">Mão</div><div style="margin:4px 0 8px">${P.hand.map((x,i)=>cardHTML(x,i,ch)).join('')||(tot?'<span class="mut">Mão vazia</span>':'')}</div>`:`<div class="mut" style="margin:10px 0">🃏 Suas cartas estão no baralho abaixo do tabuleiro, em fileira e por raridade (comum › rara › épica).</div>`}
   <div class="row">${btns}</div>
   ${X.spend?`<div class="mut" style="margin-top:6px">Descarte: ${P.disc.slice(-6).map(x=>esc(CARDS[x].n)).join(' · ')||'—'}</div>`:''}${log}`;
   const fl=el.querySelector('.flipc');if(fl){const ph=fl.dataset.ph;if(fl.dataset.prev!==ph)requestAnimationFrame(()=>requestAnimationFrame(()=>fl.classList.toggle('back',ph==='intangivel')));flipPrev[seat]=ph}}
 function startAim(seat,ch,sp,name,ref){if(!ch||ch.ready===false)return;aim=Object.assign({seat,sp,name},ref);sel=ch.id;selCov=null;
   if(!aimCells(ch,sp).length){aim=null;$('#hint').textContent='Nenhuma casa ao alcance (linha de tiro bloqueada).';SFX.err();return}renderAll();$('#board').scrollIntoView({block:'nearest',behavior:'smooth'})}
-$('#cards').addEventListener('change',e=>{if(e.target.id==='cs'){cseat=+e.target.value;renderCards()}});
+$('#cards').addEventListener('change',e=>{if(e.target.id==='cs'){cseat=+e.target.value;hsel=null;renderAll()}});
 $('#cards').addEventListener('click',e=>{const seat=me.seat===0?cseat:me.seat,t=e.target.closest('[data-i],[data-c],[data-play],[data-fx],[data-fl]');if(!t)return;
   const ch=S.chars['h'+seat],P=S.priv[seat];
   if(t.dataset.fl){act({t:'flip',seat});return}
@@ -911,12 +940,12 @@ function renderTabs(){const T=me.seat===0?TABS_M:TABS_P;if(!T.some(x=>x[0]===tab
   $('#tabs').innerHTML=T.map(t=>`<button class="${t[0]===tab?'on':''}" data-tab="${t[0]}"><span>${t[1]}</span>${t[2]}${t[0]==='chat'&&unread()?'<i class="bd">'+unread()+'</i>':''}</button>`).join('');
   $('#sheet').hidden=tab!=='ficha';$('#cards').hidden=tab!=='cartas';$('#chat').hidden=tab!=='chat';$('#master').hidden=!['npc','cena','mesa'].includes(tab)}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b){tab=b.dataset.tab;renderAll()}});
-function renderTools(){const mb='<button class="mutebtn" data-t="mute"></button><button data-t="iso" class="'+(isoOn()?'on':'')+'" title="Alternar perspectiva isométrica / 2D">🧊 Isométrico</button>';
+function renderTools(){const mb='<button class="mutebtn" data-t="mute"></button><button data-t="sheet" class="'+(sheetHide?'':'on')+'" title="Mostrar / ocultar a ficha (prancheta)">📋 Ficha</button><button data-t="iso" class="'+(isoOn()?'on':'')+'" title="Alternar perspectiva isométrica / 2D">🧊 Isométrico</button>';
   $('#tools').innerHTML=me.seat===0?`${S.scene==='combate'?'<button class="pri" data-t="turn">⏭ Próximo turno</button>':''}<button data-t="cover">🧱 Cobertura</button><button data-t="add-capanga">+ Capanga</button><button data-t="add-vilao">+ Vilão</button><button data-t="free" class="${S.free?'on':''}">🕊 Livre</button>${mb}`
   :`<button data-t="mine" class="${sel==='h'+me.seat?'on':''}">🎯 Meu token</button>${myTurn()?'<button class="pri" data-t="turn">⏭ Encerrar turno</button>':''}${mb}`;syncMute()}
 $('#tools').addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(!t)return;const k=t.dataset.t;
   if(k==='mine'){const c=S.chars['h'+me.seat];if(c&&c.ready!==false){sel=sel===c.id?null:c.id;renderAll()}}
-  else if(k==='draw')act({t:'draw',seat:me.seat});else if(k==='mute')toggleMute();else if(k==='iso')setIso(!isoOn());else if(k==='turn')act({t:me.seat===0?'newturn':'endturn'});
+  else if(k==='draw')act({t:'draw',seat:me.seat});else if(k==='mute')toggleMute();else if(k==='iso')setIso(!isoOn());else if(k==='sheet')setSheetHide(!sheetHide);else if(k==='turn')act({t:me.seat===0?'newturn':'endturn'});
   else if(k==='cover'){placing=true;renderBoard()}else if(k==='free')act({t:'free',v:!S.free});else if(k.startsWith('add-'))act({t:'addchar',kind:k.slice(4)})});
 function theme(){const mine=S.chars['h'+me.seat],c=S.chars[sel]||mine;
   $('#app').style.setProperty('--th',thc(me.seat?mine:S.chars[sel]));$('#sheet').style.setProperty('--th',thc(c));$('#cards').style.setProperty('--th',thc(S.chars['h'+(me.seat||cseat)]));$('#chat').style.setProperty('--th',thc(S.chars['h'+(me.seat||cseat)]))}
@@ -1076,31 +1105,61 @@ $('#sheet').addEventListener('click',e=>{const d=e.target.dataset,id=$('#sheet')
   if(!aimCells(c,aim.sp).length){aim=null;SFX.err();return}renderAll()});
 /* ---- MÃO DO COMBATE (abaixo do tabuleiro) ---- */
 let hsel=null,handKey='',dealtTn=null;
-function handSeat(){if(S.scene!=='combate'||!S.cb)return 0;if(me.seat>0)return me.seat;const c=S.chars[S.cb.order[S.cb.i]];return c&&c.seat?c.seat:0}
+function handSeat(){if(S.scene!=='combate'||!S.cb){if(me.seat>0)return me.seat;return S.priv[cseat]?cseat:(+Object.keys(S.priv)[0]||0)}if(me.seat>0)return me.seat;const c=S.chars[S.cb.order[S.cb.i]];return c&&c.seat?c.seat:0}
+const RORD={comum:0,rara:1,epica:2};
 function renderHand(){const el=$('#handbar'),seat=handSeat(),P=seat&&S.priv[seat],ch=seat&&S.chars['h'+seat];
+  if(el.contains(document.activeElement)&&document.activeElement.matches('select'))return;
   if(!P||!ch||ch.ready===false){el.hidden=true;el.innerHTML='';handKey='';return}
-  const X=ctxM(ch),fixed=fixedList(ch),n=P.hand.length;
-  let deal=false;if(S.tn&&S.tn.id!==dealtTn&&!introPlaying){deal=S.tn.cid===ch.id;dealtTn=S.tn.id}
-  const key=JSON.stringify([seat,P.hand,P.deck.length,P.disc.length,P.disc[P.disc.length-1],ch.pulso,ch.pmax,X.turn,X.pend,hsel,aim&&[aim.i,aim.fx,aim.seat],ch.phase,ch.form,ch.name,introPlaying]);
+  const X=ctxM(ch),fixed=fixedList(ch),n=P.hand.length,CB=X.cb,M=me.seat===0;
+  let deal=false;if(CB&&S.tn&&S.tn.id!==dealtTn&&!introPlaying){deal=S.tn.cid===ch.id;dealtTn=S.tn.id}
+  const key=JSON.stringify([seat,S.scene,M,P.hand,P.deck.length,P.disc.length,P.disc[P.disc.length-1],ch.pulso,ch.pmax,X.turn,X.pend,hsel,aim&&[aim.i,aim.fx,aim.seat],ch.phase,ch.form,ch.name,introPlaying,M&&Object.keys(S.priv).join()]);
   if(key===handKey&&!el.hidden&&!deal)return;handKey=key;el.hidden=false;if(hsel!==null&&hsel>=n)hsel=null;
   const cardH=(id,i)=>{const c=CARDS[id],req=reqOk(ch,c);let why='';
-    if(c.x)why='Reação: só pode ser usada quando você for atacado';else if(!X.turn)why='Aguarde o seu turno';else if(X.pend)why='Resolva o ataque pendente';else if(!req)why='Vire a carta Tangível/Intangível';else if(ch.pulso<c.c)why='Pulso insuficiente';
-    const on=(aim&&aim.i===i&&!aim.fx&&!aim.npc&&aim.seat===seat)||hsel===i,rot=(((i*37+3)%13-6)*0.9).toFixed(1),dy=((i*53)%9-3),lock=humanLock(ch,c);
+    if(c.x)why='Reação: só pode ser usada quando você for atacado';else if(!X.turn)why='Aguarde o seu turno';else if(X.pend)why='Resolva o ataque pendente';else if(!req)why='Vire a carta Tangível/Intangível';else if(X.spend&&ch.pulso<c.c)why='Pulso insuficiente';
+    const on=(aim&&aim.i===i&&!aim.fx&&!aim.npc&&aim.seat===seat)||hsel===i,rot=CB?(((i*37+3)%13-6)*0.9).toFixed(1):'0',dy=CB?((i*53)%9-3):0,lock=humanLock(ch,c);
     return `<div class="hc ${c.r}${why?' off':''}${on?' sel':''}${c.x?' rx':''}" data-hi="${i}" data-why="${esc(why)}" style="--r:${rot}deg;--dy:${dy}px"><div class="hh"><span class="cost">${c.c}</span><b>${esc(c.n.split(' / ')[0])}</b><span class="sg s-${c.s}">${SG[c.s]}</span></div>
       <div class="ht">${esc(lock?'Forma Humana: só 1 de dano desarmado comum.':dtxt(c.t,ch))}</div><div class="hf">${RAR[c.r]}${c.x?' · 🛡 Reação':''}${why&&!c.x?' · '+esc(why):''}</div>
       ${on?(hsel===i?`<button class="pri sm hbtn" data-hplay="${i}">Jogar</button>`:'<div class="hhint">Clique numa casa vermelha</div>'):''}</div>`};
-  const fxH=fixed.map(f=>{if(f.flip){const ph=ch.phase||'tangivel',ok=ch.pulso>=2&&X.turn&&!X.pend;return `<div class="hc fx${ok?'':' off'}" data-hflip="1" data-why="${ok?'':'Precisa de 2 Pulso e do seu turno'}"><div class="hh"><span class="cost">2</span><b>${ph==='tangivel'?'☀ Tangível':'☾ Intangível'}</b></div><div class="ht">Carta fixa: virar para ${ph==='tangivel'?'Intangível':'Tangível'}.</div><div class="hf">Fixa</div></div>`}
-    const ok=ch.pulso>=f.c&&X.turn&&!X.pend,on=aim&&aim.fx===f.key;return `<div class="hc fx${ok?'':' off'}${on?' sel':''}" data-hfx="${f.key}" data-why="${ok?'':'Aguarde o seu turno / Pulso insuficiente'}"><div class="hh"><span class="cost">${f.c}</span><b>${esc(f.n)}</b></div><div class="ht">${esc(short(f.t,90))}</div><div class="hf">Fixa${on?' · clique numa casa vermelha':''}</div></div>`}).join('');
+  const fxH=fixed.map(f=>{if(f.flip){const ph=ch.phase||'tangivel',ok=(!X.spend||ch.pulso>=2)&&X.turn&&!X.pend;return `<div class="hc fx${ok?'':' off'}" data-hflip="1" data-why="${ok?'':'Precisa de 2 Pulso e do seu turno'}"><div class="hh"><span class="cost">2</span><b>${ph==='tangivel'?'☀ Tangível':'☾ Intangível'}</b></div><div class="ht">Carta fixa: virar para ${ph==='tangivel'?'Intangível':'Tangível'}.</div><div class="hf">Fixa</div></div>`}
+    const ok=(!X.spend||ch.pulso>=f.c)&&X.turn&&!X.pend,on=aim&&aim.fx===f.key;return `<div class="hc fx${ok?'':' off'}${on?' sel':''}" data-hfx="${f.key}" data-why="${ok?'':'Aguarde o seu turno / Pulso insuficiente'}"><div class="hh"><span class="cost">${f.c}</span><b>${esc(f.n)}</b></div><div class="ht">${esc(short(f.t,90))}</div><div class="hf">Fixa${on?' · clique numa casa vermelha':''}</div></div>`}).join('');
   const top=P.disc.length?CARDS[P.disc[P.disc.length-1]]:null;
-  el.innerHTML=`<div class="hlab">🃏 Mão de <b>${esc(ch.name)}</b> · ${X.turn?'<b style="color:#ffd24a">SEU TURNO</b>':'aguarde o turno'} · Pulso ${ch.pulso}/${ch.pmax}</div>
-  <div class="hrow"><div class="pile"><div class="pbk"></div><span class="pn">${P.deck.length}</span><div class="pl">Baralho</div></div>
-  <div class="hcs">${P.hand.map(cardH).join('')||'<span class="mut">Mão vazia</span>'}</div>${fxH?`<div class="hcs fxs">${fxH}</div>`:''}
-  <div class="pile d">${top?`<div class="pt"><b>${esc(top.n.split(' / ')[0])}</b></div>`:'<div class="pt mut">vazio</div>'}<span class="pn">${P.disc.length}</span><div class="pl">Descarte</div></div></div>`;
-  if(deal)dealAnim()}
+  const pileD=`<div class="pile d">${top?`<div class="pt"><b>${esc(top.n.split(' / ')[0])}</b></div>`:'<div class="pt mut">vazio</div>'}<span class="pn">${P.disc.length}</span><div class="pl">Descarte</div></div>`;
+  if(CB){
+    el.innerHTML=`<div class="hlab">🃏 Mão de <b>${esc(ch.name)}</b> · ${X.turn?'<b style="color:#ffd24a">SEU TURNO</b>':'aguarde o turno'} · Pulso ${ch.pulso}/${ch.pmax}</div>
+    <div class="hrow"><div class="pile"><div class="pbk"></div><span class="pn">${P.deck.length}</span><div class="pl">Baralho</div></div>
+    <div class="hcs">${P.hand.map((id,i)=>cardH(id,i)).join('')||'<span class="mut">Mão vazia</span>'}</div>${fxH?`<div class="hcs fxs">${fxH}</div>`:''}
+    ${pileD}</div>`;
+    if(deal)dealAnim();return}
+  /* Mundano / Missão: baralho completo em fileira, por raridade (comum › rara › épica) */
+  const idx=P.hand.map((_,i)=>i).sort((a,b)=>{const A=CARDS[P.hand[a]],B=CARDS[P.hand[b]];return RORD[A.r]-RORD[B.r]||A.c-B.c||A.n.localeCompare(B.n)});
+  const ms=X.SC==='missao',seats=Object.keys(S.priv).map(Number).sort((a,b)=>a-b);
+  const sl=M?`<select id="hseat" style="width:auto;padding:2px 6px">${seats.map(k=>`<option value="${k}" ${k===seat?'selected':''}>Jogador ${k}${S.chars['h'+k]&&S.chars['h'+k].name?' · '+esc(S.chars['h'+k].name):''}</option>`).join('')}</select> `:'';
+  el.innerHTML=`<div class="hlab">${sl}🃏 Baralho de <b>${esc(ch.name)}</b> · ${ms?'<b style="color:#5fd0ff">MISSÃO</b> — jogar gasta Pulso e a carta vai ao descarte · Pulso '+ch.pulso+'/'+ch.pmax:'<b style="color:#f0c36a">MUNDANO</b> — uso ilimitado, as cartas não saem da mão'}${ms&&P.disc.length?` <button class="sm" data-hreshuf="1">↺ Recuperar descarte</button>`:''}</div>
+  <div class="hrow dk"><div class="deckrow" id="deckrow">${fxH}${idx.map(i=>cardH(P.hand[i],i)).join('')||'<span class="mut">Sem cartas. Complete a ficha (Arquétipo, Trilha e Nascimento).</span>'}</div>${ms?pileD:''}</div>`;
+  fitDeck()}
+/* ajusta a sobreposição das cartas para a fileira caber na largura (com rolagem se ainda faltar espaço) */
+function fitDeck(){const r=document.querySelector('#handbar .deckrow');if(!r)return;const cs=[...r.querySelectorAll(':scope>.hc')];if(cs.length<2)return;
+  const cw=r.clientWidth-24,tot=cs.reduce((s,c)=>s+c.offsetWidth,0),g=8;let ov=-g;
+  if(tot+g*(cs.length-1)>cw){ov=(tot-cw)/(cs.length-1);ov=Math.min(ov,Math.min(...cs.map(c=>c.offsetWidth))-40)}
+  r.style.setProperty('--ml',(-ov).toFixed(1)+'px')}
+addEventListener('resize',()=>{try{fitDeck()}catch(e){}});
+/* ---- HUD do turno: Vigor ◂ passos ▸ Pulso ---- */
+function renderHud(){const el=$('#hud');if(!el)return;
+  const cur=S&&S.scene==='combate'&&S.cb?S.chars[S.cb.order[S.cb.i]]:null;
+  if(!cur||cur.ready===false||!(me.seat===0||cur.seat===me.seat)){el.hidden=true;el.innerHTML='';return}
+  const col=cur.kind==='hero'&&cur.trilha?thc(cur):KIND[cur.kind].c,pc=(v,m)=>m?Math.min(100,Math.max(0,v/m*100)):0,free=me.seat===0&&S.free,
+    st=cur.mvmax>0&&cur.mvmax<=14?`<div class="hsp">${Array.from({length:cur.mvmax},(_,k)=>`<i class="${k<cur.mv?'f':''}"></i>`).join('')}</div>`:'';
+  el.hidden=false;el.style.setProperty('--hc',col);
+  el.innerHTML=`<div class="hudn">⚡ Turno de <b>${esc(cur.name)}</b></div><div class="hudr">
+    <div class="hbx v"><div class="hbl"><b>Vigor</b><span>${cur.vigor}/${cur.vmax}</span></div><div class="hbt"><i style="width:${pc(cur.vigor,cur.vmax)}%"></i></div></div>
+    <div class="hstp${cur.mv<=0&&!free?' zero':''}"><div class="hsn"><span>👣</span><b>${free?'∞':cur.mv}</b></div><div class="hsl">${free?'movimento livre':'passos restantes'}${free?'':' · de '+cur.mvmax}</div>${free?'':st}</div>
+    <div class="hbx p"><div class="hbl"><b>Pulso</b><span>${cur.pulso}/${cur.pmax}</span></div><div class="hbt"><i style="width:${pc(cur.pulso,cur.pmax)}%"></i></div></div></div>`}
 function dealAnim(){const el=$('#handbar');if(el.hidden)return;const dk=el.querySelector('.pile:not(.d)');if(!dk)return;const r=dk.getBoundingClientRect();
   el.querySelectorAll('.hcs:not(.fxs) .hc').forEach((c,i)=>{const q=c.getBoundingClientRect(),fin=getComputedStyle(c).transform,dx=r.left+r.width/2-q.left-q.width/2,dy=r.top+r.height/2-q.top-q.height/2;
     c.animate([{transform:`translate(${dx}px,${dy}px) scale(.35) rotate(-30deg) rotateY(180deg)`,opacity:0,offset:0},{transform:`translate(${dx*.55}px,${dy*.55-70}px) scale(.8) rotate(12deg) rotateY(90deg)`,opacity:1,offset:.45},{transform:fin,opacity:1,offset:1}],{duration:620,delay:i*380,easing:'cubic-bezier(.25,.8,.3,1)',fill:'backwards'});setTimeout(()=>{SFX.card()},i*380+120)})}
+$('#handbar').addEventListener('change',e=>{if(e.target.id==='hseat'){cseat=+e.target.value;hsel=null;aim=null;renderAll()}});
 $('#handbar').addEventListener('click',e=>{const seat=handSeat(),ch=S.chars['h'+seat],P=S.priv[seat];if(!ch||!P)return;
+  if(e.target.closest('[data-hreshuf]')){act({t:'reshuffle',seat});return}
   const pb_=e.target.closest('[data-hplay]');if(pb_){const i=+pb_.dataset.hplay;hsel=null;act({t:'play',seat,i});return}
   const c=e.target.closest('.hc');if(!c)return;
   if(c.classList.contains('off')){toast(c.dataset.why||'Indisponível');SFX.err();return}
@@ -1119,7 +1178,7 @@ function cellAt(e){const q=[...document.querySelectorAll('#fxl .pr')].map(p=>{co
   const[o,px,py]=q,X=[px[0]-o[0],px[1]-o[1]],Y=[py[0]-o[0],py[1]-o[1]],P=[e.clientX-o[0],e.clientY-o[1]],d=X[0]*Y[1]-X[1]*Y[0];
   if(!d)return[-1,-1];const u=(P[0]*Y[1]-P[1]*Y[0])/d,v=(X[0]*P[1]-X[1]*P[0])/d;return[Math.floor(u*S.n),Math.floor(v*S.n)]}
 
-function renderAll(){renderTabs();renderTools();renderScene();theme();renderBoard();renderInit();renderSheet();renderCards();renderMaster();renderChat();renderReact();renderHand();renderWiz()}
+function renderAll(){renderTabs();renderTools();renderScene();theme();renderBoard();renderInit();renderSheet();renderCards();renderMaster();renderChat();renderReact();renderHand();renderHud();renderWiz()}
 function render(){if(!S)return;if(sel&&!S.chars[sel])sel=null;const sc=sceneEvt();
   if(bnSeen===null)bnSeen=S.banner?S.banner.id:0;
   else if(S.banner&&S.banner.id!==bnSeen){bnSeen=S.banner.id;const b=$('#banner');b.textContent=S.banner.text+'!';b.hidden=true;void b.offsetWidth;b.hidden=false;SFX.err();setTimeout(()=>b.hidden=true,2700)}
