@@ -1512,7 +1512,17 @@ const spReal=c=>{const m=c.trilha==='O Monstro'&&c.form==='monstro';return (m&&c
 const SPT={},SPQ={};let sptT=0;
 function trimSp(u){if(SPT[u])return SPT[u];if(SPQ[u])return u;SPQ[u]=1;const im=new Image();im.onload=()=>{try{
   const w=im.naturalWidth,h=im.naturalHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;const g=cv.getContext('2d');g.drawImage(im,0,0);
-  const d=g.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=-1,y1=-1;
+  const id=g.getImageData(0,0,w,h),d=id.data;
+  /* fundo chapado opaco (cor igual nos 4 cantos): remove por preenchimento a partir das bordas */
+  {const P=(x,y)=>(y*w+x)*4,cs=[P(0,0),P(w-1,0),P(0,h-1),P(w-1,h-1)];
+   if(cs.every(i=>d[i+3]>200)){const r=d[cs[0]],gg=d[cs[0]+1],bb=d[cs[0]+2];
+    if(cs.every(i=>Math.abs(d[i]-r)+Math.abs(d[i+1]-gg)+Math.abs(d[i+2]-bb)<60)){
+     const seen=new Uint8Array(w*h),st=[];const push=(x,y)=>{if(x<0||y<0||x>=w||y>=h)return;const k=y*w+x;if(seen[k])return;const i=k*4;
+      if(d[i+3]>0&&Math.abs(d[i]-r)+Math.abs(d[i+1]-gg)+Math.abs(d[i+2]-bb)<90){seen[k]=1;st.push(k)}};
+     for(let x=0;x<w;x++){push(x,0);push(x,h-1)}for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
+     while(st.length){const k=st.pop(),x=k%w,y=(k/w)|0;d[k*4+3]=0;push(x+1,y);push(x-1,y);push(x,y+1);push(x,y-1)}
+     g.putImageData(id,0,0)}}}
+  let x0=w,y0=h,x1=-1,y1=-1;
   for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(d[(y*w+x)*4+3]>12){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
   if(x1<0||(x0<=0&&y0<=0&&x1>=w-1&&y1>=h-1)){SPT[u]=u}else{const cw=x1-x0+1,ch=y1-y0+1,c2=document.createElement('canvas');c2.width=cw;c2.height=ch;c2.getContext('2d').drawImage(cv,x0,y0,cw,ch,0,0,cw,ch);SPT[u]=c2.toDataURL('image/png')}
  }catch(e){SPT[u]=u}
