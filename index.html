@@ -66,6 +66,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .bar{height:8px;background:var(--pn2);border-radius:4px;overflow:hidden;margin-top:3px}.bar i{display:block;height:100%;background:var(--bad)}.bar.p i{background:var(--blue)}
 .stat{display:flex;gap:6px;align-items:center}.stat b{min-width:70px;font-size:13px}
 .hand{display:flex;gap:8px;flex-wrap:wrap}.pc{width:54px;height:78px;border-radius:6px;background:#f3efe8;color:#111;display:grid;place-items:center;font-size:20px;font-weight:700;border:2px solid #fff;cursor:pointer}.pc.r{color:#c0392b}
+.spprev{width:56px;height:70px;border-radius:5px;background:#d9d4c3 center/contain no-repeat;border:2px solid #8a8170;display:grid;place-items:center;font-size:24px;color:#8a8170}
 .avprev{width:64px;height:64px;border-radius:50%;background:var(--pn2) center/cover;border:2px solid var(--ln);flex:0 0 64px}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--mut)}.dot.on{background:var(--good)}
 .list>div{display:flex;gap:6px;align-items:center;padding:3px 0;border-bottom:1px solid var(--ln)}.list>div>span{flex:1}
@@ -301,11 +302,16 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .isoz.iso .board{overflow:visible;transform-style:preserve-3d;box-shadow:1px 1px 0 #2a2b44,2px 2px 0 #26273e,3px 3px 0 #222338,4px 4px 0 #1e1f32,5px 5px 0 #1a1b2c,6px 6px 0 #161725,7px 7px 0 #12131f,8px 8px 0 #0e0f19,9px 9px 0 #0b0b14,10px 10px 0 #08080f,28px 28px 40px #000c}
 .isoz.iso .board[data-scene=combate]{box-shadow:1px 1px 0 #3a1c28,2px 2px 0 #34192a,3px 3px 0 #2e1624,4px 4px 0 #28131e,5px 5px 0 #22101a,6px 6px 0 #1c0d16,7px 7px 0 #160a12,8px 8px 0 #10080e,9px 9px 0 #0a050a,10px 10px 0 #050305,0 0 28px #ef444488,28px 28px 40px #000c}
 .isoz.iso #fxl{overflow:visible;transform-style:preserve-3d}
-.isoz.iso .tok{transform-origin:50% 94%;transform:translateZ(calc(var(--cu,0px)*var(--tz,0) + 2px)) rotateZ(-45deg) rotateX(-58deg) scale(1.5)}
-/* token = sprite de papel em pé: cartão fino de borda clara, sem arredondar em círculo */
-.isoz.iso .tok>div{inset:auto 10% 6% 10%;height:112%;border-radius:4px 4px 2px 2px;border-width:2px;box-shadow:1.5px 0 0 #efe9d8,2.5px 1px 0 #a39b86}
-.isoz.iso .tok.sel>div{box-shadow:0 0 0 2px var(--blue),0 0 12px var(--blue),1.5px 0 0 #efe9d8}
-.isoz.iso .tok.turn>div{box-shadow:0 0 0 2px #ffd24a,0 0 14px #ffd24a,1.5px 0 0 #efe9d8}
+.isoz.iso .tok{transform-style:preserve-3d;transform-origin:50% 94%;transform:translateZ(calc(var(--cu,0px)*var(--tz,0) + 1px)) rotateX(-90deg)}
+/* sprite = folha de papel em pé, alinhada à linha X do grid (plano vertical), com 1 casa de altura e 80% de largura */
+.isoz.iso .tok>div{inset:auto 10% 6% 10%;height:100%;border-radius:2px;border-width:2px;background-size:cover;box-shadow:none}
+.isoz.iso .tok::before{content:"";position:absolute;left:90%;bottom:6%;width:calc(var(--cu,20px)*.05);height:100%;background:#d9d2bd;transform-origin:0 50%;transform:rotateY(90deg)}
+.isoz.iso .tok.sel>div{box-shadow:0 0 0 2px var(--blue),0 0 12px var(--blue)}
+.isoz.iso .tok.turn>div{box-shadow:0 0 0 2px #ffd24a,0 0 14px #ffd24a}
+.isoz.iso .tok .nm{display:none}
+.tsh .tn{display:none}
+.isoz.iso .tsh .tn{display:block;position:absolute;left:-40%;right:-40%;bottom:6%;text-align:center;font:700 8px/1 sans-serif;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap;overflow:hidden;transform-origin:50% 100%;transform:translateZ(calc(var(--cu,0px)*(var(--tz,0) + 1.08))) rotateZ(-45deg) rotateX(-58deg)}
+.tsh .tn.exh::after{content:" 💤"}
 .isoz.iso .tsh{display:block;transform-style:preserve-3d;transform:translateZ(.5px)}
 .tsh .sh{position:absolute;left:14%;right:14%;top:78%;height:34%;border-radius:50%;background:radial-gradient(closest-side,#000b,#0000)}
 .tsh .pole{position:absolute;left:calc(50% - 1px);top:94%;width:2px;height:calc(var(--cu,20px)*var(--tz,0));transform-origin:50% 0;transform:rotateX(90deg);background:repeating-linear-gradient(#ffd24a 0 4px,#0000 4px 8px);opacity:.9}
@@ -735,8 +741,8 @@ function apply0(seat,a){ // seat 0 = Mestre. Todas as mutações passam por aqui
     case 'level':{if(!own||S.pend||!turnOkFor(c,M)||c.dead||(immob(c)&&!(M&&S.free)))return;const z=Math.max(0,Math.min(LV_MAX,Math.floor(+a.z)||0)),pz=c.z|0;if(z===pz||blocked(c.x,c.y,c.id,z))return;
       c.z=z;lg(c.name+(z>pz?' sobe':' desce')+' para o nível '+z+(z===0?' (piso)':'')+'.');break}
     case 'move':{if(!own||S.pend||!turnOkFor(c,M)||c.dead||(immob(c)&&!(M&&S.free)))return;const cost=reach(c,M&&S.free).get(a.x+','+a.y);if(cost===undefined)return;c.x=a.x;c.y=a.y;if(!(M&&S.free)&&S.scene==='combate')c.mv=Math.max(0,c.mv-cost);break}
-    case 'patch':{if(!own||(c.dead&&!M))return;const ok=['name','secret','theme','avatar','avatar2','vigor','vmax','pulso','pmax','arch','trilha','birth'];if(M)ok.push('mv','mvmax','kind','arma','dtype','trigger');if(!M&&(c.agony||c.fare))ok.splice(ok.indexOf('vigor'),1);
-      for(const k of ok)if(k in a.p){if(!M&&['arch','trilha','birth'].includes(k))continue;let v=a.p[k];if((k==='avatar'||k==='avatar2')&&String(v).length>90000)continue;if(typeof c[k]==='number')v=Math.max(0,Math.floor(+v)||0);if(k==='arma')v=String(v).slice(0,40);if(k==='dtype'&&!DT.includes(v))continue;if(k==='trigger'&&!TRG[v])continue;c[k]=v}if(M&&c.seat&&('arch' in a.p||'trilha' in a.p||'birth' in a.p))rebuild(c.seat);break}
+    case 'patch':{if(!own||(c.dead&&!M))return;const ok=['name','secret','theme','avatar','avatar2','sprite','sprite2','vigor','vmax','pulso','pmax','arch','trilha','birth'];if(M)ok.push('mv','mvmax','kind','arma','dtype','trigger');if(!M&&(c.agony||c.fare))ok.splice(ok.indexOf('vigor'),1);
+      for(const k of ok)if(k in a.p){if(!M&&['arch','trilha','birth'].includes(k))continue;let v=a.p[k];if((k==='avatar'||k==='avatar2'||k==='sprite'||k==='sprite2')&&String(v).length>90000)continue;if(typeof c[k]==='number')v=Math.max(0,Math.floor(+v)||0);if(k==='arma')v=String(v).slice(0,40);if(k==='dtype'&&!DT.includes(v))continue;if(k==='trigger'&&!TRG[v])continue;c[k]=v}if(M&&c.seat&&('arch' in a.p||'trilha' in a.p||'birth' in a.p))rebuild(c.seat);break}
     case 'create':{const hc=S.chars['h'+seat],q=a.p||{};if(M||!hc||hc.ready!==false)return;
       const Ar=ARCH[q.arch];if(!Ar||!Ar.tr[q.trilha]||!BIRTHS.some(b=>b.name===q.birth))return;
       if(q.arch==='O Armado'&&(!DT.includes(q.dtype)||!String(q.arma||'').trim()))return;if(q.trilha==='O Monstro'&&!TRG[q.trigger])return;
@@ -744,6 +750,7 @@ function apply0(seat,a){ // seat 0 = Mestre. Todas as mutações passam por aqui
       Object.assign(hc,{name:String(q.name||'').slice(0,40)||hc.name,secret:String(q.secret||'').slice(0,60),theme:String(q.theme||'').slice(0,300),arch:q.arch,trilha:q.trilha,birth:q.birth,vmax:Ar.v,vigor:Ar.v,pmax:Ar.p,pulso:Ar.p,ready:true,form:'humana',phase:'tangivel',provoked:false,
         arma:q.arch==='O Armado'?String(q.arma).trim().slice(0,40):'',dtype:q.arch==='O Armado'?q.dtype:'',trigger:q.trilha==='O Monstro'?q.trigger:''});
       if(q.avatar&&String(q.avatar).length<90000)hc.avatar=q.avatar;if(q.trilha==='O Monstro'&&q.avatar2&&String(q.avatar2).length<90000)hc.avatar2=q.avatar2;
+      if(q.sprite&&String(q.sprite).length<90000)hc.sprite=q.sprite;if(q.trilha==='O Monstro'&&q.sprite2&&String(q.sprite2).length<90000)hc.sprite2=q.sprite2;
       let x=0;while(x<S.n&&blocked(x,S.n-1,hc.id))x++;hc.x=Math.min(x,S.n-1);hc.y=S.n-1;
       S.priv[seat]=hc.trilha==='O Monstro'?{deck:shuffle(HUM),hand:[],disc:[],mdeck:dk}:{deck:shuffle(dk),hand:[],disc:[]};S.log.push(hc.name+' entrou na mesa!');S.log=S.log.slice(-15);if(S.scene==='combate')cbJoin(hc.id);break}
     case 'draw':{if(!P||S.scene!=='combate'||!M)return;while(P.hand.length<3){if(!P.deck.length){if(!P.disc.length)break;P.deck=shuffle(P.disc);P.disc=[]}P.hand.push(P.deck.pop())}break}
@@ -1063,8 +1070,8 @@ function renderBoard(){hitEvt();$('#isoz').classList.toggle('iso',isoOn());
   if(aim&&aimChar()){const ac=aimChar();aimCells(ac,aim.sp).forEach(([x,y])=>{AIMC.add(x+','+y);h+=`<div class="cell hl atk${(t=>t&&vis(t)?' tgt':'')(charAt(x,y,ac.id))}" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`})}
   else if(c&&canCtl(c)&&canMove(c))reach(c,me.seat===0&&S.free).forEach((_,k)=>{const[x,y]=k.split(',');h+=`<div class="cell hl" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`});
   Object.values(S.chars).forEach(o=>{if(o.ready===false||o.dead||!vis(o))return;const col=o.kind==='hero'&&o.trilha?thc(o):KIND[o.kind].c;
-    h+=`<div class="cell tsh" style="${pos(o.x,o.y)};--tz:${o.z|0}"><i class="sh"></i>${o.z?'<i class="pole"></i>':''}</div>`;
-    h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)};--tz:${o.z|0}" title="${esc(o.name)}${o.z?' · nível '+o.z:''}"><div style="--c:${col};${avOf(o)?`background-image:url(${avOf(o)})`:''}">${avOf(o)?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}${o.z?' ▲'+o.z:''}</span></div>`});
+    h+=`<div class="cell tsh" style="${pos(o.x,o.y)};--tz:${o.z|0}"><i class="sh"></i>${o.z?'<i class="pole"></i>':''}<span class="tn${o.exhOn?' exh':''}">${esc(o.name)}${o.z?' ▲'+o.z:''}</span></div>`;
+    h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)};--tz:${o.z|0}" title="${esc(o.name)}${o.z?' · nível '+o.z:''}"><div style="--c:${col};${spOf(o)?`background-image:url(${spOf(o)})`:''}">${spOf(o)?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}${o.z?' ▲'+o.z:''}</span></div>`});
   if(S.fx){if(fxSeen===null)fxSeen=S.fx.id;if(S.fx.id!==fxSeen){fxSeen=S.fx.id;S.fx.cells.forEach(([x,y])=>h+=`<div class="cell flash" style="${pos(x,y)}"></div>`)}}
   b.innerHTML=h;renderLv();
   $('#hint').textContent=aim?`Alvo: ${aim.name} — clique numa casa vermelha para atacar (1 casa = 3 m). Fogo amigo ativo: aliados na área também são atingidos. Esc ou clique fora cancela.`:placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?(canMove(c)?`${c.name}: movimento ${S.scene==='combate'&&!(me.seat===0&&S.free)?'restante '+c.mv:'livre (sem limite)'} · caminho livre, sem diagonais: clique numa casa azul para mover, ou no token para desmarcar.`:(immob(c)?'☠ Em agonia: imobilizado.':'Aguarde o seu turno para se mover.')):''):'Clique no seu token para ver o alcance de movimento.'}
@@ -1093,6 +1100,11 @@ $('#board').addEventListener('click',e=>{
 function loadAvatar(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{
   const z=128,cv=document.createElement('canvas');cv.width=cv.height=z;const g=cv.getContext('2d');g.fillStyle='#222';g.fillRect(0,0,z,z);
   const s=Math.min(im.width,im.height);g.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,z,z);cb(cv.toDataURL('image/jpeg',.82))};im.src=r.result};r.readAsDataURL(file)}
+/* sprite do mapa: retrato 4:5, mantém transparência (PNG/WebP), reduz até caber no limite */
+function loadSprite(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{
+  for(const[w,h]of[[160,200],[128,160],[96,120],[64,80]]){const cv=document.createElement('canvas');cv.width=w;cv.height=h;const g=cv.getContext('2d');
+    const k=Math.min(w/im.width,h/im.height),dw=im.width*k,dh=im.height*k;g.drawImage(im,(w-dw)/2,h-dh,dw,dh);
+    let u=cv.toDataURL('image/webp',.9);if(!u.startsWith('data:image/webp'))u=cv.toDataURL('image/png');if(u.length<85000||w===64)return cb(u)}};im.src=r.result};r.readAsDataURL(file)}
 function stopTheme(){if(aud){aud.pause();aud=null}$('#yt').innerHTML=''}
 function playTheme(t){stopTheme();t=(t||'').trim();const y=t.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
   if(y)$('#yt').innerHTML=`<iframe width="100%" height="70" src="https://www.youtube.com/embed/${y[1]}?autoplay=1" allow="autoplay;encrypted-media" style="border:0"></iframe>`;
@@ -1118,8 +1130,12 @@ function renderSheet(){
   <div class="row" style="align-items:flex-start;flex-wrap:nowrap">
     <div style="flex:1;min-width:0"><label style="margin-top:0">Nome do Herói</label><input data-f="name" value="${esc(c.name)}" ${d} style="font-size:24px">
     ${c.kind==='hero'?`<label>Identidade Secreta ${can?'':'(confidencial)'}</label><input data-f="secret" value="${esc(c.secret)}" ${d} placeholder="${can?'':'█████████'}">`:''}
-    <label>${c.trilha==='O Monstro'?'Foto — forma básica (humana)':'Foto (PNG/JPG)'}</label><input type="file" id="av" accept="image/png,image/jpeg" ${d}>${c.trilha==='O Monstro'?`<label>Foto — forma transformada (Monstro)</label><input type="file" id="av2" accept="image/png,image/jpeg" ${d}>`:''}</div>
+    <label>${c.trilha==='O Monstro'?'Imagem de perfil — forma básica (só na ficha)':'Imagem de perfil (só na ficha)'}</label><input type="file" id="av" accept="image/png,image/jpeg" ${d}>${c.trilha==='O Monstro'?`<label>Imagem de perfil — forma transformada (só na ficha)</label><input type="file" id="av2" accept="image/png,image/jpeg" ${d}>`:''}</div>
     <div class="photo f0${avOf(c)?'':' empty'}" style="${avOf(c)?`background-image:url(${avOf(c)})`:''}">${avOf(c)?'':'👤'}</div></div>
+  <div class="sec">Sprite no mapa</div>
+  <div class="row" style="align-items:center;flex-wrap:nowrap"><div class="spprev f0" style="${c.sprite?`background-image:url(${c.sprite})`:''}">${c.sprite?'':'🧍'}</div><div style="flex:1;min-width:0"><label style="margin-top:0">${c.trilha==='O Monstro'?'Sprite — forma básica (humana)':'Sprite (PNG com fundo transparente é o ideal)'}</label><input type="file" id="sp" accept="image/png,image/jpeg,image/webp" ${d}></div></div>
+  ${c.trilha==='O Monstro'?`<div class="row" style="align-items:center;flex-wrap:nowrap;margin-top:6px"><div class="spprev f0" style="${c.sprite2?`background-image:url(${c.sprite2})`:''}">${c.sprite2?'':'🦖'}</div><div style="flex:1;min-width:0"><label style="margin-top:0">Sprite — forma transformada (Monstro)</label><input type="file" id="sp2" accept="image/png,image/jpeg,image/webp" ${d}></div></div>`:''}
+  <div class="mut" style="margin-top:2px">${c.sprite?'':'Sem sprite: o mapa usa a imagem de perfil. '}O sprite é o que aparece no tabuleiro, no duelo e na iniciativa.</div>
   <label>Música Tema (link mp3/ogg ou YouTube; ou texto)</label>
   <div class="row"><input data-f="theme" value="${esc(c.theme)}" ${d}><button class="f0" id="play">▶</button><button class="f0" id="stop">■</button></div>
   <div class="sec">Origem</div>
@@ -1149,6 +1165,8 @@ $('#sheet').addEventListener('click',e=>{if(e.target.closest('[data-shide]'))set
 $('#sheet').addEventListener('change',e=>{const id=$('#sheet').dataset.cid,t=e.target;
   if(t.id==='av'&&t.files[0])return loadAvatar(t.files[0],u=>act({t:'patch',id,p:{avatar:u}}));
   if(t.id==='av2'&&t.files[0])return loadAvatar(t.files[0],u=>act({t:'patch',id,p:{avatar2:u}}));
+  if(t.id==='sp'&&t.files[0])return loadSprite(t.files[0],u=>act({t:'patch',id,p:{sprite:u}}));
+  if(t.id==='sp2'&&t.files[0])return loadSprite(t.files[0],u=>act({t:'patch',id,p:{sprite2:u}}));
   const f=t.dataset.f;if(!f)return;let p={[f]:t.value};
   if(f==='arch'){const A=ARCH[t.value];p=A?{arch:t.value,trilha:'',vmax:A.v,vigor:A.v,pmax:A.p,pulso:A.p}:{arch:'',trilha:''}}
   act({t:'patch',id,p});
@@ -1268,10 +1286,11 @@ function theme(){const mine=S.chars['h'+me.seat],c=S.chars[sel]||mine;
 let W=null;
 function renderWiz(){const w=$('#wiz'),h=S&&me.seat>0&&S.chars['h'+me.seat],need=h&&h.ready===false;
   if(!need){if(!w.hidden)w.hidden=true;W=null;return}
-  if(!w.hidden)return;w.hidden=false;W={name:'',secret:'',theme:'',avatar:'',avatar2:'',arch:'',tr:'',birth:'',arma:'',dtype:'',trigger:'',pick:new Set()};
+  if(!w.hidden)return;w.hidden=false;W={name:'',secret:'',theme:'',avatar:'',avatar2:'',sprite:'',sprite2:'',arch:'',tr:'',birth:'',arma:'',dtype:'',trigger:'',pick:new Set()};
   w.innerHTML=`<div class="wbox" id="wbox"><h1 style="color:var(--th)">Criação do Herói</h1><div class="mut">Preencha a identidade, escolha Arquétipo, Trilha e Nascimento e monte seu baralho de 15 cartas.</div>
   <h2>1 · Identidade</h2>
-  <div class="row"><div class="avprev f0" id="wav"></div><div><label style="margin-top:0" id="wAvL">Avatar (PNG/JPG)</label><input type="file" id="wfile" accept="image/png,image/jpeg"></div></div>
+  <div class="row"><div class="avprev f0" id="wav"></div><div><label style="margin-top:0" id="wAvL">Imagem de perfil (PNG/JPG)</label><input type="file" id="wfile" accept="image/png,image/jpeg"><div class="mut">Aparece só na sua ficha.</div></div></div>
+  <div class="row" style="margin-top:8px"><div class="spprev f0" id="wsp">🧍</div><div><label style="margin-top:0">Sprite no mapa (PNG com fundo transparente é o ideal)</label><input type="file" id="wfilesp" accept="image/png,image/jpeg,image/webp"><div class="mut">É a sua representação no tabuleiro, no duelo e na iniciativa. Sem sprite, usa o perfil.</div></div></div>
   <label>Nome do Herói</label><input data-w="name" maxlength="40"><label>Identidade Secreta</label><input data-w="secret" maxlength="60">
   <label>Música Tema (link mp3/ogg ou YouTube; ou texto)</label><div class="row"><input data-w="theme"><button class="f0" data-wp="1">▶</button><button class="f0" data-wp="0">■</button></div>
   <h2>2 · Arquétipo</h2><div class="opts" id="wA"></div><h2>3 · Trilha</h2><div class="opts" id="wT"></div><h2>4 · Nascimento</h2><div class="opts" id="wB"></div>
@@ -1279,7 +1298,7 @@ function renderWiz(){const w=$('#wiz'),h=S&&me.seat>0&&S.chars['h'+me.seat],need
   <h2 id="wH">5 · Seu baralho</h2><div class="mut" id="wDn"></div><div id="wD"></div></div><div class="wbar"><span class="badge" id="wCnt"></span><button class="pri" id="wgo">✔ Confirmar herói e entrar no mapa</button></div>`;
   wizDraw()}
 function repick(){W.pick=new Set(W.tr&&W.birth?autoDeck(W.arch,W.tr,W.birth):poolIds(W.arch,W.tr,W.birth))}
-function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];const lb=$('#wAvL');if(lb)lb.textContent=W.tr==='O Monstro'?'Avatar — forma básica / humana (PNG/JPG)':'Avatar (PNG/JPG)';$('#wbox').style.setProperty('--th',th);
+function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];const lb=$('#wAvL');if(lb)lb.textContent=W.tr==='O Monstro'?'Imagem de perfil — forma básica / humana (PNG/JPG)':'Imagem de perfil (PNG/JPG)';$('#wbox').style.setProperty('--th',th);
   $('#wA').innerHTML=Object.entries(ARCH).map(([n,a])=>`<div class="opt${W.arch===n?' on':''}" data-wa="${n}" title="${esc(a.ch)}"><b>${n}</b><small>${DESC[n]}</small><small>Vigor ${a.v} · Pulso ${a.p} · Iniciativa ${a.i}º</small></div>`).join('');
   $('#wT').innerHTML=A?Object.entries(A.tr).map(([n,t])=>`<div class="opt${W.tr===n?' on':''}" data-wt="${n}" style="--oc:${TC[n]}"><b style="color:${TC[n]}">${n}</b><small>${esc(t)}</small></div>`).join(''):'<div class="mut">Escolha um arquétipo.</div>';
   $('#wB').innerHTML=BIRTHS.map(b=>`<div class="opt${W.birth===b.name?' on':''}" data-wb="${esc(b.name)}"><b>${b.name}</b><small><u>${esc(b.pn)}</u>: ${esc(short(b.pt,130))}</small></div>`).join('');
@@ -1289,7 +1308,8 @@ function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];const lb=$('#wAvL
     <div class="opts">${DT.map(t=>`<div class="opt${W.dtype===t?' on':''}" data-wd="${t}"><b>${t}</b></div>`).join('')}</div>`:'')
    +(W.tr==='O Monstro'?`<h2>5 · Gatilho da Besta</h2><div class="mut">Você começa com o <b>Mini-Baralho de Contenção</b> (5 cartas, Forma Humana). Ao disparar o gatilho, a Besta assume e o baralho de 15 cartas abaixo desperta. Até lá, cartas de Forma Monstro causam só 1 de dano desarmado.</div>
     <div class="opts">${Object.entries(TRG).map(([k,v])=>`<div class="opt${W.trigger===k?' on':''}" data-wg="${k}"><b>${v.n}</b><small>${v.d}</small></div>`).join('')}</div>
-    <label>Imagem da forma transformada / Monstro (PNG/JPG, opcional)</label><div class="row"><div class="avprev f0" id="wav2" style="${W.avatar2?'background-image:url('+W.avatar2+')':''}"></div><div><input type="file" id="wfile2" accept="image/png,image/jpeg"><div class="mut">A imagem da seção 1 é a forma básica (humana). Esta aparece quando a Besta assume.</div></div></div>`:'');
+    <label>Imagem da forma transformada / Monstro (PNG/JPG, opcional)</label><div class="row"><div class="avprev f0" id="wav2" style="${W.avatar2?'background-image:url('+W.avatar2+')':''}"></div><div><input type="file" id="wfile2" accept="image/png,image/jpeg"><div class="mut">A imagem da seção 1 é a forma básica (humana). Esta aparece na ficha quando a Besta assume.</div></div></div>
+    <div class="row" style="margin-top:8px"><div class="spprev f0" id="wsp2" style="${W.sprite2?'background-image:url('+W.sprite2+')':''}">${W.sprite2?'':'🦖'}</div><div><label style="margin-top:0">Sprite da forma Monstro (opcional)</label><input type="file" id="wfilesp2" accept="image/png,image/jpeg,image/webp"><div class="mut">Aparece no mapa quando a Besta assume.</div></div></div>`:'');
   $('#wH').textContent=(ex?'6':'5')+' · '+(W.tr==='O Monstro'?'Baralho da Forma Monstro':'Seu baralho');
   const pool=poolIds(W.arch,W.tr,W.birth),full=W.tr&&W.birth;
   $('#wDn').textContent=full?'Trilha (15) + Nascimento (2) = 17 cartas: toque nas cartas para remover 2 e ficar com 15, ou use a sugestão.':'Escolha Trilha e Nascimento para montar o baralho. Abaixo, as cartas disponíveis até agora.';
@@ -1299,6 +1319,9 @@ function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];const lb=$('#wAvL
 function wizBar(){const ok=W.name.trim()&&W.arch&&W.tr&&W.birth&&W.pick.size===15&&(W.arch!=='O Armado'||(W.arma.trim()&&W.dtype))&&(W.tr!=='O Monstro'||W.trigger);$('#wCnt').textContent=W.pick.size+'/15 cartas';$('#wgo').disabled=!ok}
 $('#wiz').addEventListener('input',e=>{const k=e.target.dataset.w;if(k&&W){W[k]=e.target.value;wizBar()}});
 $('#wiz').addEventListener('change',e=>{if(e.target.id==='wfile'&&e.target.files[0])loadAvatar(e.target.files[0],u=>{W.avatar=u;$('#wav').style.backgroundImage='url('+u+')'})});
+$('#wiz').addEventListener('change',e=>{const t=e.target;if(!t.files||!t.files[0])return;
+  if(t.id==='wfilesp')loadSprite(t.files[0],u=>{W.sprite=u;const v=$('#wsp');if(v){v.style.backgroundImage='url('+u+')';v.textContent=''}});
+  if(t.id==='wfilesp2')loadSprite(t.files[0],u=>{W.sprite2=u;const v=$('#wsp2');if(v){v.style.backgroundImage='url('+u+')';v.textContent=''}})});
 $('#wiz').addEventListener('change',e=>{if(e.target.id==='wfile2'&&e.target.files[0])loadAvatar(e.target.files[0],u=>{W.avatar2=u;const v=$('#wav2');if(v)v.style.backgroundImage='url('+u+')'})});
 $('#wiz').addEventListener('click',e=>{const t=e.target.closest('[data-wa],[data-wt],[data-wb],[data-wc],[data-wauto],[data-wp],[data-wd],[data-wg],#wgo');if(!t||!W)return;const d=t.dataset;
   if(d.wa){if(W.arch!==d.wa){W.arch=d.wa;W.tr='';repick()}}
@@ -1306,7 +1329,7 @@ $('#wiz').addEventListener('click',e=>{const t=e.target.closest('[data-wa],[data
   else if(d.wt){W.tr=d.wt;repick()}else if(d.wb){W.birth=d.wb;repick()}else if(d.wauto)repick()
   else if(d.wp!==undefined){d.wp==='1'?playTheme(W.theme):stopTheme();return}
   else if(d.wc!==undefined){const i=+d.wc;if(!(W.tr&&W.birth))return;if(W.pick.has(i))W.pick.delete(i);else if(W.pick.size<15)W.pick.add(i);else{SFX.err();return}}
-  else if(t.id==='wgo'){if(t.disabled)return;stopTheme();act({t:'create',p:{name:W.name.trim(),secret:W.secret,theme:W.theme,avatar:W.avatar,avatar2:W.tr==='O Monstro'?W.avatar2:'',arch:W.arch,trilha:W.tr,birth:W.birth,arma:W.arma,dtype:W.dtype,trigger:W.trigger,deck:[...W.pick]}});return}
+  else if(t.id==='wgo'){if(t.disabled)return;stopTheme();act({t:'create',p:{name:W.name.trim(),secret:W.secret,theme:W.theme,avatar:W.avatar,avatar2:W.tr==='O Monstro'?W.avatar2:'',sprite:W.sprite,sprite2:W.tr==='O Monstro'?W.sprite2:'',arch:W.arch,trilha:W.tr,birth:W.birth,arma:W.arma,dtype:W.dtype,trigger:W.trigger,deck:[...W.pick]}});return}
   wizDraw()});
 
 /* =====================================================================
@@ -1388,7 +1411,7 @@ function showTitle(mode){return new Promise(res=>{const d=SCN[mode],el=$('#scn')
 async function runScene(sc){try{await showTitle(sc.mode);if(sc.cmb&&S.cb&&S.scene==='combate')await combatIntro()}catch(e){console.error(e)}introPlaying=false;renderInit();renderHand()}
 /* ---- animação do baralho de iniciativa ---- */
 function tarotHTML(id,ph){const c=S.chars[id],ini=(S.cb&&S.cb.ini[id])||{};const col=c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c;
-  return `<div class="tc face" style="--c:${col}${ph!=null?';animation-delay:-'+ph+'ms':''}"><span class="tn">${ini.n??'?'}</span><span class="tk">${c.kind==='vilao'?'☠':c.kind==='capanga'?'⚔':'★'}</span><div class="tp" style="${avOf(c)?`background-image:url(${avOf(c)})`:''}">${avOf(c)?'':esc(c.name.slice(0,2).toUpperCase())}</div><div class="tnm">${esc(c.name)}</div><div class="tsb">${esc(c.kind==='hero'?(c.trilha||KIND.hero.n):KIND[c.kind].n)}</div><div class="thp"><i style="width:${c.vmax?Math.min(100,c.vigor/c.vmax*100):0}%"></i></div>${ini.tie?'<span class="ttie" title="Empate resolvido por sorteio">⚖</span>':''}</div>`}
+  return `<div class="tc face" style="--c:${col}${ph!=null?';animation-delay:-'+ph+'ms':''}"><span class="tn">${ini.n??'?'}</span><span class="tk">${c.kind==='vilao'?'☠':c.kind==='capanga'?'⚔':'★'}</span><div class="tp" style="${spOf(c)?`background-image:url(${spOf(c)})`:''}">${spOf(c)?'':esc(c.name.slice(0,2).toUpperCase())}</div><div class="tnm">${esc(c.name)}</div><div class="tsb">${esc(c.kind==='hero'?(c.trilha||KIND.hero.n):KIND[c.kind].n)}</div><div class="thp"><i style="width:${c.vmax?Math.min(100,c.vigor/c.vmax*100):0}%"></i></div>${ini.tie?'<span class="ttie" title="Empate resolvido por sorteio">⚖</span>':''}</div>`}
 function anim(el,to,dur,delay=0,ease='ease-in-out'){const a=el.animate([{transform:el._t},{transform:to}],{duration:dur,delay,easing:ease,fill:'forwards'});el._t=to;return a.finished.then(()=>{el.style.transform=to;a.cancel()}).catch(()=>{})}
 function startSparks(){const cv=$('#spark'),g=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;sparkOn=true;let P=[];const H=[45,280,190,320];
   (function loop(){if(!sparkOn){g.clearRect(0,0,cv.width,cv.height);return}g.clearRect(0,0,cv.width,cv.height);const r=$('#deck').getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
@@ -1470,7 +1493,9 @@ $('#agbar').addEventListener('click',e=>{const b=e.target.closest('[data-heal]')
 /* =====================================================================
    FORMA DO MONSTRO (2 imagens + efeito de transformação) e FASE DO ESPECTRO (fade / invisível aos outros)
    ===================================================================== */
-const avOf=c=>(c.trilha==='O Monstro'&&c.form==='monstro'&&c.avatar2)?c.avatar2:c.avatar;
+const avOf=c=>(c.trilha==='O Monstro'&&c.form==='monstro'&&c.avatar2)?c.avatar2:c.avatar; // imagem de PERFIL (só na ficha)
+/* sprite = representação no mapa/duelo/iniciativa; se não houver, cai no perfil (fichas antigas) */
+const spOf=c=>{const m=c.trilha==='O Monstro'&&c.form==='monstro';return (m&&c.sprite2)||c.sprite||(m&&c.avatar2)||c.avatar||''};
 const vis=o=>!(o.trilha==='O Espectro'&&(o.phase||'tangivel')==='intangivel')||me.seat===0||o.seat===me.seat;
 let xSeen=null,avCache={},xfOld={},xfAt={},phCache={},phAt={},phDir={};
 const age=t=>t?performance.now()-t:9e9,phRecent=c=>age(phAt[c.id])<900;
@@ -1479,7 +1504,7 @@ const tokSty=o=>{let r=tokSty0(o);const x=age(xfAt[o.id]),p=age(phAt[o.id]);
   if(x<900)r+=';--xd:-'+Math.round(x)+'ms;--old:'+(xfOld[o.id]?'url('+xfOld[o.id]+')':'none');if(p<900)r+=';--pd:-'+Math.round(p)+'ms';return r};
 function xfEvt(){const L=S.xfE||[];if(xSeen===null)xSeen=L.reduce((m,e)=>Math.max(m,e.id),0);
   else L.filter(e=>e.id>xSeen).forEach(e=>{xSeen=Math.max(xSeen,e.id);const c=S.chars[e.cid];if(!c)return;xfOld[e.cid]=avCache[e.cid]||'';xfAt[e.cid]=performance.now();spawnXf(c,e.to)});
-  Object.values(S.chars).forEach(c=>avCache[c.id]=avOf(c)||'')}
+  Object.values(S.chars).forEach(c=>avCache[c.id]=spOf(c)||'')}
 function spawnXf(c,to){if(c.ready===false||c.dead)return;const u=100/S.n,el=document.createElement('div'),col=to==='monstro'?'#9be34a':'#7fc4ff';
   el.className='fx t-xf';el.style.cssText=`left:${(c.x+.5)*u}%;top:${(c.y+.5)*u}%;--c:${col}`;
   let p='<b class="xflash"></b><b class="core"></b><b class="ring"></b><b class="ring r2"></b>';
@@ -1491,7 +1516,7 @@ function phEvt(){Object.values(S.chars).forEach(c=>{if(c.trilha!=='O Espectro')r
   if(prev!==undefined&&prev!==cur){phAt[c.id]=performance.now();phDir[c.id]=cur;
     if(cur==='intangivel'){if(c.ready!==false&&!c.dead)spawnPh(c);tone(900,0,.6,'sine',.06,220)}else tone(240,0,.6,'sine',.06,900)}
   phCache[c.id]=cur})}
-function spawnPh(c){const u=100/S.n,el=document.createElement('div'),col=c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c,av=avOf(c);
+function spawnPh(c){const u=100/S.n,el=document.createElement('div'),col=c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c,av=spOf(c);
   el.className='fx t-ph';el.style.cssText=`left:${(c.x+.5)*u}%;top:${(c.y+.5)*u}%;--c:${col}`;
   let p=`<b class="phantom" style="${av?`background-image:url(${av})`:''}">${av?'':esc(c.name.slice(0,2).toUpperCase())}</b>`;
   for(let i=0;i<7;i++){const x0=RR(-.5,.5);p+=`<b class="mist" style="--x0:${f2(x0)};--dx:${f2(x0+RR(-.8,.8))};--dy:${f2(RR(.6,1.8))};--w:${RR(0,260)|0}ms"></b>`}
@@ -1533,7 +1558,7 @@ function openDuelPick(){if(me.seat!==0||document.getElementById('duq'))return;
   if(hs.length<2){toast('É preciso ter pelo menos 2 heróis prontos para um duelo.');try{SFX.err()}catch(e){}return}
   const o=document.createElement('div');o.id='duq';const pick=[];
   const draw=()=>{o.innerHTML=`<div class="ovb"><h2>🥊 Duelo — escolha os 2 duelistas</h2><p class="mut">Melhor de 3: cada vitória marca 1 ponto e vence quem fizer 2. Os demais viram espectadores.</p>
-    <div class="duls">${hs.map(c=>`<button class="dul${pick.includes(c.seat)?' on':''}" data-seat="${c.seat}">${c.avatar?`<i style="background-image:url(${c.avatar})"></i>`:'<i>👤</i>'}<b>${esc(c.name)}</b><small>Jogador ${c.seat}</small></button>`).join('')}</div>
+    <div class="duls">${hs.map(c=>`<button class="dul${pick.includes(c.seat)?' on':''}" data-seat="${c.seat}">${spOf(c)?`<i style="background-image:url(${spOf(c)})"></i>`:'<i>👤</i>'}<b>${esc(c.name)}</b><small>Jogador ${c.seat}</small></button>`).join('')}</div>
     <div class="row"><button class="bad" data-go="1" ${pick.length===2?'':'disabled'}>🥊 Iniciar duelo</button><button data-no="1">Cancelar</button></div></div>`};
   draw();document.body.appendChild(o);
   o.addEventListener('click',e=>{const b=e.target.closest('[data-seat]');
@@ -1559,9 +1584,9 @@ function renderDuel(){let top=document.getElementById('duelTop'),hd=document.get
   if(!du){top.hidden=hd.hidden=true;duKey='';return}
   const A=S.chars[du.a],B=S.chars[du.b];if(!A||!B)return;
   const mineC=me.seat>0?[A,B].find(c=>c.seat===me.seat):null,P=mineC&&S.priv[me.seat],done=du.done&&!duClash;
-  const key=JSON.stringify([du.a,du.b,du.lock,du.ties,du.sc,du.r,done,du.w,du.n,P&&P.duel,P&&P.dpick,dsel,A.name,B.name,!!A.avatar,!!B.avatar,duClash,me.seat]);
+  const key=JSON.stringify([du.a,du.b,du.lock,du.ties,du.sc,du.r,done,du.w,du.n,P&&P.duel,P&&P.dpick,dsel,A.name,B.name,!!spOf(A),!!spOf(B),duClash,me.seat]);
   if(key===duKey)return;duKey=key;top.hidden=false;
-  const ft=c=>{const ko=done&&du.w!==c.id,av=avOf(c),lk=du.lock[c.id];
+  const ft=c=>{const ko=done&&du.w!==c.id,av=spOf(c),lk=du.lock[c.id];
     return `<div class="duf${ko?' ko':''}${done&&du.w===c.id?' win':''}"><div class="duav" style="${av?`background-image:url(${av})`:''}">${av?'':esc(c.name.slice(0,2).toUpperCase())}</div>
     <b>${esc(c.name)}</b><div class="duh" title="Pontos (melhor de 3)">${[0,1].map(i=>i<((du.sc||{})[c.id===du.a?'a':'b']||0)?'★':'☆').join(' ')}</div>
     <small>${done?(du.w===c.id?'🏆 Vencedor':'💤 Exaustão Completa'):(lk?'✔ carta escolhida':'… escolhendo')}</small></div>`};
