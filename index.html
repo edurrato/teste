@@ -397,7 +397,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .agh{font:700 13px 'Arial Narrow',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ff6a78}.agc.fare .agh{color:#c9a3ff}.agc.soon .agh{color:#ffb35a}.agh b{color:#fff}
 .agt{display:flex;align-items:center;gap:10px;flex:1}
 .agn{font:900 38px/1 'Arial Narrow',Oswald,sans-serif;color:#fff;text-shadow:0 0 12px #ff2a3d;min-width:34px;text-align:center}.agc.fare .agn{text-shadow:0 0 12px #b57bff}
-.agp{display:flex;gap:4px}.agp i{width:16px;height:16px;border-radius:50%;border:2px solid #ff2a3d;background:transparent}.agp i.f{background:#ff2a3d;box-shadow:0 0 8px #ff2a3d}
+.agp{display:flex;gap:4px;flex-wrap:wrap;max-width:200px}.agp i{width:12px;height:12px;border-radius:50%;border:2px solid #ff2a3d;background:transparent}.agp i.f{background:#ff2a3d;box-shadow:0 0 8px #ff2a3d}
 .agl{font-size:12px;color:#d9cfd1;letter-spacing:.04em}
 .tok.agony>div{filter:grayscale(.7) brightness(.7);box-shadow:0 0 0 3px #ff2a3d,0 0 14px #ff2a3d!important;animation:agTk 1.3s ease-in-out infinite}
 @keyframes agTk{50%{opacity:.55}}
@@ -447,6 +447,41 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 @keyframes anIn{0%{opacity:0;transform:translateY(-24px) scale(.9)}8%{opacity:1;transform:none}85%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
 .hc.ovl{border-color:#ff9a3c;box-shadow:0 0 10px #ff9a3c88}.hc.ovl .hf{color:#c4560a;font-weight:700}
 .tok.exh>div{filter:grayscale(.85) brightness(.8)}.tok.exh .nm::after{content:" 💤"}
+/* --- v9: duelo --- */
+#duelTop{position:fixed;left:50%;top:58px;transform:translateX(-50%);z-index:45;width:min(94vw,640px);pointer-events:none}
+.dubar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#14121cee;border:2px solid #ff9a3c;border-radius:14px;padding:8px 12px;box-shadow:0 0 22px #ff9a3c55,0 8px 24px #000a}
+.duf{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:110px;color:#fff;transition:filter .5s,opacity .5s}.duf b{font:700 14px 'Arial Narrow',Oswald,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.duf small{font-size:11px;color:#d8d2c4}.duh{font-size:15px;letter-spacing:2px}
+.duav{width:54px;height:54px;border-radius:50%;border:3px solid #ff9a3c;background:#2a2a3a center/cover;display:grid;place-items:center;font-weight:700;color:#fff}
+.duf.win .duav{border-color:#ffd24a;box-shadow:0 0 16px #ffd24a}.duf.ko{filter:grayscale(.9) brightness(.7)}
+.duvs{display:flex;flex-direction:column;align-items:center;color:#ff9a3c}.duvs b{font:700 30px/1 'Arial Narrow',Oswald,sans-serif;text-shadow:0 0 10px #ff9a3c}.duvs small{font-size:10.5px;color:#d8d2c4;white-space:nowrap}
+.dusp{margin-top:6px;text-align:center;font-size:12px;color:#e9cf85;background:#000a;border-radius:8px;padding:4px 8px}
+#duelHand{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:46;width:min(96vw,560px);text-align:center}
+.duhl{font:700 13px 'Arial Narrow',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#ffd24a;margin-bottom:8px;text-shadow:0 2px 4px #000}
+.duhc{display:flex;gap:10px;justify-content:center}
+.dhc{flex:1 1 0;max-width:170px;background:#f3efe8;color:#1b1a22;border:3px solid #888;border-radius:12px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 16px #000a}
+.dhc .dg{font-size:38px;line-height:1}.dhc b{font:700 13px 'Arial Narrow',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em}.dhc small{font-size:11px;color:#555}
+.dhc.s-paus{border-color:#3fa34d}.dhc.s-paus .dg{color:#2e8b3d}.dhc.s-espadas{border-color:#4a6fd0}.dhc.s-espadas .dg{color:#2a4fb0}.dhc.s-ouros{border-color:#d19a1a}.dhc.s-ouros .dg{color:#c78a00}
+.dhc:hover{transform:translateY(-8px)}.dhc.sel{transform:translateY(-16px) scale(1.07);box-shadow:0 0 22px #ffd24a,0 8px 20px #000c}.dhc.dim{opacity:.45;pointer-events:none}.dhc.sel.dim{opacity:1}
+#duq{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:#000a;backdrop-filter:blur(3px);padding:12px}
+.duls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0 14px}
+.dul{display:flex;flex-direction:column;align-items:center;gap:2px;width:104px;padding:8px;background:#0007;border:2px solid #555;border-radius:10px;color:#fff;cursor:pointer}
+.dul i{width:50px;height:50px;border-radius:50%;background:#2a2a3a center/cover;display:grid;place-items:center;font-style:normal;font-size:22px}.dul.on{border-color:#ff9a3c;box-shadow:0 0 14px #ff9a3c;background:#ff9a3c22}.dul small{color:#aaa;font-size:10.5px}
+#duclash{position:fixed;inset:0;z-index:92;display:grid;place-content:center;gap:14px;background:#000c;backdrop-filter:blur(4px);animation:rbIn .25s ease-out}
+.dcw{display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,28px)}.dcside{display:flex;flex-direction:column;align-items:center;gap:8px}
+.dcn{font:700 18px 'Arial Narrow',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#ffd24a}.dcmid{font-size:40px;animation:ovPop .6s infinite alternate}
+.dcs{perspective:800px}
+.dcc{position:relative;width:clamp(120px,30vw,170px);height:clamp(170px,42vw,236px);transform-style:preserve-3d;transition:transform .7s;animation:dcIn .6s ease-out}
+.dcs.l .dcc{--dx:-60px}.dcs.r .dcc{--dx:60px}
+@keyframes dcIn{from{opacity:0;transform:translateX(var(--dx)) scale(.7)}}
+.dcc .dcf{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:4px solid #fff}
+.dcc .bk{background:repeating-linear-gradient(45deg,#2a1620,#2a1620 8px,#4a2634 8px,#4a2634 16px);font-size:46px;border-color:#ff9a3c}
+.dcc .ft{background:#f3efe8;color:#1b1a22;transform:rotateY(180deg);text-align:center;padding:6px}.dcc .ft .dg{font-size:64px;line-height:1}.dcc .ft b{font:700 15px 'Arial Narrow',Oswald,sans-serif;text-transform:uppercase}
+.dcc .ft.s-paus{border-color:#3fa34d}.dcc .ft.s-paus .dg{color:#2e8b3d}.dcc .ft.s-espadas{border-color:#4a6fd0}.dcc .ft.s-espadas .dg{color:#2a4fb0}.dcc .ft.s-ouros{border-color:#d19a1a}.dcc .ft.s-ouros .dg{color:#c78a00}
+.dcc.flip{transform:rotateY(180deg)}#duclash.res .dcc.win{transform:rotateY(180deg) scale(1.12)}#duclash.res .dcc.win .dcf{box-shadow:0 0 26px #ffd24a}#duclash.res .dcc.lose{transform:rotateY(180deg) scale(.9)}#duclash.res .dcc.lose .dcf{opacity:.5;filter:grayscale(1)}
+.dcr{text-align:center;color:#fff;font-size:17px;min-height:56px}.dcr b{color:#ffd24a}.dcr span{color:#e9dfc8;font-size:14px}
+body.induel #anbox{top:190px}
+#deadbox{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:70;display:flex;gap:12px;align-items:center;background:#1a1016ee;border:2px solid #ff2a3d;border-radius:12px;padding:10px 16px;color:#fff;box-shadow:0 0 24px #ff2a3d77}#deadbox[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -700,11 +735,18 @@ function apply0(seat,a){ // seat 0 = Mestre. Todas as mutações passam por aqui
     case 'flip':{const hc=S.chars['h'+tgt];if(!hc||hc.trilha!=='O Espectro'||S.pend||!turnOkFor(hc,M)||immob(hc)||hc.dead)return;const sp0=S.scene!=='mundano';if(hc.exhOn)return;const ovl=sp0&&hc.pulso<2;if(ovl&&!a.ov)return;if(sp0)hc.pulso=Math.max(0,hc.pulso-2);
       hc.phase=(hc.phase||'tangivel')==='tangivel'?'intangivel':'tangivel';
       lg(hc.name+' virou a carta: agora está '+(hc.phase==='tangivel'?'Tangível':'Intangível')+(sp0?' (Pulso −2)':''));if(ovl)overload(hc);break}
-    case 'scene':{if(!M||!SCN[a.m])return;setScene(a.m);break}
+    case 'scene':{if(!M||!SCN[a.m])return;
+      if(a.m==='duelo'){const A=S.chars['h'+a.a],B=S.chars['h'+a.b];if(!A||!B||A===B||[A,B].some(x=>!x.seat||x.ready===false||x.dead))return;
+        if(S.scene==='duelo')endDuel();else setScene('duelo');startDuel(A,B);break}
+      setScene(a.m);break}
+    case 'dpick':{const du=S.du;if(S.scene!=='duelo'||!du||du.done||!tgt||M)return;const me_=S.chars['h'+tgt];if(!me_||![du.a,du.b].includes(me_.id)||du.lock[me_.id]||du.busy)return;
+      const PD=S.priv[tgt];if(!PD||!PD.duel||!PD.duel.includes(a.k))return;PD.dpick=a.k;du.lock[me_.id]=true;lg('🥊 '+me_.name+' escolheu a sua carta.');
+      if(du.lock[du.a]&&du.lock[du.b])resolveDuel();break}
     case 'resetchar':{if(!M||!c||!c.seat||c.ready===false)return;c.dead=false;c.agony=null;c.fare=false;c.vigor=c.vmax;c.pulso=c.pmax;c.mv=c.mvmax;c.phase='tangivel';c.form='humana';c.provoked=false;rebuild(c.seat);
       let rx=0;while(rx<S.n&&blocked(rx,S.n-1,c.id))rx++;c.x=Math.min(rx,S.n-1);c.y=S.n-1;if(S.cb&&!S.cb.order.includes(c.id))cbJoin(c.id);if(S.scene==='combate')drawTo3(c.seat);S.pend=null;lg('↺ Ficha de '+c.name+' resetada (Vigor, Pulso e baralho).');break}
     case 'heal':{const t=S.chars[a.id];if(!t||!t.seat||t.dead||!(t.agony||t.fare))return;const h=S.chars['h'+seat];if(!M&&(seat===t.seat||!h||h.agony||h.dead||h.ready===false))return;
       const n=Math.max(1,Math.min(5,Math.floor(+a.n)||1));t.vigor=Math.min(t.vmax,t.vigor+n);lg('✚ '+(M?'O Mestre':h.name)+' curou '+t.name+': +'+n+' Vigor');break}
+    case 'newchar':{const h=S.chars['h'+seat];if(M||!h||!h.dead)return;const st=seat;S.pend=null;delete S.chars['h'+st];delete S.priv[st];if(S.on[st])ensureSeat(st);lg('📝 Jogador '+st+' vai criar uma nova ficha após a morte de '+h.name+'.');break}
     case 'wipechar':{if(!M||!c||!c.seat)return;const st=c.seat;if(S.cb)cbLeave(c.id);S.pend=null;delete S.chars['h'+st];delete S.priv[st];if(S.on[st])ensureSeat(st);lg('🗑 Ficha do Jogador '+st+' apagada: ele refaz a criação.');break}
     case 'endturn':{if(S.scene!=='combate'||!S.cb||S.pend)return;const cur=S.chars[S.cb.order[S.cb.i]];if(!(M||(cur&&cur.seat===seat)))return;nextTurn();break}
     case 'restore':{if(!M)return;Object.values(S.chars).forEach(o=>{o.mv=o.mvmax;o.pulso=o.pmax;o.provoked=false});lg('↻ Movimento e Pulso restaurados.');break}
@@ -742,7 +784,8 @@ function act(a){ if(S&&(a.t==='play'||a.t==='fixed'||a.t==='flip')&&!a.ov&&S.sce
    ===================================================================== */
 const SCN={mundano:{t:'MUNDANO',i:'☀',c:'#f0c36a',sub:'Sem turnos · Sem Pulso · Baralho completo'},
   missao:{t:'MISSÃO',i:'🧭',c:'#5fd0ff',sub:'Sem ordem · Baralho completo · Pulso e descarte'},
-  combate:{t:'COMBATE',i:'⚔',c:'#ff4d5e',sub:'Iniciativa · Turnos · Mão de 3 cartas'}};
+  combate:{t:'COMBATE',i:'⚔',c:'#ff4d5e',sub:'Iniciativa · Turnos · Mão de 3 cartas'},
+  duelo:{t:'DUELO',i:'🥊',c:'#ff9a3c',sub:'Frente a frente · 3 de Vigor · ♣ vence ♠ vence ♦ vence ♣'}};
 const DT2=[...DT,'Psíquico'];
 const lg=m=>{S.log.push(m);S.log=S.log.slice(-30)};
 const noAcc=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
@@ -751,7 +794,7 @@ let hitCtx=null;
 function addHit(h){if(!hitCtx){hitCtx={id:S.nid++,list:[]};S.hit=hitCtx}hitCtx.list.push(h)}
 const inCombat=()=>S.scene==='combate'&&S.cb;
 const activeId=()=>inCombat()?S.cb.order[S.cb.i]:null;
-const turnOkFor=(c,M)=>M||S.scene!=='combate'||(S.cb&&S.cb.order[S.cb.i]===c.id);
+const turnOkFor=(c,M)=>M||(S.scene==='duelo'?false:S.scene!=='combate'||(S.cb&&S.cb.order[S.cb.i]===c.id));
 /* dano de uma carta: lê "Cause N de dano <Tipo>" (aceita 1d6) */
 function dmgOf(hc,cd,lock){
   if(lock)return{n:1,dt:'Cinético'};if(cd.x)return null;const t=cd.t;
@@ -841,6 +884,31 @@ function comboCheck(){const cb=S.cb,rp=cb.rp||{};cb.rp={};
     else H.forEach(c=>{const P=S.priv[c.seat];if(!P||!P.disc.length)return;const pick=shuffle(P.disc.slice()).slice(0,3);pick.forEach(id=>{P.disc.splice(P.disc.indexOf(id),1);P.deck.push(id)});P.deck=shuffle(P.deck)});
     lg('✨ COMBO '+d.ic.repeat(T)+' — '+d.t+': '+d.d);
     anEv({d:0,ic:d.ic.repeat(T),t:'COMBO — '+d.t,s:d.d,c:d.c})})}
+/* =====================================================================
+   CENA: DUELO — 2 combatentes, 6 cartas, ♣ vence ♠ vence ♦ vence ♣
+   ===================================================================== */
+const DUEL=[{k:'gancho',n:'Gancho de Baixo',s:'paus'},{k:'soco',n:'Soco Direto',s:'paus'},{k:'chute',n:'Chute Cruzado',s:'espadas'},{k:'joelhada',n:'Joelhada Potente',s:'espadas'},{k:'cabecada',n:'Cabeçada na Barriga',s:'ouros'},{k:'chave',n:'Chave de braço',s:'ouros'}];
+const DK=Object.fromEntries(DUEL.map(d=>[d.k,d])),DBEAT={paus:'espadas',espadas:'ouros',ouros:'paus'};
+function dealDuel(){const du=S.du;if(!du)return;const A=S.chars[du.a],B=S.chars[du.b],hA=[],hB=[];
+  ['paus','espadas','ouros'].forEach(su=>{const p=shuffle(DUEL.filter(d=>d.s===su).map(d=>d.k));hA.push(p[0]);hB.push(p[1])});
+  [[A,shuffle(hA)],[B,shuffle(hB)]].forEach(([c,h])=>{const P=S.priv[c.seat];if(P){P.duel=h;P.dpick=null}});
+  du.lock={[du.a]:false,[du.b]:false};du.ties=0;[A,B].forEach(c=>{c.vigor=3;c.vmax=3})}
+function startDuel(A,B){const mid=Math.floor(S.n/2),sv={};[A,B].forEach(c=>sv[c.id]={vigor:c.vigor,vmax:c.vmax,x:c.x,y:c.y,mv:c.mv});
+  S.du={a:A.id,b:B.id,ties:0,n:1,lock:{},rv:null,done:false,w:null,sv,busy:false};
+  A.x=mid-1;A.y=mid;B.x=mid;B.y=mid;dealDuel();
+  lg('🥊 DUELO! '+A.name+' × '+B.name+' — cada um com 3 de Vigor e 3 cartas (um de cada naipe). Os demais assistem.');
+  anEv({d:2400,ic:'🥊',t:'DUELO — '+A.name+' × '+B.name,s:'♣ vence ♠ · ♠ vence ♦ · ♦ vence ♣. Naipes iguais se anulam; 3 empates seguidos reiniciam o duelo.',c:'#ff9a3c'})}
+function resolveDuel(){const du=S.du,A=S.chars[du.a],B=S.chars[du.b],PA=S.priv[A.seat],PB=S.priv[B.seat],ka=PA.dpick,kb=PB.dpick,sa=DK[ka].s,sb=DK[kb].s;
+  [[PA,ka],[PB,kb]].forEach(([P,k])=>{P.duel=P.duel.filter(x=>x!==k);P.dpick=null});du.lock={[du.a]:false,[du.b]:false};
+  const w=sa===sb?null:(DBEAT[sa]===sb?'a':'b'),rv={id:S.nid++,a:ka,b:kb,w,n:du.n++,re:false};du.rv=rv;
+  lg('🥊 '+A.name+': '+SG[sa]+' '+DK[ka].n+' × '+B.name+': '+SG[sb]+' '+DK[kb].n);
+  if(!w){du.ties++;rv.t=du.ties;lg('⚖ Empate ('+du.ties+'/3).');
+    if(du.ties>=3){rv.re=true;lg('🔄 3 empates seguidos: cartas reembaralhadas e o duelo recomeça.');dealDuel()}return}
+  const W=S.chars[w==='a'?du.a:du.b],L=S.chars[w==='a'?du.b:du.a];du.done=true;du.w=W.id;du.busy=true;
+  L.exh=2;L.exhOn=true;L.exhD=false;L.pulso=0;L.mv=0;L.duelX=true;
+  lg('🏆 '+W.name+' venceu o duelo! '+L.name+' entra em Exaustão Completa.');
+  anEv({d:4200,ic:'🏆',t:W.name+' venceu o duelo!',s:L.name+' entra em Exaustão Completa (sem cartas, Pulso e movimento zerados por 2 rodadas).',c:'#ffd24a'})}
+function endDuel(){const du=S.du;if(!du)return;[du.a,du.b].forEach(id=>{const c=S.chars[id],v=du.sv[id];if(!c||!v)return;c.vigor=v.vigor;c.vmax=v.vmax;c.x=v.x;c.y=v.y;c.mv=c.mvmax;const P=c.seat&&S.priv[c.seat];if(P){delete P.duel;delete P.dpick}});S.du=null}
 /* ---- cartas por cena ---- */
 function drawTo3(seat){const P=S.priv[seat];if(!P)return;while(P.hand.length<3&&P.deck.length)P.hand.push(P.deck.pop())}
 function gatherAll(){Object.values(S.priv).forEach(P=>{P.hand=[...P.hand,...P.deck,...P.disc];P.deck=[];P.disc=[]})}
@@ -862,7 +930,7 @@ function startCombat(){
   const by={};E.forEach(e=>(by[e.n]=by[e.n]||[]).push(e));
   Object.values(by).forEach(g=>{if(g.length>1){g.forEach(e=>e.tie=true);const nm=g.map(e=>S.chars[e.id].name);lg('⚖ Empate na iniciativa '+g[0].n+'º: '+nm.join(' × ')+' — desempate por sorteio: '+nm.join(' › '))}});
   E.forEach(e=>ini[e.id]={n:e.n,tie:!!e.tie,npc:e.npc});
-  L.forEach(c=>{c.pulso=c.pmax;c.mv=c.mvmax;c.provoked=false;c.exh=0;c.exhOn=false;c.exhD=false;c.noReact=0;c.bonDmg=0;c.pBonus=0});
+  L.forEach(c=>{c.pulso=c.pmax;c.mv=c.mvmax;c.provoked=false;if(c.duelX)c.duelX=false;else{c.exh=0;c.exhOn=false}c.exhD=false;c.noReact=0;c.bonDmg=0;c.pBonus=0});
   Object.keys(S.priv).forEach(k=>{const P=S.priv[k];P.deck=shuffle([...P.deck,...P.hand,...P.disc]);P.hand=[];P.disc=[];drawTo3(+k)});
   const order=E.map(e=>e.id);let i=0;while(i<order.length-1&&S.chars[order[i]].vigor<=0&&!S.chars[order[i]].agony)i++;
   S.cb={order,ini,i,round:1,rp:{}};lg('⚔ COMBATE! Ordem: '+order.map(id=>S.chars[id].name).join(' › '));if(order.length)startTurn(order[i])}
@@ -876,7 +944,7 @@ function cbJoin(id){const cb=S.cb,c=S.chars[id];if(!cb||!c||cb.order.includes(id
   c.pulso=c.pmax;c.mv=c.mvmax;if(c.seat){const P=S.priv[c.seat];if(P){P.deck=shuffle([...P.deck,...P.hand,...P.disc]);P.hand=[];P.disc=[];drawTo3(c.seat)}}lg(c.name+' entrou no combate.')}
 function cbLeave(id){const cb=S.cb;if(!cb)return;const k=cb.order.indexOf(id);if(k<0)return;cb.order.splice(k,1);delete cb.ini[id];if(!cb.order.length)return;
   if(k<cb.i)cb.i--;else if(k===cb.i){cb.i=k-1;if(cb.i<0){cb.i=cb.order.length-1;cb.round--}noTick=true;nextTurn();noTick=false}}
-function setScene(m){if(S.scene===m)return;const prev=S.scene;S.scene=m;S.pend=null;S.cb=null;
+function setScene(m){if(S.scene===m)return;const prev=S.scene;if(S.du&&m!=='duelo')endDuel();if(m!=='combate'&&m!=='duelo')Object.values(S.chars).forEach(c=>{c.exh=0;c.exhOn=false;c.exhD=false;c.duelX=false});S.scene=m;S.pend=null;S.cb=null;
   Object.values(S.chars).forEach(c=>{c.mv=c.mvmax;c.provoked=false;if(c.fare)c.fare=false});
   if(m==='combate'){startCombat()}else{gatherAll();if(prev==='combate')lg('⚔ Combate encerrado.')}
   S.scn={id:S.nid++,mode:m,cmb:m==='combate'};lg('🎬 Cena: '+SCN[m].t)}
@@ -1096,7 +1164,7 @@ function renderMaster(){
   const v=S.cover.find(o=>o.id===selCov);let h='';
   if(tab==='npc')h=`<h3>Personagens</h3><div class="row"><button data-add="hero">+ Herói</button><button data-add="capanga">+ Capanga</button><button data-add="vilao">+ Vilão</button></div>
   <div class="list" style="margin-top:6px">${Object.values(S.chars).map(c=>`<div><span style="color:${c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c}">${esc(c.name)}${c.ready===false?' <small class="mut">(criando…)</small>':''}</span>
-    <button class="sm" data-pick="${c.id}">Ficha</button>${c.seat?`<button class="sm" data-reset="${c.id}" title="Restaura Vigor/Pulso e reembaralha">↺ Resetar</button><button class="sm bad" data-wipe="${c.id}" title="Apaga a ficha; o jogador refaz a criação">🗑 Apagar</button>`:`<button class="sm bad" data-del="${c.id}">✕</button>`}</div>`).join('')}</div>`;
+    <button class="sm" data-pick="${c.id}">Ficha</button>${c.seat&&c.trilha==='O Monstro'&&c.form==='monstro'?`<button class="sm" data-unform="${c.id}" title="Volta o Monstro à Forma Humana (base)">🧍 Destransformar</button>`:''}${c.seat?`<button class="sm" data-reset="${c.id}" title="Restaura Vigor/Pulso e reembaralha">↺ Resetar</button><button class="sm bad" data-wipe="${c.id}" title="Apaga a ficha; o jogador refaz a criação">🗑 Apagar</button>`:`<button class="sm bad" data-del="${c.id}">✕</button>`}</div>`).join('')}</div>`;
   if(tab==='cena')h=`<h3>Cenário</h3><label>Tamanho do grid (N × N células quadradas)</label><input type="number" id="gn" value="${S.n}" min="8" max="40">
   <div class="row" style="margin-top:10px"><button data-m="cvnew">🧱 Nova cobertura (clique no grid)</button>${v?'<button data-m="cvdel" class="bad">Remover</button>':''}</div>
   ${v?`<div class="row" style="margin-top:6px"><span class="f0 mut">Largura</span><input type="number" data-cv="w" value="${v.w}" min="1"><span class="f0 mut">Altura</span><input type="number" data-cv="h" value="${v.h}" min="1"></div>
@@ -1112,6 +1180,7 @@ $('#master').addEventListener('click',e=>{const t=e.target,d=t.dataset;
   if(d.add)act({t:'addchar',kind:d.add});
   if(d.del){if(sel===d.del)sel=null;act({t:'delchar',id:d.del})}
   if(d.reset&&confirm('Resetar a ficha (Vigor, Pulso, posição e baralho)?'))act({t:'resetchar',id:d.reset});
+  if(d.unform){act({t:'setform',id:d.unform,f:'humana'});return}
   if(d.wipe&&confirm('APAGAR a ficha? O jogador terá que refazer a criação do herói.')){if(sel===d.wipe)sel=null;act({t:'wipechar',id:d.wipe})}
   if(d.pick){sel=d.pick;selCov=null;tab='ficha';renderAll()}});
 $('#master').addEventListener('change',e=>{const t=e.target,d=t.dataset;
@@ -1192,7 +1261,7 @@ $('#wiz').addEventListener('click',e=>{const t=e.target.closest('[data-wa],[data
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let scnSeen=null,tnSeen=null,hitSeen=null,shakeAt={},shakeDt={},introId=0,introPlaying=false,sparkOn=false,chatSeen=0,chatLast=null,NA={n:1,dt:'Cinético',r:4};
 const aimChar=()=>aim&&(aim.cid?S.chars[aim.cid]:S.chars['h'+aim.seat]);
-const canMove=c=>!(immob(c)&&!(me.seat===0&&S.free))&&(me.seat===0||S.scene!=='combate'||(S.cb&&S.cb.order[S.cb.i]===c.id));
+const canMove=c=>!(immob(c)&&!(me.seat===0&&S.free))&&(me.seat===0||(S.scene!=='duelo'&&S.scene!=='combate')||(S.cb&&S.cb.order[S.cb.i]===c.id));
 const myTurn=()=>S.scene==='combate'&&S.cb&&me.seat>0&&(S.chars[S.cb.order[S.cb.i]]||{}).seat===me.seat;
 function toast(m,cls){const t=$('#toast');t.textContent=m;t.className=cls||'';t.hidden=true;void t.offsetWidth;t.hidden=false;clearTimeout(toast.to);toast.to=setTimeout(()=>t.hidden=true,2200)}
 /* ---- eventos que chegam pelo estado ---- */
@@ -1260,7 +1329,7 @@ function hitSfx(dt,n){if(!n){tone(900,0,.12,'triangle',.1,500);return}
 function showTitle(mode){return new Promise(res=>{const d=SCN[mode],el=$('#scn');el.style.setProperty('--c',d.c);el.className='m-'+mode;
   el.innerHTML=`<div class="scn-in"><i class="scn-ln"></i><div class="scn-ic">${d.i}</div><h1>${[...d.t].map((ch,i)=>`<span style="animation-delay:${i*70}ms">${ch}</span>`).join('')}</h1><div class="scn-sub">${d.sub}</div><i class="scn-ln"></i></div>`;
   el.hidden=true;void el.offsetWidth;el.hidden=false;
-  ({mundano:()=>[392,494,587].forEach((f,i)=>tone(f,i*.12,.5,'sine',.1)),missao:()=>[330,440,554,659].forEach((f,i)=>tone(f,i*.1,.35,'triangle',.1)),combate:()=>{tone(90,0,.6,'sawtooth',.14,40);[220,330,440].forEach((f,i)=>tone(f,.2+i*.1,.3,'square',.07))}})[mode]();
+  ({mundano:()=>[392,494,587].forEach((f,i)=>tone(f,i*.12,.5,'sine',.1)),missao:()=>[330,440,554,659].forEach((f,i)=>tone(f,i*.1,.35,'triangle',.1)),combate:()=>{tone(90,0,.6,'sawtooth',.14,40);[220,330,440].forEach((f,i)=>tone(f,.2+i*.1,.3,'square',.07))},duelo:()=>{tone(110,0,.5,'sawtooth',.14,60);tone(220,.25,.2,'square',.08);tone(330,.45,.5,'square',.08,220)}})[mode]();
   setTimeout(()=>{el.hidden=true;res()},2300)})}
 async function runScene(sc){try{await showTitle(sc.mode);if(sc.cmb&&S.cb&&S.scene==='combate')await combatIntro()}catch(e){console.error(e)}introPlaying=false;renderInit();renderHand()}
 /* ---- animação do baralho de iniciativa ---- */
@@ -1299,14 +1368,15 @@ async function combatIntro(){const my=++introId,ok=()=>my===introId;const ov=$('
 $('#shuf').addEventListener('click',()=>endIntro());
 /* =====================================================================
    AGONIA → DESPEDIDA → MORTE (heróis de jogador)
-   Vigor 0: Agonia (imobilizado, sem cartas, perde o turno). Contagem de 3 turnos de HERÓIS
+   Vigor 0: Agonia (imobilizado, sem cartas, perde o turno). Contagem de 10 turnos de HERÓIS
    (turnos de vilões/capangas não contam). Zerou: Despedida (1 turno, Pulso limitado, baralho liberado); ao encerrar, morre.
    ===================================================================== */
 let noTick=false,agSeen=null;
 const immob=c=>!!(c&&c.agony&&!c.fare&&!c.dead);
 function agEv(c,k){S.agE=S.agE||[];S.agE.push({id:S.nid++,cid:c.id,k})}
+const AGN=10; // turnos de heróis em Agonia antes da Despedida
 function agonyCheck(){Object.values(S.chars).forEach(c=>{if(c.kind!=='hero'||!c.seat||c.ready===false||c.dead)return;
-  if(c.vigor<=0&&!c.agony){c.agony={left:3,t:S.tn?S.tn.id:0};c.fare=false;lg('☠ '+c.name+' caiu em AGONIA! Imobilizado e sem cartas — 3 turnos de heróis para ser curado.');agEv(c,'fall')}
+  if(c.vigor<=0&&!c.agony){c.agony={left:AGN,t:S.tn?S.tn.id:0};c.fare=false;lg('☠ '+c.name+' caiu em AGONIA! Imobilizado e sem cartas — '+AGN+' turnos de heróis para ser curado.');agEv(c,'fall')}
   else if(c.vigor>0&&(c.agony||c.fare)){const was=c.fare;c.agony=null;c.fare=false;
     if(was&&S.cb&&S.priv[c.seat]){const P=S.priv[c.seat];P.deck=shuffle([...P.hand,...P.deck,...P.disc]);P.hand=[];P.disc=[];drawTo3(c.seat)}
     lg('✚ '+c.name+' foi estabilizado e saiu da Agonia!');agEv(c,'rec')}})}
@@ -1321,7 +1391,7 @@ function agSound(k){if(k==='fall'){[0,.26,.9,1.16,1.8,2.06].forEach(t=>tone(58,t
   else if(k==='fare'){[110,138,165].forEach((f,i)=>tone(f,i*.08,1.4,'sawtooth',.07,f/2));[0,.5,1].forEach(t=>tone(70,t,.25,'sine',.25,40))}
   else if(k==='death'){tone(200,0,1.8,'sawtooth',.12,30);tone(60,.2,1.5,'sine',.3,25);tone(90,1.2,.8,'triangle',.1,30)}}
 function showAg(k,c){const d=AGK[k],el=$('#agfx'),sub={fall:'Vigor 0 · imobilizado · sem cartas · seu turno será perdido',fare:'Última chance: Pulso limitado a '+Math.max(1,Math.ceil(c.pmax/2))+' · baralho liberado',death:'Você saiu do tabuleiro'}[k],
-  s2={fall:'3 turnos de heróis para alguém te curar',fare:'Ao encerrar este turno, você morre',death:''}[k];
+  s2={fall:AGN+' turnos de heróis para alguém te curar',fare:'Ao encerrar este turno, você morre',death:''}[k];
   el.style.setProperty('--c',d.c);el.style.setProperty('--d',d.d+'ms');el.className='k-'+k;
   el.innerHTML=`<i class="agbg"></i><div class="agin"><div class="agic">${d.i}</div><h1>${[...d.t].map((ch,i)=>`<span style="animation-delay:${i*60}ms">${ch===' '?'&nbsp;':ch}</span>`).join('')}</h1><div class="agsub">${sub}</div>${s2?`<div class="agsub2">${s2}</div>`:''}</div>`;
   el.hidden=true;void el.offsetWidth;el.hidden=false;clearTimeout(showAg.to);showAg.to=setTimeout(()=>el.hidden=true,d.d);
@@ -1339,7 +1409,7 @@ function renderAg(){const el=$('#agbar'),v=$('#agv');if(!el||!S)return;
   el.innerHTML=L.map(c=>{const f=!!c.fare,left=c.agony?c.agony.left:0,mine=c.seat===me.seat,
     lab=f?'Último turno — morre ao encerrá-lo':left>0?left+(left===1?' turno':' turnos')+' de herói'+(cb?'':' · a contagem só corre no Combate'):'Despedida na vez dele';
     return `<div class="agc${f?' fare':left===0?' soon':''}"><div class="agh">${f?'💀 DESPEDIDA':'☠ AGONIA'} · <b>${esc(c.name)}${mine?' (você)':''}</b></div>
-    <div class="agt"><div class="agn">${f?'☠':left}</div><div class="agp">${[0,1,2].map(k=>`<i class="${k<left?'f':''}"></i>`).join('')}</div><div class="agl">${lab}</div></div>
+    <div class="agt"><div class="agn">${f?'☠':left}</div><div class="agp">${Array.from({length:AGN},(_,k)=>`<i class="${k<left?'f':''}"></i>`).join('')}</div><div class="agl">${lab}</div></div>
     ${healer&&!mine?`<button class="sm" data-heal="${c.id}">✚ Curar +1 Vigor</button>`:''}</div>`}).join('')+D.map(c=>`<div class="agc dead">✝ <b>${esc(c.name)}</b> — morreu e está fora do tabuleiro</div>`).join('')}
 $('#agbar').addEventListener('click',e=>{const b=e.target.closest('[data-heal]');if(b)act({t:'heal',id:b.dataset.heal,n:1})});
 
@@ -1399,10 +1469,70 @@ function anEvt(){const L=S.anE||[];if(anSeen===null){anSeen=L.reduce((m,e)=>Math
 function showAn(e){let box=document.getElementById('anbox');if(!box){box=document.createElement('div');box.id='anbox';document.body.appendChild(box)}
   const el=document.createElement('div');el.className='an';el.style.setProperty('--c',e.c||'#ffd24a');el.innerHTML=`<span class="ani">${esc(e.ic)}</span><div><b>${esc(e.t)}</b><span>${esc(e.s)}</span></div>`;
   box.appendChild(el);try{tone(520,0,.25,'triangle',.07,260);tone(780,.12,.3,'triangle',.06,0)}catch(x){}setTimeout(()=>el.remove(),5200)}
+
+/* =====================================================================
+   DUELO — interface
+   ===================================================================== */
+let duSeen=null,duClash=false,dsel=null,duKey='';
+function openDuelPick(){if(me.seat!==0||document.getElementById('duq'))return;
+  const hs=Object.values(S.chars).filter(c=>c.kind==='hero'&&c.seat&&c.ready!==false&&!c.dead);
+  if(hs.length<2){toast('É preciso ter pelo menos 2 heróis prontos para um duelo.');try{SFX.err()}catch(e){}return}
+  const o=document.createElement('div');o.id='duq';const pick=[];
+  const draw=()=>{o.innerHTML=`<div class="ovb"><h2>🥊 Duelo — escolha os 2 duelistas</h2><p class="mut">Os dois ficam frente a frente com 3 de Vigor. Os demais viram espectadores.</p>
+    <div class="duls">${hs.map(c=>`<button class="dul${pick.includes(c.seat)?' on':''}" data-seat="${c.seat}">${c.avatar?`<i style="background-image:url(${c.avatar})"></i>`:'<i>👤</i>'}<b>${esc(c.name)}</b><small>Jogador ${c.seat}</small></button>`).join('')}</div>
+    <div class="row"><button class="bad" data-go="1" ${pick.length===2?'':'disabled'}>🥊 Iniciar duelo</button><button data-no="1">Cancelar</button></div></div>`};
+  draw();document.body.appendChild(o);
+  o.addEventListener('click',e=>{const b=e.target.closest('[data-seat]');
+    if(b){const k=+b.dataset.seat,i=pick.indexOf(k);if(i>=0)pick.splice(i,1);else{if(pick.length>=2)pick.shift();pick.push(k)}draw();return}
+    if(e.target.closest('[data-go]')&&pick.length===2){o.remove();act({t:'scene',m:'duelo',a:pick[0],b:pick[1]});return}
+    if(e.target.closest('[data-no]')||e.target===o)o.remove()})}
+function duEvt(){const rv=S.du&&S.du.rv;if(duSeen===null){duSeen=rv?rv.id:0;return}
+  if(!rv||rv.id<=duSeen)return;duSeen=rv.id;showClash(S.du,rv)}
+function dcard(k,cls){const d=DK[k];return `<div class="dcc ${cls||''}"><div class="dcf bk">🥊</div><div class="dcf ft s-${d.s}"><span class="dg">${SG[d.s]}</span><b>${esc(d.n)}</b></div></div>`}
+function showClash(du,rv){const A=S.chars[du.a],B=S.chars[du.b];if(!A||!B)return;duClash=true;document.getElementById('duclash')?.remove();
+  const o=document.createElement('div');o.id='duclash';
+  o.innerHTML=`<div class="dcw"><div class="dcside"><div class="dcn">${esc(A.name)}</div><div class="dcs l">${dcard(rv.a,rv.w==='a'?'win':rv.w==='b'?'lose':'')}</div></div><div class="dcmid">⚔</div><div class="dcside"><div class="dcn">${esc(B.name)}</div><div class="dcs r">${dcard(rv.b,rv.w==='b'?'win':rv.w==='a'?'lose':'')}</div></div></div><div class="dcr">&nbsp;</div>`;
+  document.body.appendChild(o);const r=o.querySelector('.dcr'),W=rv.w?S.chars[rv.w==='a'?du.a:du.b]:null;
+  try{tone(160,0,.3,'sawtooth',.1,80)}catch(e){}
+  setTimeout(()=>{o.querySelectorAll('.dcc').forEach(x=>x.classList.add('flip'));try{tone(300,0,.15,'square',.08,500)}catch(e){}},900);
+  setTimeout(()=>{o.classList.add('res');
+    if(W){const wk=DK[rv.w==='a'?rv.a:rv.b],lk=DK[rv.w==='a'?rv.b:rv.a];r.innerHTML=`<b>${SG[wk.s]} ${esc(wk.n)}</b> vence <b>${SG[lk.s]} ${esc(lk.n)}</b><br><span>${esc(W.name)} leva o duelo!</span>`;try{SFX.confirm()}catch(e){}}
+    else{r.innerHTML=rv.re?`<b>⚖ 3 empates seguidos!</b><br><span>Cartas reembaralhadas — o duelo recomeça.</span>`:`<b>⚖ Empate — naipes iguais se anulam</b><br><span>Empates seguidos: ${rv.t||1}/3</span>`;try{SFX.err()}catch(e){}}},1900);
+  setTimeout(()=>{o.remove();duClash=false;duKey='';renderDuel()},4600)}
+function renderDuel(){let top=document.getElementById('duelTop'),hd=document.getElementById('duelHand');
+  if(!top){top=document.createElement('div');top.id='duelTop';hd=document.createElement('div');hd.id='duelHand';document.body.append(top,hd)}
+  const du=S&&S.scene==='duelo'&&S.du;document.body.classList.toggle('induel',!!du);
+  if(!du){top.hidden=hd.hidden=true;duKey='';return}
+  const A=S.chars[du.a],B=S.chars[du.b];if(!A||!B)return;
+  const mineC=me.seat>0?[A,B].find(c=>c.seat===me.seat):null,P=mineC&&S.priv[me.seat],done=du.done&&!duClash;
+  const key=JSON.stringify([du.a,du.b,du.lock,du.ties,done,du.w,du.n,P&&P.duel,P&&P.dpick,dsel,A.name,B.name,!!A.avatar,!!B.avatar,duClash,me.seat]);
+  if(key===duKey)return;duKey=key;top.hidden=false;
+  const ft=c=>{const ko=done&&du.w!==c.id,av=avOf(c),lk=du.lock[c.id];
+    return `<div class="duf${ko?' ko':''}${done&&du.w===c.id?' win':''}"><div class="duav" style="${av?`background-image:url(${av})`:''}">${av?'':esc(c.name.slice(0,2).toUpperCase())}</div>
+    <b>${esc(c.name)}</b><div class="duh">${[0,1,2].map(()=>ko?'💔':'❤').join('')}</div>
+    <small>${done?(du.w===c.id?'🏆 Vencedor':'💤 Exaustão Completa'):(lk?'✔ carta escolhida':'… escolhendo')}</small></div>`};
+  top.innerHTML=`<div class="dubar">${ft(A)}<div class="duvs"><b>VS</b><small>Rodada ${du.n}</small><small>Empates seguidos: ${du.ties}/3</small></div>${ft(B)}</div>
+    ${!mineC?`<div class="dusp">${me.seat===0?'Você é o Mestre: acompanhe o duelo. Clique em “Duelo” na barra de cenas para trocar os duelistas.':'👁 Você está assistindo ao duelo.'}</div>`:''}`;
+  if(!mineC||!P||!P.duel||done||du.done){hd.hidden=true;hd.innerHTML='';return}
+  const locked=du.lock[mineC.id],pk=P.dpick;hd.hidden=false;
+  hd.innerHTML=`<div class="duhl">${locked?'Aguardando o oponente escolher…':'Escolha uma carta (só você vê a sua mão)'}</div><div class="duhc">${P.duel.map(k=>{const d=DK[k],on=locked?pk===k:dsel===k;
+    return `<div class="dhc s-${d.s}${on?' sel':''}${locked&&!on?' dim':''}" data-dk="${k}"><span class="dg">${SG[d.s]}</span><b>${esc(d.n)}</b><small>vence ${SG[DBEAT[d.s]]}</small>${!locked&&on?'<button class="bad sm" data-dgo="1">⚔ Lutar!</button>':''}</div>`}).join('')}</div>`}
+document.addEventListener('click',e=>{const g=e.target.closest('#duelHand [data-dgo]');
+  if(g&&dsel){const k=dsel;dsel=null;duKey='';act({t:'dpick',k});return}
+  const c=e.target.closest('#duelHand [data-dk]');if(!c||!S||!S.du)return;if(S.du.lock[(S.chars['h'+me.seat]||{}).id])return;
+  dsel=dsel===c.dataset.dk?null:c.dataset.dk;duKey='';try{SFX.card()}catch(x){}renderDuel()});
+
+/* ---- herói morto: criar nova ficha ---- */
+function renderDead(){let b=document.getElementById('deadbox');
+  const h=S&&me.seat>0&&S.chars['h'+me.seat];
+  if(!h||!h.dead||h.ready===false){if(b)b.hidden=true;return}
+  if(!b){b=document.createElement('div');b.id='deadbox';document.body.appendChild(b);
+    b.addEventListener('click',e=>{if(e.target.closest('[data-newchar]')&&confirm('Criar uma nova ficha? A ficha atual será descartada.'))act({t:'newchar'})})}
+  b.hidden=false;b.innerHTML=`<span>✝ <b>${esc(h.name)}</b> morreu.</span><button class="pri" data-newchar="1">📝 Criar nova ficha</button>`}
 /* ---- cena: barra do mestre / pílula ---- */
 function renderScene(){const m=S.scene||'mundano',d=SCN[m],p=$('#pScene');p.textContent=d.i+' '+d.t;p.style.color=d.c;$('#board').dataset.scene=m;const sb=$('#scenebar');
   sb.innerHTML=me.seat===0?Object.entries(SCN).map(([k,v])=>`<button class="scb${k===m?' on':''}" data-scn="${k}" style="--c:${v.c}"><span>${v.i}</span>${v.t}</button>`).join('').replace(/^/,'<div class="sclab">🎬 CENA</div>'):`<div class="mut scinfo" style="color:${d.c}">${d.i} <b>${d.t}</b> — ${d.sub}</div>`}
-$('#scenebar').addEventListener('click',e=>{const b=e.target.closest('[data-scn]');if(b&&b.dataset.scn!==S.scene)act({t:'scene',m:b.dataset.scn})});
+$('#scenebar').addEventListener('click',e=>{const b=e.target.closest('[data-scn]');if(!b)return;if(b.dataset.scn==='duelo')return openDuelPick();if(b.dataset.scn!==S.scene)act({t:'scene',m:b.dataset.scn})});
 /* ---- barra de iniciativa ---- */
 function renderInit(){const el=$('#initbar');if(!S.cb||S.scene!=='combate'){el.hidden=true;el.innerHTML='';return}
   const sc=el.querySelector('.itr'),sl=sc?sc.scrollLeft:0,cb=S.cb,cur=cb.order[cb.i],ph=Date.now()%1600;el.hidden=false;
@@ -1441,6 +1571,7 @@ let hsel=null,handKey='',dealtTn=null;
 function handSeat(){if(S.scene!=='combate'||!S.cb){if(me.seat>0)return me.seat;return S.priv[cseat]?cseat:(+Object.keys(S.priv)[0]||0)}if(me.seat>0)return me.seat;const c=S.chars[S.cb.order[S.cb.i]];return c&&c.seat?c.seat:0}
 const RORD={comum:0,rara:1,epica:2};
 function renderHand(){const el=$('#handbar'),seat=handSeat(),P=seat&&S.priv[seat],ch=seat&&S.chars['h'+seat];
+  if(S.scene==='duelo'){el.hidden=true;el.innerHTML='';handKey='';return}
   if(el.contains(document.activeElement)&&document.activeElement.matches('select'))return;
   if(!P||!ch||ch.ready===false||ch.dead){el.hidden=true;el.innerHTML='';handKey='';return}
   const X=ctxM(ch),fixed=fixedList(ch),n=P.hand.length,CB=X.cb,M=me.seat===0;
@@ -1512,7 +1643,7 @@ function cellAt(e){const q=[...document.querySelectorAll('#fxl .pr')].map(p=>{co
   if(!d)return[-1,-1];const u=(P[0]*Y[1]-P[1]*Y[0])/d,v=(X[0]*P[1]-X[1]*P[0])/d;return[Math.floor(u*S.n),Math.floor(v*S.n)]}
 
 function renderAll(){renderTabs();renderTools();renderScene();theme();renderBoard();renderInit();renderSheet();renderCards();renderMaster();renderChat();renderReact();renderHand();renderHud();renderAg();renderWiz()}
-function render(){if(!S)return;if(sel&&!S.chars[sel])sel=null;const sc=sceneEvt();agEvt();xfEvt();phEvt();ovEvt();anEvt();
+function render(){if(!S)return;if(sel&&!S.chars[sel])sel=null;const sc=sceneEvt();agEvt();xfEvt();phEvt();ovEvt();anEvt();duEvt();renderDuel();renderDead();
   if(bnSeen===null)bnSeen=S.banner?S.banner.id:0;
   else if(S.banner&&S.banner.id!==bnSeen){bnSeen=S.banner.id;const b=$('#banner');b.textContent=S.banner.text+'!';b.hidden=true;void b.offsetWidth;b.hidden=false;SFX.err();setTimeout(()=>b.hidden=true,2700)}
   renderAll();if(sc)runScene(sc);turnEvt()}
