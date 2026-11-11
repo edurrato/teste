@@ -302,19 +302,19 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .isoz.iso .board{overflow:visible;transform-style:preserve-3d;box-shadow:1px 1px 0 #2a2b44,2px 2px 0 #26273e,3px 3px 0 #222338,4px 4px 0 #1e1f32,5px 5px 0 #1a1b2c,6px 6px 0 #161725,7px 7px 0 #12131f,8px 8px 0 #0e0f19,9px 9px 0 #0b0b14,10px 10px 0 #08080f,28px 28px 40px #000c}
 .isoz.iso .board[data-scene=combate]{box-shadow:1px 1px 0 #3a1c28,2px 2px 0 #34192a,3px 3px 0 #2e1624,4px 4px 0 #28131e,5px 5px 0 #22101a,6px 6px 0 #1c0d16,7px 7px 0 #160a12,8px 8px 0 #10080e,9px 9px 0 #0a050a,10px 10px 0 #050305,0 0 28px #ef444488,28px 28px 40px #000c}
 .isoz.iso #fxl{overflow:visible;transform-style:preserve-3d}
-.isoz.iso .tok{transform-style:preserve-3d;transform-origin:50% 94%;transform:translateZ(calc(var(--cu,0px)*var(--tz,0) + 1px)) rotateX(-90deg)}
+.isoz.iso .tok{transform-style:preserve-3d;transform-origin:50% 50%;transform:translateZ(calc(var(--cu,0px)*var(--tz,0) + 1px)) rotateX(-90deg)}
 /* sprite = folha de papel em pé, alinhada à linha X do grid (plano vertical), com 1 casa de altura e 80% de largura */
-.isoz.iso .tok>div{inset:auto 10% 6% 10%;height:100%;border-radius:2px;border-width:2px;background-size:cover;box-shadow:none}
-.isoz.iso .tok::before{content:"";position:absolute;left:90%;bottom:6%;width:calc(var(--cu,20px)*.05);height:100%;background:#d9d2bd;transform-origin:0 50%;transform:rotateY(90deg)}
+.isoz.iso .tok>div{inset:auto 5% 50% 5%;height:100%;border-radius:2px;border-width:2px;background-size:cover;box-shadow:none}
+.isoz.iso .tok::before{display:none;content:"";position:absolute;left:90%;bottom:6%;width:calc(var(--cu,20px)*.05);height:100%;background:#d9d2bd;transform-origin:0 50%;transform:rotateY(90deg)}
 .isoz.iso .tok.sel>div{box-shadow:0 0 0 2px var(--blue),0 0 12px var(--blue)}
 .isoz.iso .tok.turn>div{box-shadow:0 0 0 2px #ffd24a,0 0 14px #ffd24a}
 .isoz.iso .tok .nm{display:none}
 .tsh .tn{display:none}
-.isoz.iso .tsh .tn{display:block;position:absolute;left:-40%;right:-40%;bottom:6%;text-align:center;font:700 8px/1 sans-serif;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap;overflow:hidden;transform-origin:50% 100%;transform:translateZ(calc(var(--cu,0px)*(var(--tz,0) + 1.08))) rotateZ(-45deg) rotateX(-58deg)}
+.isoz.iso .tsh .tn{display:block;position:absolute;left:-40%;right:-40%;bottom:50%;text-align:center;font:700 8px/1 sans-serif;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000;white-space:nowrap;overflow:hidden;transform-origin:50% 100%;transform:translateZ(calc(var(--cu,0px)*(var(--tz,0) + 1.08))) rotateZ(-45deg) rotateX(-58deg)}
 .tsh .tn.exh::after{content:" 💤"}
 .isoz.iso .tsh{display:block;transform-style:preserve-3d;transform:translateZ(.5px)}
-.tsh .sh{position:absolute;left:14%;right:14%;top:78%;height:34%;border-radius:50%;background:radial-gradient(closest-side,#000b,#0000)}
-.tsh .pole{position:absolute;left:calc(50% - 1px);top:94%;width:2px;height:calc(var(--cu,20px)*var(--tz,0));transform-origin:50% 0;transform:rotateX(90deg);background:repeating-linear-gradient(#ffd24a 0 4px,#0000 4px 8px);opacity:.9}
+.tsh .sh{position:absolute;left:14%;right:14%;top:33%;height:34%;border-radius:50%;background:radial-gradient(closest-side,#000b,#0000)}
+.tsh .pole{position:absolute;left:calc(50% - 1px);top:50%;width:2px;height:calc(var(--cu,20px)*var(--tz,0));transform-origin:50% 0;transform:rotateX(90deg);background:repeating-linear-gradient(#ffd24a 0 4px,#0000 4px 8px);opacity:.9}
 .isoz.iso .wall{transform:translateZ(calc(var(--cu,0px)*var(--zl,0)))}
 .isoz.iso .wall .wt{transform:translateZ(var(--wh));background:#d8ccb2}
 .isoz.iso .wall.pesada .wt{background:#9a9286}
@@ -513,6 +513,17 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .dcr{text-align:center;color:#fff;font-size:17px;min-height:56px}.dcr b{color:#ffd24a}.dcr span{color:#e9dfc8;font-size:14px}
 body.induel #anbox{top:190px}
 #deadbox{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:70;display:flex;gap:12px;align-items:center;background:#1a1016ee;border:2px solid #ff2a3d;border-radius:12px;padding:10px 16px;color:#fff;box-shadow:0 0 24px #ff2a3d77}#deadbox[hidden]{display:none}
+
+/* sprite puro: sem carta/borda/fundo; PNG transparente, ajustado (contain) e centrado na casa */
+.cell.tok.hasp>div{inset:4%;border:0;border-radius:0;background-color:transparent;background-size:contain;background-repeat:no-repeat;background-position:center;box-shadow:none!important}
+.cell.tok.hasp.sel>div{filter:drop-shadow(0 0 2px var(--blue)) drop-shadow(0 0 6px var(--blue))}
+.cell.tok.hasp.turn>div{filter:drop-shadow(0 0 2px #ffd24a) drop-shadow(0 0 6px #ffd24a)}
+.cell.tok.hasp.down>div{filter:grayscale(1) brightness(.55)}
+.isoz.iso .cell.tok.hasp>div{inset:auto 5% 50% 5%;height:100%;border:0;background-position:center bottom}
+.isoz.iso .cell.tok.hasp.sel>div,.isoz.iso .cell.tok.hasp.turn>div{box-shadow:none!important}
+.isoz.iso .cell.tok.hasp.xform>div::after{border-radius:0;background-size:contain;background-repeat:no-repeat;background-position:center bottom}
+/* sem sprite (só iniciais/perfil): disco em pé no centro da casa */
+.isoz.iso .cell.tok:not(.hasp)>div{inset:auto 15% 50% 15%;height:auto;aspect-ratio:1;border-radius:50%;border-width:2px}
 </style>
 </head>
 <body>
@@ -1071,7 +1082,7 @@ function renderBoard(){hitEvt();$('#isoz').classList.toggle('iso',isoOn());
   else if(c&&canCtl(c)&&canMove(c))reach(c,me.seat===0&&S.free).forEach((_,k)=>{const[x,y]=k.split(',');h+=`<div class="cell hl" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`});
   Object.values(S.chars).forEach(o=>{if(o.ready===false||o.dead||!vis(o))return;const col=o.kind==='hero'&&o.trilha?thc(o):KIND[o.kind].c;
     h+=`<div class="cell tsh" style="${pos(o.x,o.y)};--tz:${o.z|0}"><i class="sh"></i>${o.z?'<i class="pole"></i>':''}<span class="tn${o.exhOn?' exh':''}">${esc(o.name)}${o.z?' ▲'+o.z:''}</span></div>`;
-    h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)};--tz:${o.z|0}" title="${esc(o.name)}${o.z?' · nível '+o.z:''}"><div style="--c:${col};${spOf(o)?`background-image:url(${spOf(o)})`:''}">${spOf(o)?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}${o.z?' ▲'+o.z:''}</span></div>`});
+    h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${spReal(o)?' hasp':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)};--tz:${o.z|0}" title="${esc(o.name)}${o.z?' · nível '+o.z:''}"><div style="--c:${col};${spOf(o)?`background-image:url(${spReal(o)?trimSp(spReal(o)):spOf(o)})`:''}">${spOf(o)?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}${o.z?' ▲'+o.z:''}</span></div>`});
   if(S.fx){if(fxSeen===null)fxSeen=S.fx.id;if(S.fx.id!==fxSeen){fxSeen=S.fx.id;S.fx.cells.forEach(([x,y])=>h+=`<div class="cell flash" style="${pos(x,y)}"></div>`)}}
   b.innerHTML=h;renderLv();
   $('#hint').textContent=aim?`Alvo: ${aim.name} — clique numa casa vermelha para atacar (1 casa = 3 m). Fogo amigo ativo: aliados na área também são atingidos. Esc ou clique fora cancela.`:placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?(canMove(c)?`${c.name}: movimento ${S.scene==='combate'&&!(me.seat===0&&S.free)?'restante '+c.mv:'livre (sem limite)'} · caminho livre, sem diagonais: clique numa casa azul para mover, ou no token para desmarcar.`:(immob(c)?'☠ Em agonia: imobilizado.':'Aguarde o seu turno para se mover.')):''):'Clique no seu token para ver o alcance de movimento.'}
@@ -1496,6 +1507,16 @@ $('#agbar').addEventListener('click',e=>{const b=e.target.closest('[data-heal]')
 const avOf=c=>(c.trilha==='O Monstro'&&c.form==='monstro'&&c.avatar2)?c.avatar2:c.avatar; // imagem de PERFIL (só na ficha)
 /* sprite = representação no mapa/duelo/iniciativa; se não houver, cai no perfil (fichas antigas) */
 const spOf=c=>{const m=c.trilha==='O Monstro'&&c.form==='monstro';return (m&&c.sprite2)||c.sprite||(m&&c.avatar2)||c.avatar||''};
+const spReal=c=>{const m=c.trilha==='O Monstro'&&c.form==='monstro';return (m&&c.sprite2)||c.sprite||''};
+/* corta a área transparente em volta do sprite (cache) para que ele preencha a casa automaticamente */
+const SPT={},SPQ={};let sptT=0;
+function trimSp(u){if(SPT[u])return SPT[u];if(SPQ[u])return u;SPQ[u]=1;const im=new Image();im.onload=()=>{try{
+  const w=im.naturalWidth,h=im.naturalHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;const g=cv.getContext('2d');g.drawImage(im,0,0);
+  const d=g.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=-1,y1=-1;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(d[(y*w+x)*4+3]>12){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+  if(x1<0||(x0<=0&&y0<=0&&x1>=w-1&&y1>=h-1)){SPT[u]=u}else{const cw=x1-x0+1,ch=y1-y0+1,c2=document.createElement('canvas');c2.width=cw;c2.height=ch;c2.getContext('2d').drawImage(cv,x0,y0,cw,ch,0,0,cw,ch);SPT[u]=c2.toDataURL('image/png')}
+ }catch(e){SPT[u]=u}
+ clearTimeout(sptT);sptT=setTimeout(()=>{try{renderBoard()}catch(e){}},30)};im.src=u;return u}
 const vis=o=>!(o.trilha==='O Espectro'&&(o.phase||'tangivel')==='intangivel')||me.seat===0||o.seat===me.seat;
 let xSeen=null,avCache={},xfOld={},xfAt={},phCache={},phAt={},phDir={};
 const age=t=>t?performance.now()-t:9e9,phRecent=c=>age(phAt[c.id])<900;
