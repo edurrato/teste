@@ -249,7 +249,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .hc:hover{transform:translateY(-26px) scale(1.18) rotate(0deg);z-index:6;box-shadow:0 12px 26px #000c,0 0 16px var(--th,#f08a3c);overflow:visible;height:auto;min-height:clamp(158px,18.5vw,208px)}
 .hc.sel{transform:translateY(-34px) scale(1.2) rotate(0deg);z-index:7;border-color:#ff4d5e;box-shadow:0 0 20px #ff4d5e,0 12px 26px #000c;height:auto;min-height:clamp(158px,18.5vw,208px);overflow:visible}
 .hc.off{filter:brightness(.62) saturate(.6)}.hc.off:hover{filter:brightness(.9)}
-.hc.rx{border-style:dotted}.hc.fx{border-style:dashed;width:clamp(100px,11vw,128px);height:clamp(140px,16vw,180px)}
+.hc.rx{border-style:dotted}.hc.fxc{border-style:dashed;width:clamp(100px,11vw,128px);height:clamp(140px,16vw,180px)}
 .hh{display:flex;gap:5px;align-items:center}.hh b{flex:1;font-size:12.5px;line-height:1.1}.hh .cost{width:22px;height:22px;flex:0 0 22px;font-size:13px}
 .ht{font-size:10.5px;line-height:1.25;flex:1;overflow:hidden}.hc:hover .ht,.hc.sel .ht{overflow:visible}
 .hf{font-size:9.5px;color:#6b6678}.hhint{font:700 10px sans-serif;color:#c0392b;text-align:center}.hbtn{width:100%}
@@ -303,7 +303,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .hrow.dk{flex-wrap:nowrap;align-items:flex-end;gap:10px;padding-bottom:22px}
 .deckrow{flex:1 1 0;min-width:0;display:flex;align-items:flex-end;overflow-x:auto;overflow-y:hidden;padding:70px 14px 56px;margin:-34px 0 -46px;scrollbar-width:thin}
 .deckrow>.hc{flex:0 0 auto}.deckrow>*+*{margin-left:var(--ml,8px)}
-.deckrow>.hc.fx{border-style:dashed;width:clamp(112px,13vw,150px);height:clamp(158px,18.5vw,208px)}
+.deckrow>.hc.fxc{border-style:dashed;width:clamp(112px,13vw,150px);height:clamp(158px,18.5vw,208px)}
 .deckrow .hc.comum{border-color:#9a968d}.deckrow .hc.rara{border-color:#4f9be8}.deckrow .hc.epica{border-color:#c77dff}
 .deckrow .hc:hover,.deckrow .hc.sel{transform:translateY(-22px) scale(1.12) rotate(0deg)}
 .hlab .sm{margin-left:6px;vertical-align:middle}
@@ -320,6 +320,133 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 .hsp{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-top:4px;max-width:130px}.hsp i{width:8px;height:8px;border-radius:50%;border:1.5px solid #ffd24a;background:transparent}.hsp i.f{background:#ffd24a}
 @media(max-width:560px){.hudr{gap:6px}.hstp{min-width:74px;padding:3px 6px}.hsn b{font-size:26px}.hbl span{font-size:15px}}
 #sheet .clipb .shide{position:absolute;top:10px;right:12px;z-index:3;font-size:12px;padding:2px 8px}
+/* --- v4: efeitos por tipo de dano --- */
+.fx{font-size:clamp(12px,2.4vw,26px)}
+.fx .core,.fx .ring{animation-fill-mode:both}.fx .ring.r2{animation-delay:.22s}
+/* Flamejante: brasas subindo */
+.fx .ember{width:var(--s,.3em);height:var(--s,.3em);border-radius:50%;background:radial-gradient(circle,#fff3b0 0,#ff9a2a 45%,#d2300f 100%);box-shadow:0 0 .5em #ff7a1a,0 0 1em #ff4a0a88;animation:fxEmb 1.25s ease-out var(--w) both}
+@keyframes fxEmb{0%{opacity:0;transform:translate(calc(-50% + var(--x0)*1em),calc(-50% + .5em)) scale(.5)}12%{opacity:1}60%{opacity:.9}100%{opacity:0;transform:translate(calc(-50% + var(--dx)*1em),calc(-50% - var(--dy)*1em)) scale(.15)}}
+/* Congelante: disco de gelo + cacos */
+.fx .frost{width:118%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#dff6ff99 0,#8fdcff66 50%,#8fdcff00 72%);box-shadow:inset 0 0 .6em #fff8;animation:fxFr .95s ease-out both}
+@keyframes fxFr{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}25%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)}}
+.fx .shard{width:.34em;height:.7em;background:linear-gradient(#fff,#8fdcff 60%,#3b9fd6);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);filter:drop-shadow(0 0 .25em #8fdcff);animation:fxSh .95s cubic-bezier(.2,.7,.3,1) var(--w) both}
+@keyframes fxSh{0%{opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)*1em),calc(-50% + var(--dy)*1em)) rotate(calc(var(--r)*2)) scale(1)}}
+/* Elétrico: raios */
+.fx .bolt{width:4em;height:4em;overflow:visible;transform:translate(-50%,-50%);filter:drop-shadow(0 0 .3em #ffe94d);animation:fxBolt .7s linear var(--w) both}
+@keyframes fxBolt{0%{opacity:0}8%{opacity:1}22%{opacity:.1}36%{opacity:1}52%{opacity:0}68%{opacity:.9}100%{opacity:0}}
+/* Sombrio: fumaça roxa */
+.fx .smoke{width:1.5em;height:1.5em;border-radius:50%;background:radial-gradient(circle,#c79bff99 0,#6a35b888 45%,#2a0f4d00 72%);filter:blur(.12em);animation:fxSm 1.7s ease-out var(--w) both}
+@keyframes fxSm{0%{opacity:0;transform:translate(calc(-50% + var(--x0)*1em),-50%) scale(.3)}25%{opacity:.85}100%{opacity:0;transform:translate(calc(-50% + var(--dx)*1em),calc(-50% - var(--dy)*1em)) scale(1.7)}}
+/* Solar: blasters dourados */
+.fx .blast{width:1.15em;height:.2em;border-radius:.2em;background:linear-gradient(90deg,#fff0 0,#ffd24a 35%,#fff 100%);box-shadow:0 0 .5em #ffd24a,0 0 .9em #ffb30088;animation:fxBl .6s cubic-bezier(.2,.8,.3,1) var(--w) both}
+@keyframes fxBl{0%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(.2em)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(2.6em)}}
+/* Psíquico: aura rosa cobrindo o token */
+.fx .aura{width:125%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#ff9be0aa 0,#ff5fc488 48%,#ff5fc400 72%);box-shadow:0 0 1.1em #ff5fc4;animation:fxAu 1.5s ease-in-out both}
+@keyframes fxAu{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}50%{opacity:.85;transform:translate(-50%,-50%) scale(.95)}75%{opacity:.9;transform:translate(-50%,-50%) scale(1.08)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.2)}}
+.fx .swirl{width:112%;aspect-ratio:1;border-radius:50%;background:conic-gradient(#ff5fc400,#ff5fc4cc,#ff5fc400 50%,#ff5fc4cc 75%,#ff5fc400);-webkit-mask:radial-gradient(circle,transparent 38%,#000 41%);mask:radial-gradient(circle,transparent 38%,#000 41%);animation:fxSw 1.4s linear both}
+@keyframes fxSw{0%{opacity:0;transform:translate(-50%,-50%) rotate(0)}20%,80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(300deg)}}
+/* Venenoso: bolhas ácidas */
+.fx .bub{width:var(--s);height:var(--s);border-radius:50%;border:.08em solid #c4f66a;background:radial-gradient(circle at 30% 30%,#fffc 0,#fff0 25%),radial-gradient(circle,#7bd83a44,#4a9a1fbb);box-shadow:0 0 .4em #7bd83a;animation:fxBu 1.5s ease-in-out var(--w) both}
+@keyframes fxBu{0%{opacity:0;transform:translate(calc(-50% + var(--x0)*1em),calc(-50% + .4em)) scale(.3)}15%{opacity:1}35%{transform:translate(calc(-50% + var(--x0)*1em + .25em),calc(-50% - var(--dy)*.4em)) scale(.8)}65%{transform:translate(calc(-50% + var(--x0)*1em - .25em),calc(-50% - var(--dy)*.75em)) scale(1)}88%{opacity:1;transform:translate(calc(-50% + var(--x0)*1em),calc(-50% - var(--dy)*1em)) scale(1.1)}100%{opacity:0;transform:translate(calc(-50% + var(--x0)*1em),calc(-50% - var(--dy)*1em)) scale(1.6)}}
+/* Cinético: ondas de impacto + riscos */
+.fx .ln{width:.9em;height:.12em;border-radius:.1em;background:linear-gradient(90deg,#fff0,#fff);animation:fxLn .45s ease-out var(--w) both}
+@keyframes fxLn{0%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(.4em)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a)) translateX(1.7em)}}
+/* reação do próprio token por tipo */
+.tok.hit-cinetico>div{animation:shk .7s both;animation-delay:var(--sd,0s)}
+.tok.hit-congelante>div{animation:shv .7s linear both;animation-delay:var(--sd,0s);filter:brightness(1.35) saturate(.7) hue-rotate(150deg);box-shadow:0 0 0 3px #bdeeff,0 0 14px #8fdcff!important}
+@keyframes shv{0%,100%{transform:translate(0,0)}8%{transform:translate(-2.5px,1px)}16%{transform:translate(2.5px,-1px)}24%{transform:translate(-2.5px,-1px)}32%{transform:translate(2.5px,1px)}40%{transform:translate(-2px,1px)}48%{transform:translate(2px,-1px)}56%{transform:translate(-2px,0)}64%{transform:translate(2px,1px)}72%{transform:translate(-1px,0)}80%{transform:translate(1px,0)}}
+.tok.hit-psiquico>div{animation:aur .95s ease-in-out both;animation-delay:var(--sd,0s);filter:brightness(1.3) saturate(1.5)}
+@keyframes aur{0%,100%{box-shadow:0 0 0 0 #ff5fc400}30%,70%{box-shadow:0 0 0 .35em #ff5fc4aa,0 0 22px 10px #ff5fc4}}
+.tok.hit-flamejante>div{animation:flk .7s linear both;animation-delay:var(--sd,0s);filter:brightness(1.5) sepia(.6) saturate(3) hue-rotate(-15deg);box-shadow:0 0 0 3px #ff7a1a,0 0 16px #ff4a0a!important}
+@keyframes flk{0%,100%{transform:translateY(0)}25%{transform:translateY(-2px)}50%{transform:translateY(1px)}75%{transform:translateY(-1px)}}
+.tok.hit-eletrico>div{animation:zp .7s steps(1,end) both;animation-delay:var(--sd,0s);box-shadow:0 0 0 3px #ffe94d,0 0 16px #ffe94d!important}
+@keyframes zp{0%{filter:brightness(2.2)}20%{filter:brightness(.8)}40%{filter:brightness(2.2);transform:translate(3px,-1px)}60%{filter:brightness(1)}80%{filter:brightness(2.4);transform:translate(-3px,1px)}100%{filter:brightness(1.2)}}
+.tok.hit-sombrio>div{filter:brightness(.6) contrast(1.2);box-shadow:0 0 0 3px #9a5cff,0 0 18px #9a5cff!important;animation:none}
+.tok.hit-solar>div{filter:brightness(1.9) saturate(1.6) sepia(.4);box-shadow:0 0 0 3px #ffd24a,0 0 20px #ffd24a!important;animation:sol .5s ease-out both;animation-delay:var(--sd,0s)}
+@keyframes sol{0%{transform:scale(1.15)}100%{transform:scale(1)}}
+.tok.hit-venenoso>div{filter:brightness(1.1) saturate(1.8) hue-rotate(70deg);box-shadow:0 0 0 3px #7bd83a,0 0 14px #7bd83a!important;animation:wob .7s ease-in-out both;animation-delay:var(--sd,0s)}
+@keyframes wob{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+/* --- v5: agonia / despedida / morte --- */
+#agv{position:fixed;inset:0;z-index:50;pointer-events:none;display:none}#agv.ag,#agv.fare,#agv.dead{display:block}
+#agv.ag{animation:agPl 1.3s ease-in-out infinite}
+@keyframes agPl{0%,100%{box-shadow:inset 0 0 90px 20px #c4001a77}12%{box-shadow:inset 0 0 160px 55px #e00022cc}26%{box-shadow:inset 0 0 100px 25px #c4001a88}38%{box-shadow:inset 0 0 150px 48px #e00022bb}}
+#agv.fare{animation:agPv 2s ease-in-out infinite}@keyframes agPv{0%,100%{box-shadow:inset 0 0 100px 24px #6a2cff77}50%{box-shadow:inset 0 0 170px 56px #a05cffcc}}
+#agv.dead{background:radial-gradient(ellipse at center,#0000 30%,#000b 100%);box-shadow:inset 0 0 160px 60px #000}
+#agfx{position:fixed;inset:0;z-index:80;display:grid;place-items:center;pointer-events:none;animation:agfO var(--d,3.4s) ease-in-out forwards}#agfx[hidden]{display:none}
+@keyframes agfO{0%{opacity:0}7%{opacity:1}82%{opacity:1}100%{opacity:0}}
+#agfx .agbg{position:absolute;inset:0;background:radial-gradient(ellipse at center,#000d 0,#000b 45%,var(--c) 190%);animation:agFl 1s ease-out}
+@keyframes agFl{0%{background:var(--c)}30%{background:#000c}}
+#agfx.k-death .agbg{background:radial-gradient(ellipse at center,#000e 0,#000f 70%)}
+.agin{position:relative;text-align:center;color:var(--c);width:100%;animation:agIn .6s .1s both}
+@keyframes agIn{from{opacity:0;transform:scale(1.5);filter:blur(10px)}}
+.agic{font-size:clamp(40px,10vw,110px);filter:drop-shadow(0 0 20px var(--c));animation:agBeat 1s ease-in-out infinite}
+@keyframes agBeat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+.agin h1{display:flex;justify-content:center;font:900 clamp(40px,12vw,150px)/1 'Arial Narrow',Oswald,Impact,sans-serif;letter-spacing:.08em;text-shadow:0 0 28px var(--c),0 0 70px var(--c),3px 0 0 #00e5ff66,-3px 0 0 #ff003c66;margin:6px 0}
+.agin h1 span{display:inline-block;animation:scnL .7s cubic-bezier(.2,1.4,.4,1) both}
+.agsub{font:600 clamp(13px,2.6vw,24px) 'Arial Narrow',sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#fff;opacity:.9;padding:0 14px}
+.agsub2{margin-top:10px;font:700 clamp(14px,3vw,26px) 'Arial Narrow',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--c);animation:agBlk 1s steps(2) infinite}
+@keyframes agBlk{50%{opacity:.35}}
+#app.agshake{animation:agBody 1s both}
+@keyframes agBody{0%,100%{transform:none;filter:none}8%{transform:translate(-9px,4px) rotate(-.6deg);filter:grayscale(1) contrast(1.4) brightness(1.5)}16%{transform:translate(9px,-4px) rotate(.6deg)}24%{transform:translate(-7px,3px)}34%{transform:translate(6px,-2px);filter:grayscale(.6)}50%{transform:translate(-3px,1px)}70%{transform:translate(2px,0);filter:grayscale(.3)}}
+#agbar{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}#agbar[hidden]{display:none}
+.agc{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:6px 12px;border:2px solid #ff2a3d;border-radius:10px;background:linear-gradient(#2a0d12,#180609);box-shadow:0 0 16px -2px #ff2a3d;animation:agcP 1.3s ease-in-out infinite}
+@keyframes agcP{50%{box-shadow:0 0 24px 2px #ff2a3d}}
+.agc.soon{border-color:#ff9a2a;box-shadow:0 0 16px -2px #ff9a2a;animation:none}
+.agc.fare{border-color:#b57bff;background:linear-gradient(#1f0d33,#0e0618);box-shadow:0 0 18px -2px #b57bff}
+.agc.dead{border-color:#5a5a6c;background:#12121a;box-shadow:none;animation:none;color:#a5a2b4;font-size:13px}
+.agh{font:700 13px 'Arial Narrow',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ff6a78}.agc.fare .agh{color:#c9a3ff}.agc.soon .agh{color:#ffb35a}.agh b{color:#fff}
+.agt{display:flex;align-items:center;gap:10px;flex:1}
+.agn{font:900 38px/1 'Arial Narrow',Oswald,sans-serif;color:#fff;text-shadow:0 0 12px #ff2a3d;min-width:34px;text-align:center}.agc.fare .agn{text-shadow:0 0 12px #b57bff}
+.agp{display:flex;gap:4px}.agp i{width:16px;height:16px;border-radius:50%;border:2px solid #ff2a3d;background:transparent}.agp i.f{background:#ff2a3d;box-shadow:0 0 8px #ff2a3d}
+.agl{font-size:12px;color:#d9cfd1;letter-spacing:.04em}
+.tok.agony>div{filter:grayscale(.7) brightness(.7);box-shadow:0 0 0 3px #ff2a3d,0 0 14px #ff2a3d!important;animation:agTk 1.3s ease-in-out infinite}
+@keyframes agTk{50%{opacity:.55}}
+.tok.fare>div{box-shadow:0 0 0 3px #b57bff,0 0 18px #b57bff!important;filter:none}
+.tok.agony::after,.tok.fare::after{content:"☠";position:absolute;top:-4%;right:-2%;font-size:clamp(10px,1.8vw,18px);z-index:6;text-shadow:0 0 4px #000,0 0 6px #ff2a3d;pointer-events:none}
+.ic.agn .tc{filter:grayscale(.7) brightness(.7)}.ic.agn::before{content:"☠";position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:#ff4d5e;z-index:5;text-shadow:0 0 8px #000,0 0 12px #ff2a3d}
+/* --- v6: transformação do Monstro / fade do Espectro --- */
+.fx .xflash{width:160%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--c) 38%,#0000 70%);animation:xfF .85s ease-out both}
+@keyframes xfF{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}25%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
+.fx .xsp{width:1.3em;height:.2em;border-radius:.2em;background:linear-gradient(90deg,#fff0,var(--c) 40%,#fff);box-shadow:0 0 .5em var(--c);animation:fxBl .7s cubic-bezier(.2,.8,.3,1) var(--w) both}
+.tok.xform>div{animation:xfT .9s ease-out both;animation-delay:var(--xd,0s)}
+.tok.xform>div::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--old,none) center/cover;animation:xfO .9s linear both;animation-delay:var(--xd,0s)}
+@keyframes xfT{0%{transform:scale(1);filter:none}18%{transform:scale(.8) rotate(-4deg);filter:brightness(3) saturate(0)}40%{transform:scale(1.55) rotate(4deg);filter:brightness(2.2)}70%{transform:scale(1.15)}100%{transform:scale(1);filter:none}}
+@keyframes xfO{0%,28%{opacity:1}62%,100%{opacity:0}}
+.fx .phantom{width:88%;aspect-ratio:1;border-radius:50%;border:3px solid var(--c);background:var(--c) center/cover;display:grid;place-items:center;font-weight:700;color:#fff;animation:fxPh .95s ease-in both}
+@keyframes fxPh{0%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:none}100%{opacity:0;transform:translate(-50%,-64%) scale(1.15);filter:blur(5px) brightness(2.2)}}
+.fx .mist{width:1.2em;height:1.2em;border-radius:50%;background:radial-gradient(circle,#e6f4ffaa 0,#9ac8ff55 50%,#0000 72%);filter:blur(.1em);animation:fxSm 1.3s ease-out var(--w) both}
+.tok.ph-out>div{animation:phOut .9s ease-in both;animation-delay:var(--pd,0s)}
+@keyframes phOut{from{opacity:1;filter:none}60%{filter:blur(3px) brightness(1.8)}to{opacity:.5;filter:none}}
+.tok.ph-in>div{animation:phIn .9s ease-out both;animation-delay:var(--pd,0s)}
+@keyframes phIn{from{opacity:0;filter:blur(6px) brightness(2.2)}to{opacity:1;filter:none}}
+.hc.phflip{animation:hcFd .9s ease-in-out}
+@keyframes hcFd{0%{opacity:1}35%{opacity:.1;transform:scale(.94)}100%{opacity:1}}
+/* --- v7: projétil à distância --- */
+.fx.proj{z-index:7}.fx.proj .pj{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(14px,2.6vw,26px);line-height:1;filter:drop-shadow(0 0 .35em var(--c)) drop-shadow(0 0 .7em var(--c));animation:pjP .28s ease-in-out infinite alternate}
+@keyframes pjP{from{transform:translate(-50%,-50%) scale(.85) rotate(-8deg)}to{transform:translate(-50%,-50%) scale(1.25) rotate(8deg)}}
+.fx.t-eletrico.proj .pj{animation-duration:.08s}
+.fx.ptr{z-index:6}.fx.ptr b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(10px,1.8vw,18px);color:var(--c);text-shadow:0 0 .5em var(--c);animation:pjT .7s ease-out both}
+@keyframes pjT{0%{opacity:.9;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.3)}}
+/* --- v8: sobrecarga / exaustão / combos --- */
+#ovq,#ovr{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:#000a;backdrop-filter:blur(3px);padding:12px}
+#ovr{z-index:91;animation:rbIn .25s ease-out}
+.ovb{max-width:460px;width:100%;background:linear-gradient(160deg,#1c1a2a,#2a1620);border:2px solid #ff9a3c;border-radius:14px;padding:16px 18px;box-shadow:0 0 36px #ff9a3c66,0 12px 40px #000c;color:#fff;max-height:92vh;overflow:auto}
+.ovb h2{color:#ff9a3c;text-align:center;margin-bottom:8px}
+.ovtab{margin:8px 0 12px;padding-left:20px;font-size:12.5px;line-height:1.4;color:#d8d2c4}
+.ovtab li{margin:3px 0}.ovb .row{display:flex;gap:8px;justify-content:center}
+.ovreel{display:flex;align-items:center;gap:14px;justify-content:center;background:#0008;border:2px solid #ff9a3c88;border-radius:12px;padding:16px 10px;margin:10px 0;min-height:84px}
+.ovn{font:700 56px/1 'Arial Narrow',Oswald,sans-serif;color:#ffd24a;text-shadow:0 0 14px #ff9a3c;min-width:46px;text-align:center}
+.ovt{font:700 22px 'Arial Narrow',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.ovd{text-align:center;min-height:42px;color:#e9dfc8;font-size:14px}
+#ovr.done .ovreel{border-color:#ffd24a;box-shadow:0 0 28px #ffd24a99;animation:ovPop .5s ease-out}
+@keyframes ovPop{0%{transform:scale(.9)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+#anbox{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(92vw,520px)}
+.an{display:flex;gap:12px;align-items:center;background:#12121ce6;border:2px solid var(--c);border-radius:12px;padding:10px 16px;box-shadow:0 0 22px var(--c),0 6px 20px #000b;animation:anIn 5.2s ease both;width:100%}
+.an .ani{font:700 26px/1 sans-serif;color:var(--c);text-shadow:0 0 10px var(--c);white-space:nowrap}
+.an b{display:block;font:700 15px 'Arial Narrow',Oswald,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}.an span:not(.ani){display:block;font-size:13px;color:#f1ecde}
+@keyframes anIn{0%{opacity:0;transform:translateY(-24px) scale(.9)}8%{opacity:1;transform:none}85%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+.hc.ovl{border-color:#ff9a3c;box-shadow:0 0 10px #ff9a3c88}.hc.ovl .hf{color:#c4560a;font-weight:700}
+.tok.exh>div{filter:grayscale(.85) brightness(.8)}.tok.exh .nm::after{content:" 💤"}
 </style>
 </head>
 <body>
@@ -342,6 +469,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
 </div>
 <div id="wiz" hidden></div><div id="banner" hidden></div>
 <div id="scn" hidden></div><div id="toast" hidden></div><div id="react" hidden></div>
+<div id="agfx" hidden></div><div id="agv"></div>
 <div id="shuf" hidden><canvas id="spark"></canvas><div id="deck"></div><div id="shufT"></div></div>
 <!-- ============ APP ============ -->
 <div id="app" hidden>
@@ -355,6 +483,7 @@ background-size:calc(100%/var(--n)) calc(100%/var(--n))}
     <section>
       <div class="tools" id="tools"></div>
       <div id="initbar" hidden></div>
+      <div id="agbar" hidden></div>
       <div id="isoz" class="isoz iso"><div class="boardwrap"><div class="board" id="board"></div><div id="fxl"><i class="pr" style="left:0;top:0"></i><i class="pr" style="left:100%;top:0"></i><i class="pr" style="left:0;top:100%"></i></div></div></div>
       <div class="mut" id="hint" style="text-align:center;margin-top:6px"></div>
       <div id="handbar" hidden></div>
@@ -460,7 +589,7 @@ const net={peer:null,conns:{},conn:null};
 
 function newState(){const s={n:20,free:false,cover:[],chars:{},priv:{},pw:{},on:{},log:[],nid:1,scene:'mundano',cb:null,pend:null,chat:[]};
   s.pw[0]='mestre';for(let i=1;i<=SEATS;i++)s.pw[i]='jogador'+i;return s}
-function mkChar(o){return Object.assign({id:'c'+(S.nid++),name:'?',secret:'',theme:'',kind:'hero',seat:0,x:0,y:0,mv:6,mvmax:6,avatar:'',
+function mkChar(o){return Object.assign({id:'c'+(S.nid++),name:'?',secret:'',theme:'',kind:'hero',seat:0,x:0,y:0,mv:6,mvmax:6,avatar:'',avatar2:'',
   vigor:10,vmax:10,pulso:3,pmax:3,arch:'',trilha:'',birth:'',arma:'',dtype:'',trigger:'',form:'humana',phase:'tangivel',provoked:false,ready:true},o)}
 function ensureSeat(seat){ // cria herói + baralho privado da cadeira
   if(!S.chars['h'+seat])S.chars['h'+seat]=mkChar({id:'h'+seat,name:'Herói '+seat,seat,x:(seat-1)%S.n,y:S.n-1,ready:false});
@@ -480,6 +609,7 @@ function rebuild(seat){const c=S.chars['h'+seat],P=S.priv[seat];if(!c||!P)return
 function setForm(c,f,why){const P=S.priv[c.seat];if(!P||!c.seat)return;c.form=f;c.provoked=false;P.hand=[];P.disc=[];
   P.deck=shuffle(f==='monstro'?(P.mdeck||autoDeck(c.arch,c.trilha,c.birth)):HUM);
   S.log.push(f==='monstro'?'💥 '+c.name+' — a Besta assumiu! ('+why+')':c.name+' voltou à Forma Humana.');S.log=S.log.slice(-15);
+  (S.xfE=S.xfE||[]).push({id:S.nid++,cid:c.id,to:f});
   if(f==='monstro')S.banner={id:S.nid++,text:'A Besta assumiu'}}
 /* ---- alcance de cartas (1 casa = 3 m; 1 zona = 3×3 casas) ---- */
 const NOAIM=/^(Mira Cir|“Pegue Isso|Passo Espectral|Palco de Ilus|Cúpula|Desvanecimento|Arrasto)/;
@@ -504,7 +634,7 @@ function fixedList(c){const L=[];if(!c||c.ready===false)return L;
 function reqOk(c,cd){const m=cd.t.match(/\(Exige estar (Tang[íi]vel|Intang[íi]vel)\)/i);if(!m)return true;
   const need=/^Intang/i.test(m[1])?'intangivel':'tangivel';return c.trilha!=='O Espectro'||(c.phase||'tangivel')===need}
 const cellCover=(x,y)=>S.cover.some(v=>x>=v.x&&x<v.x+v.w&&y>=v.y&&y<v.y+v.h);
-const charAt=(x,y,except)=>Object.values(S.chars).find(o=>o.id!==except&&o.ready!==false&&o.x===x&&o.y===y);
+const charAt=(x,y,except)=>Object.values(S.chars).find(o=>o.id!==except&&o.ready!==false&&!o.dead&&o.x===x&&o.y===y);
 const DIRS=[[1,0],[-1,0],[0,1],[0,-1]];
 function lineCells(c,r,pass,pierce){const out=[];for(const[dx,dy]of DIRS)for(let k=1;k<=r;k++){const x=c.x+dx*k,y=c.y+dy*k;if(x<0||y<0||x>=S.n||y>=S.n)break;
   if(cellCover(x,y)){if(pass)continue;break}out.push([x,y]);if(charAt(x,y,c.id)&&!pierce)break}return out}
@@ -518,7 +648,7 @@ function affected(c,sp,x,y){
   return[[x,y]]}
 
 /* grid: cada token ocupa 1 casa. Movimento livre por qualquer caminho (4 direções, sem diagonal), custo 1 por casa até o limite de passos; coberturas e tokens bloqueiam o caminho */
-function blocked(x,y,except){return S.cover.some(v=>x>=v.x&&x<v.x+v.w&&y>=v.y&&y<v.y+v.h)||Object.values(S.chars).some(o=>o.id!==except&&o.ready!==false&&o.x===x&&o.y===y)}
+function blocked(x,y,except){return S.cover.some(v=>x>=v.x&&x<v.x+v.w&&y>=v.y&&y<v.y+v.h)||Object.values(S.chars).some(o=>o.id!==except&&o.ready!==false&&!o.dead&&o.x===x&&o.y===y)}
 function reach(c,free){const d=new Map();
   if(free){for(let x=0;x<S.n;x++)for(let y=0;y<S.n;y++)if(!(x===c.x&&y===c.y)&&!blocked(x,y,c.id))d.set(x+','+y,1);return d}
   const lim=S.scene==='combate'?c.mv:Infinity,seen=new Set([c.x+','+c.y]);let fr=[[c.x,c.y]],k=0;
@@ -527,51 +657,54 @@ function reach(c,free){const d=new Map();
   return d}
 
 const trSnap=c=>({m:c.vmax>0&&c.vigor*2<=c.vmax,p:c.pulso===0,k:Object.values(S.chars).filter(o=>o.id!==c.id&&o.kind==='hero'&&o.ready!==false&&o.vigor===0).length,v:c.vigor});
-function apply(seat,a){hitCtx=null; // envolve apply0: depois de qualquer ação verifica os Gatilhos de Transformação dos Monstros
+function apply(seat,a){hitCtx=null;S.agE=[];S.xfE=[];S.ovE=[];S.anE=[]; // envolve apply0: depois de qualquer ação verifica os Gatilhos de Transformação dos Monstros
   const mons=Object.values(S.chars).filter(c=>c.seat&&c.ready!==false&&c.trilha==='O Monstro'&&(c.form||'humana')==='humana'),pre=mons.map(c=>[c,trSnap(c)]);
   apply0(seat,a);
   pre.forEach(([c,p])=>{if(!S.chars[c.id]||(c.form||'humana')!=='humana'||c.trilha!=='O Monstro')return;const n=trSnap(c),g=c.trigger||'metade';
     if(c.provoked&&n.v<p.v)return setForm(c,'monstro','provocado: sofreu dano');
     if(g==='metade'&&!p.m&&n.m)setForm(c,'monstro','Ferimento Crítico: metade do Vigor perdida');
     else if(g==='pulso'&&!p.p&&n.p)setForm(c,'monstro','Adrenalina: Pulso zerado');
-    else if(g==='aliado'&&n.k>p.k)setForm(c,'monstro','Proteção de Bando: um aliado foi abatido')})}
+    else if(g==='aliado'&&n.k>p.k)setForm(c,'monstro','Proteção de Bando: um aliado foi abatido')});agonyCheck();Object.values(S.chars).forEach(chkExh)}
 function apply0(seat,a){ // seat 0 = Mestre. Todas as mutações passam por aqui (validação central).
   const M=seat===0,c=S.chars[a.id],own=c&&(M||c.seat===seat),tgt=M?(a.seat||0):seat,P=S.priv[tgt];
   switch(a.t){
-    case 'move':{if(!own||S.pend||!turnOkFor(c,M))return;const cost=reach(c,M&&S.free).get(a.x+','+a.y);if(cost===undefined)return;c.x=a.x;c.y=a.y;if(!(M&&S.free)&&S.scene==='combate')c.mv=Math.max(0,c.mv-cost);break}
-    case 'patch':{if(!own)return;const ok=['name','secret','theme','avatar','vigor','vmax','pulso','pmax','arch','trilha','birth'];if(M)ok.push('mv','mvmax','kind','arma','dtype','trigger');
-      for(const k of ok)if(k in a.p){if(!M&&['arch','trilha','birth'].includes(k))continue;let v=a.p[k];if(k==='avatar'&&String(v).length>90000)continue;if(typeof c[k]==='number')v=Math.max(0,Math.floor(+v)||0);if(k==='arma')v=String(v).slice(0,40);if(k==='dtype'&&!DT.includes(v))continue;if(k==='trigger'&&!TRG[v])continue;c[k]=v}if(M&&c.seat&&('arch' in a.p||'trilha' in a.p||'birth' in a.p))rebuild(c.seat);break}
+    case 'move':{if(!own||S.pend||!turnOkFor(c,M)||c.dead||(immob(c)&&!(M&&S.free)))return;const cost=reach(c,M&&S.free).get(a.x+','+a.y);if(cost===undefined)return;c.x=a.x;c.y=a.y;if(!(M&&S.free)&&S.scene==='combate')c.mv=Math.max(0,c.mv-cost);break}
+    case 'patch':{if(!own||(c.dead&&!M))return;const ok=['name','secret','theme','avatar','avatar2','vigor','vmax','pulso','pmax','arch','trilha','birth'];if(M)ok.push('mv','mvmax','kind','arma','dtype','trigger');if(!M&&(c.agony||c.fare))ok.splice(ok.indexOf('vigor'),1);
+      for(const k of ok)if(k in a.p){if(!M&&['arch','trilha','birth'].includes(k))continue;let v=a.p[k];if((k==='avatar'||k==='avatar2')&&String(v).length>90000)continue;if(typeof c[k]==='number')v=Math.max(0,Math.floor(+v)||0);if(k==='arma')v=String(v).slice(0,40);if(k==='dtype'&&!DT.includes(v))continue;if(k==='trigger'&&!TRG[v])continue;c[k]=v}if(M&&c.seat&&('arch' in a.p||'trilha' in a.p||'birth' in a.p))rebuild(c.seat);break}
     case 'create':{const hc=S.chars['h'+seat],q=a.p||{};if(M||!hc||hc.ready!==false)return;
       const Ar=ARCH[q.arch];if(!Ar||!Ar.tr[q.trilha]||!BIRTHS.some(b=>b.name===q.birth))return;
       if(q.arch==='O Armado'&&(!DT.includes(q.dtype)||!String(q.arma||'').trim()))return;if(q.trilha==='O Monstro'&&!TRG[q.trigger])return;
       const pool=poolIds(q.arch,q.trilha,q.birth),dk=[...new Set(q.deck||[])].filter(i=>pool.includes(i));if(dk.length!==15)return;
       Object.assign(hc,{name:String(q.name||'').slice(0,40)||hc.name,secret:String(q.secret||'').slice(0,60),theme:String(q.theme||'').slice(0,300),arch:q.arch,trilha:q.trilha,birth:q.birth,vmax:Ar.v,vigor:Ar.v,pmax:Ar.p,pulso:Ar.p,ready:true,form:'humana',phase:'tangivel',provoked:false,
         arma:q.arch==='O Armado'?String(q.arma).trim().slice(0,40):'',dtype:q.arch==='O Armado'?q.dtype:'',trigger:q.trilha==='O Monstro'?q.trigger:''});
-      if(q.avatar&&String(q.avatar).length<90000)hc.avatar=q.avatar;
+      if(q.avatar&&String(q.avatar).length<90000)hc.avatar=q.avatar;if(q.trilha==='O Monstro'&&q.avatar2&&String(q.avatar2).length<90000)hc.avatar2=q.avatar2;
       let x=0;while(x<S.n&&blocked(x,S.n-1,hc.id))x++;hc.x=Math.min(x,S.n-1);hc.y=S.n-1;
       S.priv[seat]=hc.trilha==='O Monstro'?{deck:shuffle(HUM),hand:[],disc:[],mdeck:dk}:{deck:shuffle(dk),hand:[],disc:[]};S.log.push(hc.name+' entrou na mesa!');S.log=S.log.slice(-15);if(S.scene==='combate')cbJoin(hc.id);break}
     case 'draw':{if(!P||S.scene!=='combate'||!M)return;while(P.hand.length<3){if(!P.deck.length){if(!P.disc.length)break;P.deck=shuffle(P.disc);P.disc=[]}P.hand.push(P.deck.pop())}break}
     case 'discard':{if(!P||S.scene==='mundano'||!(a.i in P.hand))return;P.disc.push(P.hand.splice(a.i,1)[0]);break}
-    case 'play':case 'fixed':{const hc=S.chars['h'+tgt];if(!P||!hc||S.pend||!turnOkFor(hc,M))return;let cd,fx=a.t==='fixed';const sp0=S.scene!=='mundano';
+    case 'play':case 'fixed':{const hc=S.chars['h'+tgt];if(!P||!hc||S.pend||!turnOkFor(hc,M)||immob(hc)||hc.dead)return;let cd,fx=a.t==='fixed';const sp0=S.scene!=='mundano';
       if(fx){cd=fixedList(hc).find(f=>f.key===a.key);if(!cd||cd.flip)return}else{if(!(a.i in P.hand))return;cd=CARDS[P.hand[a.i]];if(!reqOk(hc,cd)||cd.x)return}
-      if(sp0&&hc.pulso<cd.c)return;
+      if(hc.exhOn)return;const ovl=sp0&&hc.pulso<cd.c;if(ovl&&!a.ov)return;
       const lock=!fx&&humanLock(hc,cd),sp=fx?cd.spec:specOf(hc,cd);let aff=null;
       if(sp){const x=+a.x,y=+a.y;if(!aimCells(hc,sp).some(p=>p[0]===x&&p[1]===y))return;aff=affected(hc,sp,x,y)}
-      if(sp0)hc.pulso-=cd.c;if(!fx&&sp0)P.disc.push(P.hand.splice(a.i,1)[0]);
-      const names=aff?Object.values(S.chars).filter(o=>o.ready!==false&&o.id!==hc.id&&aff.some(p=>o.x===p[0]&&o.y===p[1])).map(o=>o.name):[];
+      if(sp0)hc.pulso=Math.max(0,hc.pulso-cd.c);if(!fx&&sp0)P.disc.push(P.hand.splice(a.i,1)[0]);if(!fx)recSuit(hc,cd.s);
+      const names=aff?Object.values(S.chars).filter(o=>o.ready!==false&&!o.dead&&o.id!==hc.id&&aff.some(p=>o.x===p[0]&&o.y===p[1])).map(o=>o.name):[];
       const cn=fx?cd.n:cd.n.split(' / ')[0];
       lg(hc.name+' jogou '+SG[cd.s]+' '+cn+(sp0?' (Pulso −'+cd.c+')':'')+(lock?' — Forma Humana: só 1 de dano desarmado comum, sem bônus nem Esmagamento':'')+(aff?(names.length?' → atinge: '+names.join(', '):' → sem alvos na área'):''));
       if(aff)S.fx={id:S.nid++,cells:aff};
       if(cd.fx==='provoca')hc.provoked=true;
       if(cd.fx==='valvula'){hc.vigor=Math.max(0,hc.vigor-1);if(!P.deck.length&&P.disc.length){P.deck=shuffle(P.disc);P.disc=[]}if(P.deck.length)P.hand.push(P.deck.pop())}
-      const dm=aff?dmgOf(hc,cd,lock):null;if(aff&&dm)strike(hc,cn,aff,dm);
+      const dm=aff?dmgOf(hc,cd,lock):null;if(dm&&dm.n>0&&hc.bonDmg>0){dm.n+=hc.bonDmg;lg('♣ Combo: '+hc.name+' causa +'+hc.bonDmg+' de dano neste ataque.');hc.bonDmg=0}if(aff&&dm)strike(hc,cn,aff,dm);
+      if(ovl)overload(hc);
       break}
-    case 'flip':{const hc=S.chars['h'+tgt];if(!hc||hc.trilha!=='O Espectro'||S.pend||!turnOkFor(hc,M))return;const sp0=S.scene!=='mundano';if(sp0&&hc.pulso<2)return;if(sp0)hc.pulso-=2;
+    case 'flip':{const hc=S.chars['h'+tgt];if(!hc||hc.trilha!=='O Espectro'||S.pend||!turnOkFor(hc,M)||immob(hc)||hc.dead)return;const sp0=S.scene!=='mundano';if(hc.exhOn)return;const ovl=sp0&&hc.pulso<2;if(ovl&&!a.ov)return;if(sp0)hc.pulso=Math.max(0,hc.pulso-2);
       hc.phase=(hc.phase||'tangivel')==='tangivel'?'intangivel':'tangivel';
-      lg(hc.name+' virou a carta: agora está '+(hc.phase==='tangivel'?'Tangível':'Intangível')+(sp0?' (Pulso −2)':''));break}
+      lg(hc.name+' virou a carta: agora está '+(hc.phase==='tangivel'?'Tangível':'Intangível')+(sp0?' (Pulso −2)':''));if(ovl)overload(hc);break}
     case 'scene':{if(!M||!SCN[a.m])return;setScene(a.m);break}
-    case 'resetchar':{if(!M||!c||!c.seat||c.ready===false)return;c.vigor=c.vmax;c.pulso=c.pmax;c.mv=c.mvmax;c.phase='tangivel';c.form='humana';c.provoked=false;rebuild(c.seat);
-      let rx=0;while(rx<S.n&&blocked(rx,S.n-1,c.id))rx++;c.x=Math.min(rx,S.n-1);c.y=S.n-1;if(S.scene==='combate')drawTo3(c.seat);S.pend=null;lg('↺ Ficha de '+c.name+' resetada (Vigor, Pulso e baralho).');break}
+    case 'resetchar':{if(!M||!c||!c.seat||c.ready===false)return;c.dead=false;c.agony=null;c.fare=false;c.vigor=c.vmax;c.pulso=c.pmax;c.mv=c.mvmax;c.phase='tangivel';c.form='humana';c.provoked=false;rebuild(c.seat);
+      let rx=0;while(rx<S.n&&blocked(rx,S.n-1,c.id))rx++;c.x=Math.min(rx,S.n-1);c.y=S.n-1;if(S.cb&&!S.cb.order.includes(c.id))cbJoin(c.id);if(S.scene==='combate')drawTo3(c.seat);S.pend=null;lg('↺ Ficha de '+c.name+' resetada (Vigor, Pulso e baralho).');break}
+    case 'heal':{const t=S.chars[a.id];if(!t||!t.seat||t.dead||!(t.agony||t.fare))return;const h=S.chars['h'+seat];if(!M&&(seat===t.seat||!h||h.agony||h.dead||h.ready===false))return;
+      const n=Math.max(1,Math.min(5,Math.floor(+a.n)||1));t.vigor=Math.min(t.vmax,t.vigor+n);lg('✚ '+(M?'O Mestre':h.name)+' curou '+t.name+': +'+n+' Vigor');break}
     case 'wipechar':{if(!M||!c||!c.seat)return;const st=c.seat;if(S.cb)cbLeave(c.id);S.pend=null;delete S.chars['h'+st];delete S.priv[st];if(S.on[st])ensureSeat(st);lg('🗑 Ficha do Jogador '+st+' apagada: ele refaz a criação.');break}
     case 'endturn':{if(S.scene!=='combate'||!S.cb||S.pend)return;const cur=S.chars[S.cb.order[S.cb.i]];if(!(M||(cur&&cur.seat===seat)))return;nextTurn();break}
     case 'restore':{if(!M)return;Object.values(S.chars).forEach(o=>{o.mv=o.mvmax;o.pulso=o.pmax;o.provoked=false});lg('↻ Movimento e Pulso restaurados.');break}
@@ -598,7 +731,11 @@ function apply0(seat,a){ // seat 0 = Mestre. Todas as mutações passam por aqui
     case 'cvdel':{if(!M)return;S.cover=S.cover.filter(o=>o.id!==a.id);break}
   }
 }
-function act(a){ if(me.seat===0){apply(0,a);push()} else if(net.conn&&net.conn.open)net.conn.send({t:'act',a}) }
+function act(a){ if(S&&(a.t==='play'||a.t==='fixed'||a.t==='flip')&&!a.ov&&S.scene!=='mundano'){
+    const seat=me.seat===0?(a.seat||0):me.seat,ch=S.chars['h'+seat],P=S.priv[seat];let cost=0;
+    try{if(a.t==='flip')cost=2;else if(a.t==='fixed'){const f=fixedList(ch).find(k=>k.key===a.key);cost=f?f.c:0}else{const id=P&&P.hand[a.i];cost=id!=null?CARDS[id].c:0}}catch(e){}
+    if(ch&&!ch.exhOn&&cost>ch.pulso){askOverload(ch,cost,()=>act(Object.assign({},a,{ov:1})));return}}
+  if(me.seat===0){apply(0,a);push()} else if(net.conn&&net.conn.open)net.conn.send({t:'act',a}) }
 
 /* =====================================================================
    MÓDULO 1b — CENAS (Mundano / Missão / Combate), INICIATIVA, DANO, REAÇÕES
@@ -638,11 +775,11 @@ function reactFx(cd){const t=cd.t,o={abs:0,all:false,heal:0,refl:0,redir:-1,flip
   if(m)o.abs=+m[1];else if(/anul|nega|sem causar dano|a zero|todo o dano/i.test(t))o.all=true;
   return Object.assign(o,REOV[cd.n]||{})}
 /* índices (na mão) das reações que o alvo pode usar agora */
-function reactables(o){const P=o&&o.seat&&S.priv[o.seat];if(!P)return[];const sp=S.scene!=='mundano';
+function reactables(o){const P=o&&o.seat&&S.priv[o.seat];if(!P||o.noReact>0)return[];const sp=S.scene!=='mundano';
   return P.hand.map((id,i)=>[id,i]).filter(([id])=>{const cd=CARDS[id];return cd.x&&(!sp||o.pulso>=cd.c)&&reqOk(o,cd)&&!(/^Vácuo Corporal/.test(cd.n)&&o.phase==='intangivel')}).map(p=>p[1])}
 function dealDmg(o,n,dt,att,name,ff){
-  if(o.trilha==='O Espectro'&&o.phase==='intangivel'&&dt==='Cinético'){addHit({cid:o.id,n:0,dt,blk:'atravessa'});lg(o.name+' está Intangível: o ataque físico de '+(att?att.name:'?')+' o atravessa.');return}
-  n=Math.max(0,n);const was=o.vigor;o.vigor=Math.max(0,o.vigor-n);addHit({cid:o.id,n,dt,ff:!!ff});
+  if(o.trilha==='O Espectro'&&o.phase==='intangivel'&&dt==='Cinético'){addHit({cid:o.id,n:0,dt,blk:'atravessa',from:att&&att.id});lg(o.name+' está Intangível: o ataque físico de '+(att?att.name:'?')+' o atravessa.');return}
+  n=Math.max(0,n);const was=o.vigor;o.vigor=Math.max(0,o.vigor-n);addHit({cid:o.id,n,dt,ff:!!ff,from:att&&att.id});
   lg((att?att.name:'?')+' → '+o.name+': −'+n+' Vigor ('+dt+')'+(name?' com '+name:'')+(ff?' · FOGO AMIGO!':'')+(was>0&&o.vigor===0?(o.seat?' — caiu em Agonia!':' — foi derrotado!'):''))}
 function strike(att,name,aff,dm){
   const tg=Object.values(S.chars).filter(o=>o.ready!==false&&o.id!==att.id&&o.vigor>0&&aff.some(p=>o.x===p[0]&&o.y===p[1])),pend=[];
@@ -653,7 +790,7 @@ function resolveReact(i,take){
   const pd=S.pend,cur=pd.list[0],o=S.chars[cur.tid],att=S.chars[pd.att];let n=cur.n;
   if(o){
     if(!take){const PP=S.priv[o.seat],cd=CARDS[PP.hand[i]],ef=reactFx(cd),sp=S.scene!=='mundano';
-      if(sp){o.pulso-=cd.c;PP.disc.push(PP.hand.splice(i,1)[0])}
+      recSuit(o,cd.s);if(sp){o.pulso-=cd.c;PP.disc.push(PP.hand.splice(i,1)[0])}
       if(ef.heal)o.vigor=Math.min(o.vmax,o.vigor+ef.heal);
       let ab=ef.all?n:Math.min(n,ef.abs);
       if(ef.cap&&o.vigor-(n-ab)<=0){ab=n-(o.vigor-1);if(o.trilha==='O Monstro'&&(o.form||'humana')==='humana')setForm(o,'monstro','Imortalidade Bestial')}
@@ -661,35 +798,86 @@ function resolveReact(i,take){
       n-=ab;lg('🛡 '+o.name+' reagiu: '+cd.n.split(' / ')[0]+(sp?' (Pulso −'+cd.c+')':'')+(ab?' — absorveu '+ab:'')+(ef.heal?' — curou '+ef.heal:''));
       const rn=ef.refl+(ef.redir>=0?ab+ef.redir:0);if(rn>0&&att&&att.vigor>0)dealDmg(att,rn,cur.dt,o,cd.n.split(' / ')[0],false)}
     else lg(o.name+' decidiu tomar o dano.');
-    if(n>0)dealDmg(o,n,cur.dt,att,pd.card,cur.ff);else addHit({cid:o.id,n:0,dt:cur.dt,blk:'bloqueado'})}
+    if(n>0)dealDmg(o,n,cur.dt,att,pd.card,cur.ff);else addHit({cid:o.id,n:0,dt:cur.dt,blk:'bloqueado',from:att&&att.id})}
   pd.list.shift();if(pd.list.length)pd.id=S.nid++;else S.pend=null}
+/* =====================================================================
+   SOBRECARGA · EXAUSTÃO COMPLETA · COMBOS DE NAIPES
+   ===================================================================== */
+const OVT=[
+ {n:1,t:'Exaustão completa',d:'Você zera seu Pulso e sua movimentação pelas próximas duas rodadas.'},
+ {n:2,t:'Cicatriz Eterna',d:'Você perde 1 de Vigor permanentemente.'},
+ {n:3,t:'Efeito Dominó',d:'Todos os aliados recebem 2 de dano.'},
+ {n:4,t:'Guarda Aberta',d:'Você fica impossibilitado de usar cartas de reação por 3 turnos.'},
+ {n:5,t:'Menos Três',d:'Três cartas do seu baralho vão automaticamente para a pilha de descarte.'},
+ {n:6,t:'Peso Sanguíneo',d:'Você sofre 6 pontos de Dano.'}];
+const CMB={copas:{ic:'♥',t:'Cura Coletiva',d:'Todos os heróis curam 2 de Vigor.',c:'#ff5a6e'},paus:{ic:'♣',t:'Golpe Coletivo',d:'Todos os heróis ganham +2 no dano do próximo ataque.',c:'#6fdc6f'},
+ espadas:{ic:'♠',t:'Fôlego Coletivo',d:'Todos os heróis ganham +2 de Pulso temporário no próximo turno.',c:'#9fb4ff'},ouros:{ic:'♦',t:'Retorno Coletivo',d:'3 cartas do descarte de cada herói voltam ao baralho.',c:'#ffd24a'}};
+function anEv(o){(S.anE=S.anE||[]).push(Object.assign({id:S.nid++},o))}
+function recSuit(c,s){if(S.scene!=='combate'||!S.cb||!c||c.kind!=='hero'||!c.seat||!s)return;const rp=S.cb.rp=S.cb.rp||{},a=rp[c.id]=rp[c.id]||[];if(!a.includes(s))a.push(s)}
+function overload(c){const r=1+Math.floor(Math.random()*6),o=OVT[r-1],P=S.priv[c.seat];
+  (S.ovE=S.ovE||[]).push({id:S.nid++,cid:c.id,r});
+  lg('⚡ SOBRECARGA de '+c.name+'! Sorteio '+r+': '+o.t+' — '+o.d);
+  switch(r){
+   case 1:c.pulso=0;c.mv=0;c.exh=2;c.exhOn=true;break;
+   case 2:{const was=c.vigor;c.vmax=Math.max(1,c.vmax-1);if(c.vigor>0)c.vigor=Math.max(1,Math.min(c.vigor-1,c.vmax));if(was!==c.vigor||true)lg('🩸 '+c.name+' perdeu 1 de Vigor permanentemente (máx. '+c.vmax+').');break}
+   case 3:{const al=Object.values(S.chars).filter(x=>x.id!==c.id&&x.kind==='hero'&&x.seat&&x.ready!==false&&!x.dead&&x.vigor>0);
+     if(!al.length)lg('Efeito Dominó: não há aliados para atingir.');al.forEach(x=>dealDmg(x,2,'Psíquico',c,'Efeito Dominó',false));break}
+   case 4:c.noReact=3;break;
+   case 5:{let k=0;if(P)while(k<3&&P.deck.length){P.disc.push(P.deck.pop());k++}lg('🃏 '+c.name+' perdeu '+k+' carta(s) do baralho para o descarte.');break}
+   case 6:dealDmg(c,6,'Psíquico',c,'Peso Sanguíneo',false);break}
+  anEv({d:2900,ic:'⚡',t:'SOBRECARGA — '+c.name,s:r+'. '+o.t+': '+o.d,c:'#ff9a3c'})}
+function chkExh(c){if(!c||c.kind!=='hero'||!c.seat||c.ready===false||c.dead||c.agony||c.fare||c.exhD||S.scene!=='combate'||!S.cb)return;
+  const P=S.priv[c.seat];if(!P||P.deck.length||P.hand.length||!P.disc.length)return;
+  c.exhD=true;c.exh=2;c.exhOn=true;c.pulso=0;c.mv=0;
+  lg('💤 EXAUSTÃO COMPLETA: '+c.name+' gastou todo o baralho! Pulso e movimento zerados por 2 rodadas; depois o descarte volta ao baralho.');
+  anEv({d:0,ic:'💤',t:'EXAUSTÃO COMPLETA — '+c.name,s:'Baralho esgotado: sem cartas, Pulso e movimento zerados por 2 rodadas.',c:'#8aa0c8'})}
+function comboCheck(){const cb=S.cb,rp=cb.rp||{};cb.rp={};
+  const H=cb.order.map(id=>S.chars[id]).filter(c=>c&&c.kind==='hero'&&c.seat&&c.ready!==false&&!c.dead);
+  if(H.length<2)return;const T=Math.min(4,H.length);
+  Object.keys(CMB).forEach(s=>{if(H.filter(c=>(rp[c.id]||[]).includes(s)).length<T)return;const d=CMB[s];
+    if(s==='copas')H.forEach(c=>{if(c.vigor>0&&!c.agony)c.vigor=Math.min(c.vmax,c.vigor+2)});
+    else if(s==='paus')H.forEach(c=>{c.bonDmg=2});
+    else if(s==='espadas')H.forEach(c=>{c.pBonus=2});
+    else H.forEach(c=>{const P=S.priv[c.seat];if(!P||!P.disc.length)return;const pick=shuffle(P.disc.slice()).slice(0,3);pick.forEach(id=>{P.disc.splice(P.disc.indexOf(id),1);P.deck.push(id)});P.deck=shuffle(P.deck)});
+    lg('✨ COMBO '+d.ic.repeat(T)+' — '+d.t+': '+d.d);
+    anEv({d:0,ic:d.ic.repeat(T),t:'COMBO — '+d.t,s:d.d,c:d.c})})}
 /* ---- cartas por cena ---- */
-function drawTo3(seat){const P=S.priv[seat];if(!P)return;while(P.hand.length<3){if(!P.deck.length){if(!P.disc.length)break;P.deck=shuffle(P.disc);P.disc=[]}P.hand.push(P.deck.pop())}}
+function drawTo3(seat){const P=S.priv[seat];if(!P)return;while(P.hand.length<3&&P.deck.length)P.hand.push(P.deck.pop())}
 function gatherAll(){Object.values(S.priv).forEach(P=>{P.hand=[...P.hand,...P.deck,...P.disc];P.deck=[];P.disc=[]})}
 function normAll(){if(!S||S.scene==='combate')return;Object.values(S.priv).forEach(P=>{if(P.deck.length){P.hand.push(...P.deck);P.deck=[]}if(S.scene==='mundano'&&P.disc.length){P.hand.push(...P.disc);P.disc=[]}})}
 /* ---- combate: iniciativa, turnos ---- */
-function startTurn(id){const c=S.chars[id];if(!c)return;c.mv=c.mvmax;c.pulso=c.pmax;c.provoked=false;if(c.seat)drawTo3(c.seat);lg('▶ Turno de '+c.name+' (rodada '+S.cb.round+')');S.tn={id:S.nid++,cid:id}}
+function startTurn(id){const c=S.chars[id];if(!c)return;
+  if(c.agony&&!c.dead){
+    if(c.agony.left>0){lg('☠ '+c.name+' está em Agonia: perde o turno automaticamente.');return nextTurn()}
+    c.fare=true;c.mv=c.mvmax;c.pulso=Math.max(1,Math.ceil(c.pmax/2));c.provoked=false;const P=S.priv[c.seat];if(P){P.hand=[...P.hand,...P.deck,...P.disc];P.deck=[];P.disc=[]}
+    lg('💀 DESPEDIDA de '+c.name+': última chance — Pulso limitado a '+c.pulso+' e baralho liberado. Ao encerrar o turno, morre.');agEv(c,'fare');S.tn={id:S.nid++,cid:id};return}
+  if(c.noReact>0)c.noReact--;
+  if(c.exh>0){c.exh--;c.exhOn=true;c.mv=0;c.pulso=0;c.provoked=false;lg('💤 '+c.name+' está em Exaustão Completa: Pulso e movimento zerados neste turno.');S.tn={id:S.nid++,cid:id};return}
+  if(c.exhOn){c.exhOn=false;if(c.exhD){c.exhD=false;const PX=S.priv[c.seat];if(PX){PX.deck=shuffle([...PX.deck,...PX.disc]);PX.disc=[]}lg('😮‍💨 '+c.name+' recuperou o fôlego: o descarte voltou ao baralho.')}}
+  c.mv=c.mvmax;c.pulso=c.pmax+(c.pBonus||0);if(c.pBonus){lg('♠ Combo: '+c.name+' começa o turno com +'+c.pBonus+' de Pulso temporário.');c.pBonus=0}c.provoked=false;if(c.seat)drawTo3(c.seat);lg('▶ Turno de '+c.name+' (rodada '+S.cb.round+')');S.tn={id:S.nid++,cid:id}}
 function startCombat(){
-  const L=Object.values(S.chars).filter(c=>c.ready!==false),ini={};
+  const L=Object.values(S.chars).filter(c=>c.ready!==false&&!c.dead),ini={};
   const E=L.map(c=>{const A=c.kind==='hero'&&c.seat&&ARCH[c.arch];return{id:c.id,n:A?A.i:1+Math.floor(Math.random()*7),r:Math.random(),npc:!A}});
   E.sort((a,b)=>a.n-b.n||a.r-b.r);
   const by={};E.forEach(e=>(by[e.n]=by[e.n]||[]).push(e));
   Object.values(by).forEach(g=>{if(g.length>1){g.forEach(e=>e.tie=true);const nm=g.map(e=>S.chars[e.id].name);lg('⚖ Empate na iniciativa '+g[0].n+'º: '+nm.join(' × ')+' — desempate por sorteio: '+nm.join(' › '))}});
   E.forEach(e=>ini[e.id]={n:e.n,tie:!!e.tie,npc:e.npc});
-  L.forEach(c=>{c.pulso=c.pmax;c.mv=c.mvmax;c.provoked=false});
+  L.forEach(c=>{c.pulso=c.pmax;c.mv=c.mvmax;c.provoked=false;c.exh=0;c.exhOn=false;c.exhD=false;c.noReact=0;c.bonDmg=0;c.pBonus=0});
   Object.keys(S.priv).forEach(k=>{const P=S.priv[k];P.deck=shuffle([...P.deck,...P.hand,...P.disc]);P.hand=[];P.disc=[];drawTo3(+k)});
-  const order=E.map(e=>e.id);let i=0;while(i<order.length-1&&S.chars[order[i]].vigor<=0)i++;
-  S.cb={order,ini,i,round:1};lg('⚔ COMBATE! Ordem: '+order.map(id=>S.chars[id].name).join(' › '));if(order.length)startTurn(order[i])}
-function nextTurn(){const cb=S.cb;if(!cb||!cb.order.length)return;const n=cb.order.length;let i=cb.i,r=cb.round;
-  for(let k=0;k<n;k++){i++;if(i>=n){i=0;r++}const c=S.chars[cb.order[i]];if(c&&c.vigor>0)break}
-  cb.i=i;cb.round=r;startTurn(cb.order[i])}
+  const order=E.map(e=>e.id);let i=0;while(i<order.length-1&&S.chars[order[i]].vigor<=0&&!S.chars[order[i]].agony)i++;
+  S.cb={order,ini,i,round:1,rp:{}};lg('⚔ COMBATE! Ordem: '+order.map(id=>S.chars[id].name).join(' › '));if(order.length)startTurn(order[i])}
+function nextTurn(){const cb=S.cb;if(!cb||!cb.order.length)return;const nt=noTick;noTick=false;const prev=S.chars[cb.order[cb.i]];
+  if(!nt){if(prev&&prev.fare){killHero(prev);return}heroTick(prev)}
+  const n=cb.order.length;let i=cb.i,r=cb.round;
+  for(let k=0;k<n;k++){i++;if(i>=n){i=0;r++}const c=S.chars[cb.order[i]];if(c&&(c.vigor>0||(c.agony&&!c.dead)))break}
+  if(r>cb.round)comboCheck();cb.i=i;cb.round=r;startTurn(cb.order[i])}
 function cbJoin(id){const cb=S.cb,c=S.chars[id];if(!cb||!c||cb.order.includes(id))return;const A=c.kind==='hero'&&c.seat&&ARCH[c.arch];
   cb.ini[id]={n:A?A.i:1+Math.floor(Math.random()*7),tie:false,npc:!A};cb.order.splice(cb.i+1+Math.floor(Math.random()*(cb.order.length-cb.i)),0,id);
   c.pulso=c.pmax;c.mv=c.mvmax;if(c.seat){const P=S.priv[c.seat];if(P){P.deck=shuffle([...P.deck,...P.hand,...P.disc]);P.hand=[];P.disc=[];drawTo3(c.seat)}}lg(c.name+' entrou no combate.')}
 function cbLeave(id){const cb=S.cb;if(!cb)return;const k=cb.order.indexOf(id);if(k<0)return;cb.order.splice(k,1);delete cb.ini[id];if(!cb.order.length)return;
-  if(k<cb.i)cb.i--;else if(k===cb.i){cb.i=k-1;if(cb.i<0){cb.i=cb.order.length-1;cb.round--}nextTurn()}}
+  if(k<cb.i)cb.i--;else if(k===cb.i){cb.i=k-1;if(cb.i<0){cb.i=cb.order.length-1;cb.round--}noTick=true;nextTurn();noTick=false}}
 function setScene(m){if(S.scene===m)return;const prev=S.scene;S.scene=m;S.pend=null;S.cb=null;
-  Object.values(S.chars).forEach(c=>{c.mv=c.mvmax;c.provoked=false});
+  Object.values(S.chars).forEach(c=>{c.mv=c.mvmax;c.provoked=false;if(c.fare)c.fare=false});
   if(m==='combate'){startCombat()}else{gatherAll();if(prev==='combate')lg('⚔ Combate encerrado.')}
   S.scn={id:S.nid++,mode:m,cmb:m==='combate'};lg('🎬 Cena: '+SCN[m].t)}
 
@@ -761,19 +949,19 @@ function renderBoard(){hitEvt();$('#isoz').classList.toggle('iso',isoOn());
   const pos=(x,y)=>`left:${x*u}%;top:${y*u}%`;let h='';
   S.cover.forEach(v=>h+=`<div class="cov${v.id===selCov?' on':''}" data-cv="${v.id}" style="${pos(v.x,v.y)};width:${v.w*u}%;height:${v.h*u}%">${esc(v.label)}</div>`);
   const c=S.chars[sel];AIMC=new Set();
-  if(aim&&aimChar()){const ac=aimChar();aimCells(ac,aim.sp).forEach(([x,y])=>{AIMC.add(x+','+y);h+=`<div class="cell hl atk${charAt(x,y,ac.id)?' tgt':''}" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`})}
+  if(aim&&aimChar()){const ac=aimChar();aimCells(ac,aim.sp).forEach(([x,y])=>{AIMC.add(x+','+y);h+=`<div class="cell hl atk${(t=>t&&vis(t)?' tgt':'')(charAt(x,y,ac.id))}" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`})}
   else if(c&&canCtl(c)&&canMove(c))reach(c,me.seat===0&&S.free).forEach((_,k)=>{const[x,y]=k.split(',');h+=`<div class="cell hl" data-x="${x}" data-y="${y}" style="${pos(x,y)}"></div>`});
-  Object.values(S.chars).forEach(o=>{if(o.ready===false)return;const col=o.kind==='hero'&&o.trilha?thc(o):KIND[o.kind].c;
-    h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)}" title="${esc(o.name)}"><div style="--c:${col};${o.avatar?`background-image:url(${o.avatar})`:''}">${o.avatar?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}</span></div>`});
+  Object.values(S.chars).forEach(o=>{if(o.ready===false||o.dead||!vis(o))return;const col=o.kind==='hero'&&o.trilha?thc(o):KIND[o.kind].c;
+    h+=`<div class="cell tok${o.id===sel?' sel':''}${o.trilha==='O Espectro'&&o.phase==='intangivel'?' ghost':''}${o.trilha==='O Monstro'&&o.form==='monstro'?' beast':''}${tokCls(o)}" data-id="${o.id}" style="${pos(o.x,o.y)}${tokSty(o)}" title="${esc(o.name)}"><div style="--c:${col};${avOf(o)?`background-image:url(${avOf(o)})`:''}">${avOf(o)?'':esc(o.name.slice(0,2).toUpperCase())}</div><span class="nm">${esc(o.name)}</span></div>`});
   if(S.fx){if(fxSeen===null)fxSeen=S.fx.id;if(S.fx.id!==fxSeen){fxSeen=S.fx.id;S.fx.cells.forEach(([x,y])=>h+=`<div class="cell flash" style="${pos(x,y)}"></div>`)}}
   b.innerHTML=h;
-  $('#hint').textContent=aim?`Alvo: ${aim.name} — clique numa casa vermelha para atacar (1 casa = 3 m). Fogo amigo ativo: aliados na área também são atingidos. Esc ou clique fora cancela.`:placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?(canMove(c)?`${c.name}: movimento ${S.scene==='combate'&&!(me.seat===0&&S.free)?'restante '+c.mv:'livre (sem limite)'} · caminho livre, sem diagonais: clique numa casa azul para mover, ou no token para desmarcar.`:'Aguarde o seu turno para se mover.'):''):'Clique no seu token para ver o alcance de movimento.'}
+  $('#hint').textContent=aim?`Alvo: ${aim.name} — clique numa casa vermelha para atacar (1 casa = 3 m). Fogo amigo ativo: aliados na área também são atingidos. Esc ou clique fora cancela.`:placing?'Clique numa célula para posicionar a cobertura.':c?(canCtl(c)?(canMove(c)?`${c.name}: movimento ${S.scene==='combate'&&!(me.seat===0&&S.free)?'restante '+c.mv:'livre (sem limite)'} · caminho livre, sem diagonais: clique numa casa azul para mover, ou no token para desmarcar.`:(immob(c)?'☠ Em agonia: imobilizado.':'Aguarde o seu turno para se mover.')):''):'Clique no seu token para ver o alcance de movimento.'}
 $('#board').addEventListener('click',e=>{
   const tk=e.target.closest('.tok'),hc=e.target.closest('.cell[data-x]');let x,y;if(tk&&S.chars[tk.dataset.id]){x=S.chars[tk.dataset.id].x;y=S.chars[tk.dataset.id].y}else if(hc){x=+hc.dataset.x;y=+hc.dataset.y}else{[x,y]=cellAt(e)}
   if(x<0||y<0||x>=S.n||y>=S.n)return;
   if(aim){const k=x+','+y,a=aim;aim=null;if(AIMC.has(k)){act(a.npc?{t:'npcatk',id:a.cid,n:a.n,dt:a.dt,r:a.r,x,y}:a.fx?{t:'fixed',seat:a.seat,key:a.fx,x,y}:{t:'play',seat:a.seat,i:a.i,x,y});SFX.card()}else renderAll();return}
   if(placing){placing=false;act({t:'cvadd',x:Math.min(x,S.n-2),y:Math.min(y,S.n-2)});selCov=S.cover[S.cover.length-1].id;sel=null;tab='cena';renderAll();return}
-  const tok=Object.values(S.chars).find(o=>o.ready!==false&&o.x===x&&o.y===y);
+  const tok=Object.values(S.chars).find(o=>o.ready!==false&&!o.dead&&vis(o)&&o.x===x&&o.y===y);
   if(tok){ if(canCtl(tok)){sel=sel===tok.id?null:tok.id;selCov=null} renderAll();return}
   if(sel&&e.target.classList.contains('hl')){act({t:'move',id:sel,x,y});SFX.move();return}
   if(me.seat===0){const v=S.cover.find(o=>x>=o.x&&x<o.x+o.w&&y>=o.y&&y<o.y+o.h);
@@ -812,8 +1000,8 @@ function renderSheet(){
   <div class="row" style="align-items:flex-start;flex-wrap:nowrap">
     <div style="flex:1;min-width:0"><label style="margin-top:0">Nome do Herói</label><input data-f="name" value="${esc(c.name)}" ${d} style="font-size:24px">
     ${c.kind==='hero'?`<label>Identidade Secreta ${can?'':'(confidencial)'}</label><input data-f="secret" value="${esc(c.secret)}" ${d} placeholder="${can?'':'█████████'}">`:''}
-    <label>Foto (PNG/JPG)</label><input type="file" id="av" accept="image/png,image/jpeg" ${d}></div>
-    <div class="photo f0${c.avatar?'':' empty'}" style="${c.avatar?`background-image:url(${c.avatar})`:''}">${c.avatar?'':'👤'}</div></div>
+    <label>${c.trilha==='O Monstro'?'Foto — forma básica (humana)':'Foto (PNG/JPG)'}</label><input type="file" id="av" accept="image/png,image/jpeg" ${d}>${c.trilha==='O Monstro'?`<label>Foto — forma transformada (Monstro)</label><input type="file" id="av2" accept="image/png,image/jpeg" ${d}>`:''}</div>
+    <div class="photo f0${avOf(c)?'':' empty'}" style="${avOf(c)?`background-image:url(${avOf(c)})`:''}">${avOf(c)?'':'👤'}</div></div>
   <label>Música Tema (link mp3/ogg ou YouTube; ou texto)</label>
   <div class="row"><input data-f="theme" value="${esc(c.theme)}" ${d}><button class="f0" id="play">▶</button><button class="f0" id="stop">■</button></div>
   <div class="sec">Origem</div>
@@ -823,7 +1011,7 @@ function renderSheet(){
   ${c.kind==='hero'?`<label>Nascimento</label><select data-f="birth" ${M?d:'disabled'}><option value="">—</option>${BIRTHS.map(b=>`<option ${b.name===c.birth?'selected':''}>${b.name}</option>`).join('')}</select>${B?`<div class="mut" style="margin-top:4px"><b>${esc(B.pn)}:</b> ${esc(B.pt)}</div>`:''}`:''}
   ${c.kind==='hero'&&A?`<div class="mut" style="margin-top:6px">Iniciativa de Arquétipo: <b>${A.i}º</b>${S.cb&&S.cb.ini[c.id]?` · neste combate: <b>${S.cb.ini[c.id].n}º</b>${S.cb.ini[c.id].tie?' (⚖ desempatado)':''}`:''}</div>`:''}
   ${classSheet(c,M,d)}
-  <div class="sec">Condição</div>
+  <div class="sec">Condição</div>${c.dead?'<div class="mut"><b>✝ Morto</b> — fora do tabuleiro.</div>':c.fare?'<div class="mut"><b>💀 Despedida</b> — último turno.</div>':c.agony?'<div class="mut"><b>☠ Agonia</b> — '+(c.agony.left>0?c.agony.left+' turno(s) de herói restante(s)':'Despedida na próxima vez')+'. Só pode ser curado por outro herói ou pelo Mestre.</div>':''}
   ${pips('Vigor',c.vigor,c.vmax,'')}
   <div class="row"><button class="sm f0" data-adj="vigor" data-d="-1" ${d}>−</button><button class="sm f0" data-adj="vigor" data-d="1" ${d}>+</button>
   <input type="number" data-f="vmax" value="${c.vmax}" ${d} style="max-width:70px" title="Vigor máx."></div>
@@ -842,6 +1030,7 @@ function renderSheet(){
 $('#sheet').addEventListener('click',e=>{if(e.target.closest('[data-shide]'))setSheetHide(true);else if(e.target.closest('[data-shshow]'))setSheetHide(false)});
 $('#sheet').addEventListener('change',e=>{const id=$('#sheet').dataset.cid,t=e.target;
   if(t.id==='av'&&t.files[0])return loadAvatar(t.files[0],u=>act({t:'patch',id,p:{avatar:u}}));
+  if(t.id==='av2'&&t.files[0])return loadAvatar(t.files[0],u=>act({t:'patch',id,p:{avatar2:u}}));
   const f=t.dataset.f;if(!f)return;let p={[f]:t.value};
   if(f==='arch'){const A=ARCH[t.value];p=A?{arch:t.value,trilha:'',vmax:A.v,vigor:A.v,pmax:A.p,pulso:A.p}:{arch:'',trilha:''}}
   act({t:'patch',id,p});
@@ -856,19 +1045,19 @@ $('#sheet').addEventListener('click',e=>{const id=$('#sheet').dataset.cid,c=S.ch
    ===================================================================== */
 let cseat=1;
 const dtxt=(t,ch)=>ch&&ch.arch==='O Armado'&&ch.dtype?t.replace(/(seu )?Tipo( de Dano)? Escolhido/gi,'tipo '+ch.dtype):t;
-function ctxM(ch){const SC=S.scene||'mundano',cb=SC==='combate',M=me.seat===0;return{SC,cb,spend:SC!=='mundano',turn:!cb||M||!!(S.cb&&ch&&S.cb.order[S.cb.i]===ch.id),pend:!!S.pend}}
-function cardHTML(id,i,ch){const c=CARDS[id],X=ctxM(ch),lock=humanLock(ch,c),req=ch?reqOk(ch,c):true,can=ch&&(!X.spend||ch.pulso>=c.c)&&req&&!c.x&&X.turn&&!X.pend;
-  const why=c.x?'Reações só podem ser usadas quando você é atacado':!req?'Vire a carta Tangível/Intangível':!X.turn?'Aguarde o seu turno':X.pend?'Resolva o ataque pendente':X.spend&&ch.pulso<c.c?'Pulso insuficiente':'';
+function ctxM(ch){const SC=S.scene||'mundano',cb=SC==='combate',M=me.seat===0;return{SC,cb,spend:SC!=='mundano',turn:(!cb||M||!!(S.cb&&ch&&S.cb.order[S.cb.i]===ch.id))&&!immob(ch),pend:!!S.pend}}
+function cardHTML(id,i,ch){const c=CARDS[id],X=ctxM(ch),lock=humanLock(ch,c),req=ch?reqOk(ch,c):true,can=ch&&!ch.exhOn&&req&&!c.x&&X.turn&&!X.pend;
+  const why=c.x?'Reações só podem ser usadas quando você é atacado':!req?'Vire a carta Tangível/Intangível':!X.turn?'Aguarde o seu turno':X.pend?'Resolva o ataque pendente':ch.exhOn?'💤 Exaustão completa: sem cartas':'';
   return `<div class="gc ${c.r}${c.x?' reacao':''}"><div class="gh"><span class="cost">${c.c}</span><b>${esc(c.n)}</b><span class="sg s-${c.s}">${SG[c.s]}</span></div><div class="gt">${esc(dtxt(c.t,ch))}</div>
   ${lock?'<span class="lock">🔒 Forma Humana: causa só 1 de dano desarmado comum; sem bônus nem Esmagamento</span>':''}
   <div class="gf"><span class="mut">${RAR[c.r]}${c.x?' · 🛡 Reação (só ao ser atacado)':''}${c.o?' · Sobrecarga':''}${req?'':' · exige outra face'}</span><span><button class="sm pri" data-sfx="card" data-play="${i}" ${can?'':'disabled'} title="${why}">${c.x?'Só em reação':'Jogar'}</button> ${X.spend?`<button class="sm" data-i="${i}">Descartar</button>`:''}</span></div></div>`}
 let flipPrev={};
 function fixedHTML(f,ch,seat){const X=ctxM(ch);
-  if(f.flip){const ph=ch.phase||'tangivel',prev=flipPrev[seat]||ph,ok=(!X.spend||ch.pulso>=2)&&X.turn&&!X.pend,cs=X.spend?2:0,tt=ok?'':(X.spend&&ch.pulso<2?'Pulso insuficiente (custa 2)':'Aguarde o seu turno');
+  if(f.flip){const ph=ch.phase||'tangivel',prev=flipPrev[seat]||ph,ok=!ch.exhOn&&X.turn&&!X.pend,cs=X.spend?2:0,tt=ok?'':(ch.exhOn?'Exaustão completa':'Aguarde o seu turno');
     return `<div class="flipw"><div class="flipc${prev==='intangivel'?' back':''}" data-seat="${seat}" data-ph="${ph}" data-prev="${prev}" data-flip="1">
       <div class="face f"><div class="gh"><span class="cost">2</span><h4 style="flex:1">Tangível</h4><span class="sg">☀</span></div><div class="gt">Seu corpo é sólido. Cartas “(Exige estar Tangível)” podem ser jogadas. Ataques físicos e balísticos o atingem normalmente.</div><div class="gf"><span class="mut">Carta fixa · custo 2 Pulso</span><button class="sm pri" data-sfx="card" data-fl="1" ${ok?'':'disabled'} title="${tt}">⟳ Virar → Intangível</button></div></div>
       <div class="face b"><div class="gh"><span class="cost" style="background:#e6ecff;color:#171c30">2</span><h4 style="flex:1">Intangível</h4><span class="sg">☾</span></div><div class="gt">Você atravessa matéria. Cartas “(Exige estar Intangível)” podem ser jogadas. Ataques físicos (Cinético) o atravessam.</div><div class="gf"><span style="opacity:.7;font-size:13px">Carta fixa · custo 2 Pulso</span><button class="sm" data-sfx="card" data-fl="1" ${ok?'':'disabled'} title="${tt}">⟳ Virar → Tangível</button></div></div></div></div>`}
-  const ok=(!X.spend||ch.pulso>=f.c)&&X.turn&&!X.pend;
+  const ok=!ch.exhOn&&X.turn&&!X.pend;
   return `<div class="gc fixa"><div class="gh"><span class="cost">${f.c}</span><b>${esc(f.n)}</b><span class="sg s-${f.s}">${SG[f.s]}</span></div><div class="gt">${esc(f.t)}</div>
   <div class="gf"><span class="mut">Carta fixa · não vai ao baralho</span><button class="sm pri" data-sfx="card" data-fx="${f.key}" ${ok?'':'disabled'}>Atacar</button></div></div>`}
 function renderCards(){
@@ -956,10 +1145,10 @@ function theme(){const mine=S.chars['h'+me.seat],c=S.chars[sel]||mine;
 let W=null;
 function renderWiz(){const w=$('#wiz'),h=S&&me.seat>0&&S.chars['h'+me.seat],need=h&&h.ready===false;
   if(!need){if(!w.hidden)w.hidden=true;W=null;return}
-  if(!w.hidden)return;w.hidden=false;W={name:'',secret:'',theme:'',avatar:'',arch:'',tr:'',birth:'',arma:'',dtype:'',trigger:'',pick:new Set()};
+  if(!w.hidden)return;w.hidden=false;W={name:'',secret:'',theme:'',avatar:'',avatar2:'',arch:'',tr:'',birth:'',arma:'',dtype:'',trigger:'',pick:new Set()};
   w.innerHTML=`<div class="wbox" id="wbox"><h1 style="color:var(--th)">Criação do Herói</h1><div class="mut">Preencha a identidade, escolha Arquétipo, Trilha e Nascimento e monte seu baralho de 15 cartas.</div>
   <h2>1 · Identidade</h2>
-  <div class="row"><div class="avprev f0" id="wav"></div><div><label style="margin-top:0">Avatar (PNG/JPG)</label><input type="file" id="wfile" accept="image/png,image/jpeg"></div></div>
+  <div class="row"><div class="avprev f0" id="wav"></div><div><label style="margin-top:0" id="wAvL">Avatar (PNG/JPG)</label><input type="file" id="wfile" accept="image/png,image/jpeg"></div></div>
   <label>Nome do Herói</label><input data-w="name" maxlength="40"><label>Identidade Secreta</label><input data-w="secret" maxlength="60">
   <label>Música Tema (link mp3/ogg ou YouTube; ou texto)</label><div class="row"><input data-w="theme"><button class="f0" data-wp="1">▶</button><button class="f0" data-wp="0">■</button></div>
   <h2>2 · Arquétipo</h2><div class="opts" id="wA"></div><h2>3 · Trilha</h2><div class="opts" id="wT"></div><h2>4 · Nascimento</h2><div class="opts" id="wB"></div>
@@ -967,7 +1156,7 @@ function renderWiz(){const w=$('#wiz'),h=S&&me.seat>0&&S.chars['h'+me.seat],need
   <h2 id="wH">5 · Seu baralho</h2><div class="mut" id="wDn"></div><div id="wD"></div></div><div class="wbar"><span class="badge" id="wCnt"></span><button class="pri" id="wgo">✔ Confirmar herói e entrar no mapa</button></div>`;
   wizDraw()}
 function repick(){W.pick=new Set(W.tr&&W.birth?autoDeck(W.arch,W.tr,W.birth):poolIds(W.arch,W.tr,W.birth))}
-function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];$('#wbox').style.setProperty('--th',th);
+function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];const lb=$('#wAvL');if(lb)lb.textContent=W.tr==='O Monstro'?'Avatar — forma básica / humana (PNG/JPG)':'Avatar (PNG/JPG)';$('#wbox').style.setProperty('--th',th);
   $('#wA').innerHTML=Object.entries(ARCH).map(([n,a])=>`<div class="opt${W.arch===n?' on':''}" data-wa="${n}" title="${esc(a.ch)}"><b>${n}</b><small>${DESC[n]}</small><small>Vigor ${a.v} · Pulso ${a.p} · Iniciativa ${a.i}º</small></div>`).join('');
   $('#wT').innerHTML=A?Object.entries(A.tr).map(([n,t])=>`<div class="opt${W.tr===n?' on':''}" data-wt="${n}" style="--oc:${TC[n]}"><b style="color:${TC[n]}">${n}</b><small>${esc(t)}</small></div>`).join(''):'<div class="mut">Escolha um arquétipo.</div>';
   $('#wB').innerHTML=BIRTHS.map(b=>`<div class="opt${W.birth===b.name?' on':''}" data-wb="${esc(b.name)}"><b>${b.name}</b><small><u>${esc(b.pn)}</u>: ${esc(short(b.pt,130))}</small></div>`).join('');
@@ -976,7 +1165,8 @@ function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];$('#wbox').style.
     <label>Nome da arma</label><input data-w="arma" maxlength="40" value="${esc(W.arma)}" placeholder="Ex.: Martelo Tempestade"><label>Tipo de dano</label>
     <div class="opts">${DT.map(t=>`<div class="opt${W.dtype===t?' on':''}" data-wd="${t}"><b>${t}</b></div>`).join('')}</div>`:'')
    +(W.tr==='O Monstro'?`<h2>5 · Gatilho da Besta</h2><div class="mut">Você começa com o <b>Mini-Baralho de Contenção</b> (5 cartas, Forma Humana). Ao disparar o gatilho, a Besta assume e o baralho de 15 cartas abaixo desperta. Até lá, cartas de Forma Monstro causam só 1 de dano desarmado.</div>
-    <div class="opts">${Object.entries(TRG).map(([k,v])=>`<div class="opt${W.trigger===k?' on':''}" data-wg="${k}"><b>${v.n}</b><small>${v.d}</small></div>`).join('')}</div>`:'');
+    <div class="opts">${Object.entries(TRG).map(([k,v])=>`<div class="opt${W.trigger===k?' on':''}" data-wg="${k}"><b>${v.n}</b><small>${v.d}</small></div>`).join('')}</div>
+    <label>Imagem da forma transformada / Monstro (PNG/JPG, opcional)</label><div class="row"><div class="avprev f0" id="wav2" style="${W.avatar2?'background-image:url('+W.avatar2+')':''}"></div><div><input type="file" id="wfile2" accept="image/png,image/jpeg"><div class="mut">A imagem da seção 1 é a forma básica (humana). Esta aparece quando a Besta assume.</div></div></div>`:'');
   $('#wH').textContent=(ex?'6':'5')+' · '+(W.tr==='O Monstro'?'Baralho da Forma Monstro':'Seu baralho');
   const pool=poolIds(W.arch,W.tr,W.birth),full=W.tr&&W.birth;
   $('#wDn').textContent=full?'Trilha (15) + Nascimento (2) = 17 cartas: toque nas cartas para remover 2 e ficar com 15, ou use a sugestão.':'Escolha Trilha e Nascimento para montar o baralho. Abaixo, as cartas disponíveis até agora.';
@@ -986,22 +1176,23 @@ function wizDraw(){const th=TC[W.tr]||'#f08a3c',A=ARCH[W.arch];$('#wbox').style.
 function wizBar(){const ok=W.name.trim()&&W.arch&&W.tr&&W.birth&&W.pick.size===15&&(W.arch!=='O Armado'||(W.arma.trim()&&W.dtype))&&(W.tr!=='O Monstro'||W.trigger);$('#wCnt').textContent=W.pick.size+'/15 cartas';$('#wgo').disabled=!ok}
 $('#wiz').addEventListener('input',e=>{const k=e.target.dataset.w;if(k&&W){W[k]=e.target.value;wizBar()}});
 $('#wiz').addEventListener('change',e=>{if(e.target.id==='wfile'&&e.target.files[0])loadAvatar(e.target.files[0],u=>{W.avatar=u;$('#wav').style.backgroundImage='url('+u+')'})});
+$('#wiz').addEventListener('change',e=>{if(e.target.id==='wfile2'&&e.target.files[0])loadAvatar(e.target.files[0],u=>{W.avatar2=u;const v=$('#wav2');if(v)v.style.backgroundImage='url('+u+')'})});
 $('#wiz').addEventListener('click',e=>{const t=e.target.closest('[data-wa],[data-wt],[data-wb],[data-wc],[data-wauto],[data-wp],[data-wd],[data-wg],#wgo');if(!t||!W)return;const d=t.dataset;
   if(d.wa){if(W.arch!==d.wa){W.arch=d.wa;W.tr='';repick()}}
   else if(d.wd){W.dtype=d.wd}else if(d.wg){W.trigger=d.wg}
   else if(d.wt){W.tr=d.wt;repick()}else if(d.wb){W.birth=d.wb;repick()}else if(d.wauto)repick()
   else if(d.wp!==undefined){d.wp==='1'?playTheme(W.theme):stopTheme();return}
   else if(d.wc!==undefined){const i=+d.wc;if(!(W.tr&&W.birth))return;if(W.pick.has(i))W.pick.delete(i);else if(W.pick.size<15)W.pick.add(i);else{SFX.err();return}}
-  else if(t.id==='wgo'){if(t.disabled)return;stopTheme();act({t:'create',p:{name:W.name.trim(),secret:W.secret,theme:W.theme,avatar:W.avatar,arch:W.arch,trilha:W.tr,birth:W.birth,arma:W.arma,dtype:W.dtype,trigger:W.trigger,deck:[...W.pick]}});return}
+  else if(t.id==='wgo'){if(t.disabled)return;stopTheme();act({t:'create',p:{name:W.name.trim(),secret:W.secret,theme:W.theme,avatar:W.avatar,avatar2:W.tr==='O Monstro'?W.avatar2:'',arch:W.arch,trilha:W.tr,birth:W.birth,arma:W.arma,dtype:W.dtype,trigger:W.trigger,deck:[...W.pick]}});return}
   wizDraw()});
 
 /* =====================================================================
    MÓDULO 10 — UI v2: cenas, iniciativa (tarot), efeitos de dano, reação, chat
    ===================================================================== */
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-let scnSeen=null,tnSeen=null,hitSeen=null,shakeAt={},introId=0,introPlaying=false,sparkOn=false,chatSeen=0,chatLast=null,NA={n:1,dt:'Cinético',r:4};
+let scnSeen=null,tnSeen=null,hitSeen=null,shakeAt={},shakeDt={},introId=0,introPlaying=false,sparkOn=false,chatSeen=0,chatLast=null,NA={n:1,dt:'Cinético',r:4};
 const aimChar=()=>aim&&(aim.cid?S.chars[aim.cid]:S.chars['h'+aim.seat]);
-const canMove=c=>me.seat===0||S.scene!=='combate'||(S.cb&&S.cb.order[S.cb.i]===c.id);
+const canMove=c=>!(immob(c)&&!(me.seat===0&&S.free))&&(me.seat===0||S.scene!=='combate'||(S.cb&&S.cb.order[S.cb.i]===c.id));
 const myTurn=()=>S.scene==='combate'&&S.cb&&me.seat>0&&(S.chars[S.cb.order[S.cb.i]]||{}).seat===me.seat;
 function toast(m,cls){const t=$('#toast');t.textContent=m;t.className=cls||'';t.hidden=true;void t.offsetWidth;t.hidden=false;clearTimeout(toast.to);toast.to=setTimeout(()=>t.hidden=true,2200)}
 /* ---- eventos que chegam pelo estado ---- */
@@ -1010,17 +1201,57 @@ function turnEvt(){if(tnSeen===null)tnSeen=S.tn?S.tn.id:0;if(!S.tn||S.tn.id===tn
   const c=S.chars[S.tn.cid];if(!c)return;const mine=c.seat&&c.seat===me.seat;toast(mine?'⚡ SEU TURNO!':'▶ Turno de '+c.name,mine?'mine':'');if(mine)SFX.confirm();
   const a=document.querySelector('.ic.act');if(a)try{a.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}catch(e){}}
 function hitEvt(){const f=$('#fxl');if(!f||!S)return;f.style.setProperty('--n',S.n);if(hitSeen===null)hitSeen=S.hit?S.hit.id:0;if(!S.hit||S.hit.id===hitSeen)return;hitSeen=S.hit.id;
-  S.hit.list.slice().forEach((h,k)=>setTimeout(()=>{const c=S.chars[h.cid];if(!c)return;if(h.n>0)shakeAt[h.cid]=performance.now();spawnFx(c,h);renderBoard()},k*200))}
-const tokCls=o=>{const t=shakeAt[o.id],e=t?performance.now()-t:9e9;return(e<700?' hit':'')+(o.vigor<=0?' down':'')+(S.scene==='combate'&&S.cb&&S.cb.order[S.cb.i]===o.id?' turn':'')};
-const tokSty=o=>{const t=shakeAt[o.id],e=t?performance.now()-t:9e9;return e<700?';--sd:-'+Math.round(e)+'ms':''};
+  S.hit.list.slice().forEach((h,k)=>{const c0=S.chars[h.cid],a0=h.from&&S.chars[h.from],tv=(c0&&a0)?spawnProj(a0,c0,h,k*200):0;
+    setTimeout(()=>{const c=S.chars[h.cid];if(!c)return;if(h.n>0){shakeAt[h.cid]=performance.now();shakeDt[h.cid]=h.dt}if(vis(c))spawnFx(c,h);renderBoard()},k*200+tv)})}
+/* ---- projétil: percorre os quadrados entre atacante e alvo (só ataques à distância) ---- */
+function pathCells(x0,y0,x1,y1){const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0)),o=[];for(let i=1;i<=n;i++)o.push([Math.round(x0+(x1-x0)*i/n),Math.round(y0+(y1-y0)*i/n)]);return o}
+function spawnProj(a,t,h,delay){if(a.id===t.id||a.ready===false)return 0;const path=pathCells(a.x,a.y,t.x,t.y);if(path.length<2)return 0;
+  if(!(vis(a)||vis(t)))return 0;
+  const dt=FXD[h.dt]?h.dt:'Cinético',d=FXD[dt],u=100/S.n,per=Math.max(45,Math.min(85,900/path.length)),dur=Math.round(per*(path.length-1)+120),
+    P=([x,y])=>`left:${(x+.5)*u}%;top:${(y+.5)*u}%`,el=document.createElement('div');
+  el.className='fx proj t-'+noAcc(dt);el.style.cssText=P([a.x,a.y])+`;--c:${d.c};opacity:0`;
+  el.innerHTML=`<b class="pj">${d.g[0]}</b>`;
+  const fl=$('#fxl');fl.appendChild(el);
+  const kf=[{left:(a.x+.5)*u+'%',top:(a.y+.5)*u+'%',opacity:1,offset:0}];
+  path.forEach(([x,y],i)=>kf.push({left:(x+.5)*u+'%',top:(y+.5)*u+'%',opacity:1,offset:(i+1)/path.length}));
+  setTimeout(()=>{if(!el.isConnected)return;
+    const an=el.animate(kf,{duration:dur,easing:dt==='Elétrico'?'steps('+path.length+')':'cubic-bezier(.35,0,.7,1)',fill:'forwards'});
+    path.slice(0,-1).forEach((c,i)=>setTimeout(()=>{const tr=document.createElement('div');tr.className='fx ptr';tr.style.cssText=P(c)+`;--c:${d.c}`;tr.innerHTML=`<b>${d.g[(i%2)+1]||d.g[0]}</b>`;fl.appendChild(tr);setTimeout(()=>tr.remove(),700)},Math.round(dur*(i+1)/path.length)-per*.4));
+    an.onfinish=()=>el.remove();setTimeout(()=>el.remove(),dur+300);
+    try{tone(dt==='Elétrico'?900:dt==='Sombrio'||dt==='Psíquico'?260:520,0,Math.min(.5,dur/1000),dt==='Elétrico'?'sawtooth':'sine',.05,dt==='Elétrico'?300:120)}catch(e){}
+  },delay);
+  return dur}
+const tokCls0=o=>{const t=shakeAt[o.id],e=t?performance.now()-t:9e9;return(e<950?' hit hit-'+noAcc(shakeDt[o.id]||'Cinético'):'')+(o.vigor<=0?' down':'')+(S.scene==='combate'&&S.cb&&S.cb.order[S.cb.i]===o.id?' turn':'')+(o.agony&&!o.fare?' agony':'')+(o.fare?' fare':'')};
+const tokSty0=o=>{const t=shakeAt[o.id],e=t?performance.now()-t:9e9;return e<950?';--sd:-'+Math.round(e)+'ms':''};
 /* ---- efeitos de dano por tipo ---- */
 const FXD={Flamejante:{c:'#ff7a1a',g:['🔥','🔥','✹'],m:'up'},Congelante:{c:'#8fdcff',g:['❄','❅','✦'],m:'out'},Elétrico:{c:'#ffe94d',g:['⚡','⚡','✦'],m:'zap'},Venenoso:{c:'#7bd83a',g:['☠','●','●'],m:'up'},
   Solar:{c:'#ffd24a',g:['☀','✺','✦'],m:'out'},Sombrio:{c:'#9a5cff',g:['☾','✦','●'],m:'in'},Cinético:{c:'#ffffff',g:['💥','✸','✦'],m:'out'},Psíquico:{c:'#ff5fc4',g:['◉','✧','◎'],m:'out'}};
-function spawnFx(c,h){const d=FXD[h.dt]||FXD.Cinético,u=100/S.n,el=document.createElement('div');el.className='fx m-'+d.m;el.style.cssText=`left:${(c.x+.5)*u}%;top:${(c.y+.5)*u}%;--c:${d.c}`;
-  let p='<b class="core"></b><b class="ring"></b>';const cnt=h.n>0?9:4;
-  for(let i=0;i<cnt;i++){const a=Math.random()*6.283,r=1.5+Math.random()*2.2;p+=`<i style="--dx:${(Math.cos(a)*r).toFixed(2)};--dy:${(d.m==='up'?-(1.5+Math.random()*2.5):Math.sin(a)*r).toFixed(2)};--r:${(Math.random()*360)|0}deg;--w:${(Math.random()*160)|0}ms">${d.g[i%d.g.length]}</i>`}
-  p+=`<span class="fxn">${h.n>0?'−'+h.n:(h.blk==='atravessa'?'ATRAVESSA':'🛡 0')}</span>`+(h.ff?'<span class="fxff">FOGO AMIGO</span>':'');
-  el.innerHTML=p;$('#fxl').appendChild(el);setTimeout(()=>el.remove(),1500);hitSfx(h.dt,h.n)}
+const RR=(a,b)=>a+Math.random()*(b-a),f2=v=>v.toFixed(2);
+/* partículas por tipo de dano (k = intensidade) */
+function fxParts(dt,k){const n=x=>Math.max(2,Math.round(x*k));let p='';
+  switch(dt){
+  case 'Flamejante':p='<b class="core"></b>';
+    for(let i=0;i<n(13);i++){const x0=RR(-.7,.7);p+=`<b class="ember" style="--s:${f2(RR(.18,.42))}em;--x0:${f2(x0)};--dx:${f2(x0+RR(-1,1))};--dy:${f2(RR(1.4,3.4))};--w:${RR(0,380)|0}ms"></b>`}break;
+  case 'Congelante':p='<b class="frost"></b><b class="ring"></b>';
+    for(let i=0;i<n(11);i++){const a=RR(0,6.283),r=RR(1.2,2.5);p+=`<b class="shard" style="--dx:${f2(Math.cos(a)*r)};--dy:${f2(Math.sin(a)*r*.8+.35)};--r:${(RR(-80,80))|0}deg;--w:${RR(0,160)|0}ms"></b>`}break;
+  case 'Elétrico':p='<b class="core"></b>';
+    for(let i=0;i<n(4);i++){const a=RR(0,6.283)+i*1.57;let d='M0 0';
+      for(let s=1;s<=5;s++){const r=46*s/5,j=s===5?0:RR(-9,9);d+=` L${f2(Math.cos(a)*r-Math.sin(a)*j)} ${f2(Math.sin(a)*r+Math.cos(a)*j)}`}
+      p+=`<svg class="bolt" viewBox="-50 -50 100 100" style="--w:${i*90}ms"><path d="${d}" fill="none" stroke="#ffe94d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`}break;
+  case 'Sombrio':p='<b class="core"></b>';
+    for(let i=0;i<n(8);i++){const x0=RR(-.5,.5);p+=`<b class="smoke" style="--x0:${f2(x0)};--dx:${f2(x0+RR(-.9,.9))};--dy:${f2(RR(.8,2.2))};--w:${RR(0,380)|0}ms"></b>`}break;
+  case 'Solar':{p='<b class="core"></b>';const c=n(9);
+    for(let i=0;i<c;i++)p+=`<b class="blast" style="--a:${(i*360/c+RR(-12,12))|0}deg;--w:${RR(0,220)|0}ms"></b>`;break}
+  case 'Psíquico':p='<b class="aura"></b><b class="swirl"></b><b class="ring"></b><b class="ring r2"></b>';break;
+  case 'Venenoso':p='<b class="core"></b>';
+    for(let i=0;i<n(9);i++)p+=`<b class="bub" style="--s:${f2(RR(.3,.8))}em;--x0:${f2(RR(-.9,.9))};--dy:${f2(RR(1.2,2.8))};--w:${RR(0,520)|0}ms"></b>`;break;
+  default:{p='<b class="core"></b><b class="ring"></b><b class="ring r2"></b>';const c=n(8);
+    for(let i=0;i<c;i++)p+=`<b class="ln" style="--a:${(i*360/c+RR(-10,10))|0}deg;--w:${RR(0,120)|0}ms"></b>`}}
+  return p}
+function spawnFx(c,h){const dt=FXD[h.dt]?h.dt:'Cinético',d=FXD[dt],u=100/S.n,el=document.createElement('div'),k=h.n>0?Math.min(1.5,.8+h.n*.12):.45;
+  el.className='fx m-'+d.m+' t-'+noAcc(dt);el.style.cssText=`left:${(c.x+.5)*u}%;top:${(c.y+.5)*u}%;--c:${d.c}`;
+  el.innerHTML=fxParts(dt,k)+`<span class="fxn">${h.n>0?'−'+h.n:(h.blk==='atravessa'?'ATRAVESSA':'🛡 0')}</span>`+(h.ff?'<span class="fxff">FOGO AMIGO</span>':'');
+  $('#fxl').appendChild(el);setTimeout(()=>el.remove(),2300);hitSfx(h.dt,h.n)}
 function hitSfx(dt,n){if(!n){tone(900,0,.12,'triangle',.1,500);return}
   const f={Flamejante:()=>tone(220,0,.35,'sawtooth',.09,70),Congelante:()=>{tone(1500,0,.2,'triangle',.08,2200);tone(900,.05,.25,'sine',.06)},Elétrico:()=>{tone(200,0,.06,'square',.08,900);tone(1200,.06,.06,'square',.07,300);tone(300,.12,.1,'square',.06,1000)},
     Venenoso:()=>tone(160,0,.4,'sine',.1,90),Solar:()=>{tone(700,0,.3,'sine',.1,1400);tone(1050,.05,.3,'sine',.07)},Sombrio:()=>tone(300,0,.45,'sawtooth',.08,60),Psíquico:()=>tone(500,0,.4,'sine',.1,900)}[dt];
@@ -1034,7 +1265,7 @@ function showTitle(mode){return new Promise(res=>{const d=SCN[mode],el=$('#scn')
 async function runScene(sc){try{await showTitle(sc.mode);if(sc.cmb&&S.cb&&S.scene==='combate')await combatIntro()}catch(e){console.error(e)}introPlaying=false;renderInit();renderHand()}
 /* ---- animação do baralho de iniciativa ---- */
 function tarotHTML(id,ph){const c=S.chars[id],ini=(S.cb&&S.cb.ini[id])||{};const col=c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c;
-  return `<div class="tc face" style="--c:${col}${ph!=null?';animation-delay:-'+ph+'ms':''}"><span class="tn">${ini.n??'?'}</span><span class="tk">${c.kind==='vilao'?'☠':c.kind==='capanga'?'⚔':'★'}</span><div class="tp" style="${c.avatar?`background-image:url(${c.avatar})`:''}">${c.avatar?'':esc(c.name.slice(0,2).toUpperCase())}</div><div class="tnm">${esc(c.name)}</div><div class="tsb">${esc(c.kind==='hero'?(c.trilha||KIND.hero.n):KIND[c.kind].n)}</div><div class="thp"><i style="width:${c.vmax?Math.min(100,c.vigor/c.vmax*100):0}%"></i></div>${ini.tie?'<span class="ttie" title="Empate resolvido por sorteio">⚖</span>':''}</div>`}
+  return `<div class="tc face" style="--c:${col}${ph!=null?';animation-delay:-'+ph+'ms':''}"><span class="tn">${ini.n??'?'}</span><span class="tk">${c.kind==='vilao'?'☠':c.kind==='capanga'?'⚔':'★'}</span><div class="tp" style="${avOf(c)?`background-image:url(${avOf(c)})`:''}">${avOf(c)?'':esc(c.name.slice(0,2).toUpperCase())}</div><div class="tnm">${esc(c.name)}</div><div class="tsb">${esc(c.kind==='hero'?(c.trilha||KIND.hero.n):KIND[c.kind].n)}</div><div class="thp"><i style="width:${c.vmax?Math.min(100,c.vigor/c.vmax*100):0}%"></i></div>${ini.tie?'<span class="ttie" title="Empate resolvido por sorteio">⚖</span>':''}</div>`}
 function anim(el,to,dur,delay=0,ease='ease-in-out'){const a=el.animate([{transform:el._t},{transform:to}],{duration:dur,delay,easing:ease,fill:'forwards'});el._t=to;return a.finished.then(()=>{el.style.transform=to;a.cancel()}).catch(()=>{})}
 function startSparks(){const cv=$('#spark'),g=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;sparkOn=true;let P=[];const H=[45,280,190,320];
   (function loop(){if(!sparkOn){g.clearRect(0,0,cv.width,cv.height);return}g.clearRect(0,0,cv.width,cv.height);const r=$('#deck').getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
@@ -1066,6 +1297,108 @@ async function combatIntro(){const my=++introId,ok=()=>my===introId;const ov=$('
   await sleep(950);if(!ok())return;tone(784,0,.5,'sine',.1);tone(1047,.1,.6,'sine',.1);
   ov.classList.add('out');introPlaying=false;renderInit();await sleep(460);if(!ok())return;endIntro()}
 $('#shuf').addEventListener('click',()=>endIntro());
+/* =====================================================================
+   AGONIA → DESPEDIDA → MORTE (heróis de jogador)
+   Vigor 0: Agonia (imobilizado, sem cartas, perde o turno). Contagem de 3 turnos de HERÓIS
+   (turnos de vilões/capangas não contam). Zerou: Despedida (1 turno, Pulso limitado, baralho liberado); ao encerrar, morre.
+   ===================================================================== */
+let noTick=false,agSeen=null;
+const immob=c=>!!(c&&c.agony&&!c.fare&&!c.dead);
+function agEv(c,k){S.agE=S.agE||[];S.agE.push({id:S.nid++,cid:c.id,k})}
+function agonyCheck(){Object.values(S.chars).forEach(c=>{if(c.kind!=='hero'||!c.seat||c.ready===false||c.dead)return;
+  if(c.vigor<=0&&!c.agony){c.agony={left:3,t:S.tn?S.tn.id:0};c.fare=false;lg('☠ '+c.name+' caiu em AGONIA! Imobilizado e sem cartas — 3 turnos de heróis para ser curado.');agEv(c,'fall')}
+  else if(c.vigor>0&&(c.agony||c.fare)){const was=c.fare;c.agony=null;c.fare=false;
+    if(was&&S.cb&&S.priv[c.seat]){const P=S.priv[c.seat];P.deck=shuffle([...P.hand,...P.deck,...P.disc]);P.hand=[];P.disc=[];drawTo3(c.seat)}
+    lg('✚ '+c.name+' foi estabilizado e saiu da Agonia!');agEv(c,'rec')}})}
+function heroTick(prev){if(!prev||prev.kind!=='hero'||prev.dead||prev.ready===false)return;const t=S.tn?S.tn.id:0;
+  Object.values(S.chars).forEach(c=>{if(!c.agony||c.fare||c.dead||c.agony.left<=0||c.agony.t===t)return;c.agony.left--;
+    if(c.agony.left>0)lg('⏳ '+c.name+': '+c.agony.left+' turno(s) de herói restante(s) na Agonia.');
+    else{lg('⏳ '+c.name+' esgotou o tempo — Despedida na sua próxima vez.');agEv(c,'soon')}})}
+function killHero(c){c.dead=true;c.fare=false;c.agony=null;lg('✝ '+c.name+' morreu e saiu do tabuleiro.');agEv(c,'death');cbLeave(c.id)}
+/* ---- cliente: eventos dramáticos, barra do cronômetro, vinheta ---- */
+const AGK={fall:{c:'#ff2a3d',t:'AGONIA',i:'☠',d:3400},fare:{c:'#b57bff',t:'DESPEDIDA',i:'💀',d:3400},death:{c:'#a5a2b4',t:'VOCÊ MORREU',i:'✝',d:4300}};
+function agSound(k){if(k==='fall'){[0,.26,.9,1.16,1.8,2.06].forEach(t=>tone(58,t,.2,'sine',.3,38));tone(300,0,1.2,'sawtooth',.06,50)}
+  else if(k==='fare'){[110,138,165].forEach((f,i)=>tone(f,i*.08,1.4,'sawtooth',.07,f/2));[0,.5,1].forEach(t=>tone(70,t,.25,'sine',.25,40))}
+  else if(k==='death'){tone(200,0,1.8,'sawtooth',.12,30);tone(60,.2,1.5,'sine',.3,25);tone(90,1.2,.8,'triangle',.1,30)}}
+function showAg(k,c){const d=AGK[k],el=$('#agfx'),sub={fall:'Vigor 0 · imobilizado · sem cartas · seu turno será perdido',fare:'Última chance: Pulso limitado a '+Math.max(1,Math.ceil(c.pmax/2))+' · baralho liberado',death:'Você saiu do tabuleiro'}[k],
+  s2={fall:'3 turnos de heróis para alguém te curar',fare:'Ao encerrar este turno, você morre',death:''}[k];
+  el.style.setProperty('--c',d.c);el.style.setProperty('--d',d.d+'ms');el.className='k-'+k;
+  el.innerHTML=`<i class="agbg"></i><div class="agin"><div class="agic">${d.i}</div><h1>${[...d.t].map((ch,i)=>`<span style="animation-delay:${i*60}ms">${ch===' '?'&nbsp;':ch}</span>`).join('')}</h1><div class="agsub">${sub}</div>${s2?`<div class="agsub2">${s2}</div>`:''}</div>`;
+  el.hidden=true;void el.offsetWidth;el.hidden=false;clearTimeout(showAg.to);showAg.to=setTimeout(()=>el.hidden=true,d.d);
+  const a=$('#app');a.classList.remove('agshake');void a.offsetWidth;a.classList.add('agshake');setTimeout(()=>a.classList.remove('agshake'),1100);agSound(k)}
+function agEvt(){const L=S.agE||[];if(agSeen===null){agSeen=L.reduce((m,e)=>Math.max(m,e.id),0);return}
+  L.filter(e=>e.id>agSeen).forEach(e=>{agSeen=Math.max(agSeen,e.id);const c=S.chars[e.cid];if(!c)return;const mine=c.seat&&c.seat===me.seat;
+    if(mine&&AGK[e.k])return showAg(e.k,c);
+    const T={fall:'☠ '+c.name+' caiu em AGONIA!',fare:'💀 '+c.name+' está na DESPEDIDA — último turno',death:'✝ '+c.name+' morreu',soon:'⏳ '+c.name+': tempo esgotado — Despedida na vez dele',rec:mine?'✚ Você foi estabilizado!':'✚ '+c.name+' foi estabilizado'}[e.k];
+    if(T){toast(T,mine?'mine':'');if(e.k==='rec')SFX.confirm();else SFX.err()}})}
+function renderAg(){const el=$('#agbar'),v=$('#agv');if(!el||!S)return;
+  const mc=me.seat>0&&S.chars['h'+me.seat];v.className=mc?(mc.dead?'dead':mc.fare?'fare':mc.agony?'ag':''):'';
+  const L=Object.values(S.chars).filter(c=>c.kind==='hero'&&c.seat&&c.ready!==false&&!c.dead&&(c.agony||c.fare)),D=Object.values(S.chars).filter(c=>c.kind==='hero'&&c.seat&&c.dead);
+  if(!L.length&&!D.length){el.hidden=true;el.innerHTML='';return}el.hidden=false;
+  const healer=me.seat===0||(mc&&!mc.dead&&!mc.agony&&!mc.fare),cb=S.scene==='combate'&&S.cb;
+  el.innerHTML=L.map(c=>{const f=!!c.fare,left=c.agony?c.agony.left:0,mine=c.seat===me.seat,
+    lab=f?'Último turno — morre ao encerrá-lo':left>0?left+(left===1?' turno':' turnos')+' de herói'+(cb?'':' · a contagem só corre no Combate'):'Despedida na vez dele';
+    return `<div class="agc${f?' fare':left===0?' soon':''}"><div class="agh">${f?'💀 DESPEDIDA':'☠ AGONIA'} · <b>${esc(c.name)}${mine?' (você)':''}</b></div>
+    <div class="agt"><div class="agn">${f?'☠':left}</div><div class="agp">${[0,1,2].map(k=>`<i class="${k<left?'f':''}"></i>`).join('')}</div><div class="agl">${lab}</div></div>
+    ${healer&&!mine?`<button class="sm" data-heal="${c.id}">✚ Curar +1 Vigor</button>`:''}</div>`}).join('')+D.map(c=>`<div class="agc dead">✝ <b>${esc(c.name)}</b> — morreu e está fora do tabuleiro</div>`).join('')}
+$('#agbar').addEventListener('click',e=>{const b=e.target.closest('[data-heal]');if(b)act({t:'heal',id:b.dataset.heal,n:1})});
+
+/* =====================================================================
+   FORMA DO MONSTRO (2 imagens + efeito de transformação) e FASE DO ESPECTRO (fade / invisível aos outros)
+   ===================================================================== */
+const avOf=c=>(c.trilha==='O Monstro'&&c.form==='monstro'&&c.avatar2)?c.avatar2:c.avatar;
+const vis=o=>!(o.trilha==='O Espectro'&&(o.phase||'tangivel')==='intangivel')||me.seat===0||o.seat===me.seat;
+let xSeen=null,avCache={},xfOld={},xfAt={},phCache={},phAt={},phDir={};
+const age=t=>t?performance.now()-t:9e9,phRecent=c=>age(phAt[c.id])<900;
+const tokCls=o=>tokCls0(o)+(o.exhOn?' exh':'')+(age(xfAt[o.id])<900?' xform':'')+(phDir[o.id]==='tangivel'&&age(phAt[o.id])<900?' ph-in':'')+(phDir[o.id]==='intangivel'&&age(phAt[o.id])<900?' ph-out':'');
+const tokSty=o=>{let r=tokSty0(o);const x=age(xfAt[o.id]),p=age(phAt[o.id]);
+  if(x<900)r+=';--xd:-'+Math.round(x)+'ms;--old:'+(xfOld[o.id]?'url('+xfOld[o.id]+')':'none');if(p<900)r+=';--pd:-'+Math.round(p)+'ms';return r};
+function xfEvt(){const L=S.xfE||[];if(xSeen===null)xSeen=L.reduce((m,e)=>Math.max(m,e.id),0);
+  else L.filter(e=>e.id>xSeen).forEach(e=>{xSeen=Math.max(xSeen,e.id);const c=S.chars[e.cid];if(!c)return;xfOld[e.cid]=avCache[e.cid]||'';xfAt[e.cid]=performance.now();spawnXf(c,e.to)});
+  Object.values(S.chars).forEach(c=>avCache[c.id]=avOf(c)||'')}
+function spawnXf(c,to){if(c.ready===false||c.dead)return;const u=100/S.n,el=document.createElement('div'),col=to==='monstro'?'#9be34a':'#7fc4ff';
+  el.className='fx t-xf';el.style.cssText=`left:${(c.x+.5)*u}%;top:${(c.y+.5)*u}%;--c:${col}`;
+  let p='<b class="xflash"></b><b class="core"></b><b class="ring"></b><b class="ring r2"></b>';
+  for(let i=0;i<12;i++)p+=`<b class="xsp" style="--a:${(i*30+RR(-8,8))|0}deg;--w:${RR(0,220)|0}ms"></b>`;
+  el.innerHTML=p;$('#fxl').appendChild(el);setTimeout(()=>el.remove(),1700);
+  if(to==='monstro'){tone(70,0,.7,'sawtooth',.18,38);tone(140,.05,.5,'square',.08,60);tone(260,.1,.3,'sawtooth',.06,90)}else{tone(500,0,.5,'sine',.1,200);tone(300,.1,.5,'triangle',.08,500)}}
+/* Espectro: detecta troca de fase em qualquer origem (carta fixa, reação...) */
+function phEvt(){Object.values(S.chars).forEach(c=>{if(c.trilha!=='O Espectro')return;const cur=c.phase||'tangivel',prev=phCache[c.id];
+  if(prev!==undefined&&prev!==cur){phAt[c.id]=performance.now();phDir[c.id]=cur;
+    if(cur==='intangivel'){if(c.ready!==false&&!c.dead)spawnPh(c);tone(900,0,.6,'sine',.06,220)}else tone(240,0,.6,'sine',.06,900)}
+  phCache[c.id]=cur})}
+function spawnPh(c){const u=100/S.n,el=document.createElement('div'),col=c.kind==='hero'&&c.trilha?thc(c):KIND[c.kind].c,av=avOf(c);
+  el.className='fx t-ph';el.style.cssText=`left:${(c.x+.5)*u}%;top:${(c.y+.5)*u}%;--c:${col}`;
+  let p=`<b class="phantom" style="${av?`background-image:url(${av})`:''}">${av?'':esc(c.name.slice(0,2).toUpperCase())}</b>`;
+  for(let i=0;i<7;i++){const x0=RR(-.5,.5);p+=`<b class="mist" style="--x0:${f2(x0)};--dx:${f2(x0+RR(-.8,.8))};--dy:${f2(RR(.6,1.8))};--w:${RR(0,260)|0}ms"></b>`}
+  el.innerHTML=p;$('#fxl').appendChild(el);setTimeout(()=>el.remove(),1600)}
+
+
+/* =====================================================================
+   SOBRECARGA / EXAUSTÃO / COMBOS — interface
+   ===================================================================== */
+let ovSeen=null,anSeen=null;
+function askOverload(ch,cost,go){if(document.getElementById('ovq'))return;const o=document.createElement('div');o.id='ovq';
+  o.innerHTML=`<div class="ovb"><h2>⚡ Sobrecarregar?</h2><p><b>${esc(ch.name)}</b>: a carta custa <b>${cost}</b> de Pulso e você só tem <b>${ch.pulso}</b>.</p>
+  <p class="mut">Se sobrecarregar, o Pulso restante é gasto, a carta é jogada e você sorteia uma consequência na tabela abaixo.</p>
+  <ol class="ovtab">${OVT.map(e=>`<li><b>${esc(e.t)}</b> — ${esc(e.d)}</li>`).join('')}</ol>
+  <div class="row"><button class="bad" data-ovy="1">⚡ Sobrecarregar</button><button data-ovn="1">Cancelar</button></div></div>`;
+  document.body.appendChild(o);try{SFX.err()}catch(e){}
+  o.addEventListener('click',e=>{const y=e.target.closest('[data-ovy]'),n=e.target.closest('[data-ovn]');if(!y&&!n&&e.target!==o)return;o.remove();if(y)go()})}
+function ovEvt(){const L=S.ovE||[];if(ovSeen===null){ovSeen=L.reduce((m,e)=>Math.max(m,e.id),0);return}
+  L.filter(e=>e.id>ovSeen).forEach(e=>{ovSeen=Math.max(ovSeen,e.id);const c=S.chars[e.cid];if(c&&me.seat>0&&c.seat===me.seat)ovSpin(c,e.r)})}
+function ovSpin(c,r){const o=document.createElement('div');o.id='ovr';
+  o.innerHTML=`<div class="ovb"><h2>⚡ SOBRECARGA</h2><div class="ovreel"><b class="ovn">?</b><span class="ovt">Sorteando…</span></div><div class="ovd">&nbsp;</div></div>`;document.body.appendChild(o);
+  const n=o.querySelector('.ovn'),t=o.querySelector('.ovt'),d=o.querySelector('.ovd'),total=22,start=(((r-1-total)%6)+6)%6;let s=0;
+  const step=()=>{const e=OVT[(start+s)%6];n.textContent=e.n;t.textContent=e.t;try{tone(300+((start+s)%6)*90,0,.07,'square',.04,0)}catch(x){}
+    if(s>=total){o.classList.add('done');d.textContent=e.d;try{SFX.confirm()}catch(x){}setTimeout(()=>o.remove(),3200);return}
+    s++;setTimeout(step,55+Math.pow(s/total,3)*330)};
+  o.addEventListener('click',()=>{if(o.classList.contains('done'))o.remove()});step()}
+function anEvt(){const L=S.anE||[];if(anSeen===null){anSeen=L.reduce((m,e)=>Math.max(m,e.id),0);return}
+  L.filter(e=>e.id>anSeen).forEach(e=>{anSeen=Math.max(anSeen,e.id);setTimeout(()=>showAn(e),e.d||0)})}
+function showAn(e){let box=document.getElementById('anbox');if(!box){box=document.createElement('div');box.id='anbox';document.body.appendChild(box)}
+  const el=document.createElement('div');el.className='an';el.style.setProperty('--c',e.c||'#ffd24a');el.innerHTML=`<span class="ani">${esc(e.ic)}</span><div><b>${esc(e.t)}</b><span>${esc(e.s)}</span></div>`;
+  box.appendChild(el);try{tone(520,0,.25,'triangle',.07,260);tone(780,.12,.3,'triangle',.06,0)}catch(x){}setTimeout(()=>el.remove(),5200)}
 /* ---- cena: barra do mestre / pílula ---- */
 function renderScene(){const m=S.scene||'mundano',d=SCN[m],p=$('#pScene');p.textContent=d.i+' '+d.t;p.style.color=d.c;$('#board').dataset.scene=m;const sb=$('#scenebar');
   sb.innerHTML=me.seat===0?Object.entries(SCN).map(([k,v])=>`<button class="scb${k===m?' on':''}" data-scn="${k}" style="--c:${v.c}"><span>${v.i}</span>${v.t}</button>`).join('').replace(/^/,'<div class="sclab">🎬 CENA</div>'):`<div class="mut scinfo" style="color:${d.c}">${d.i} <b>${d.t}</b> — ${d.sub}</div>`}
@@ -1074,7 +1407,7 @@ $('#scenebar').addEventListener('click',e=>{const b=e.target.closest('[data-scn]
 function renderInit(){const el=$('#initbar');if(!S.cb||S.scene!=='combate'){el.hidden=true;el.innerHTML='';return}
   const sc=el.querySelector('.itr'),sl=sc?sc.scrollLeft:0,cb=S.cb,cur=cb.order[cb.i],ph=Date.now()%1600;el.hidden=false;
   el.innerHTML=`<div class="ihead"><b>⚔ Rodada ${cb.round}</b><span>Turno de <b>${esc((S.chars[cur]||{}).name||'—')}</b></span></div><div class="itr">${cb.order.map(id=>{const c=S.chars[id];if(!c)return'';
-    return `<div class="ic${id===cur?' act':''}${c.vigor<=0?' dead':''}${id===sel?' sel':''}" data-ic="${id}" style="${introPlaying?'visibility:hidden':''}">${tarotHTML(id,id===cur?ph:null)}</div>`}).join('')}</div>`;
+    return `<div class="ic${id===cur?' act':''}${c.vigor<=0?(c.agony?' agn':' dead'):''}${id===sel?' sel':''}" data-ic="${id}" style="${introPlaying?'visibility:hidden':''}">${tarotHTML(id,id===cur?ph:null)}</div>`}).join('')}</div>`;
   const n=el.querySelector('.itr');if(n)n.scrollLeft=sl}
 $('#initbar').addEventListener('click',e=>{const t=e.target.closest('[data-ic]');if(!t)return;const c=S.chars[t.dataset.ic];if(c&&canCtl(c)){sel=sel===c.id?null:c.id;selCov=null;renderAll()}});
 /* ---- reação ao ataque ---- */
@@ -1085,7 +1418,7 @@ function renderReact(){const el=$('#react'),pd=S&&S.pend;if(!pd||!pd.list.length
   el.hidden=false;
   if(mine){const P=S.priv[me.seat],rs=reactables(o);el.className='';
     el.innerHTML=`<div class="rbox"><h2>⚔ Você está sendo atacado!</h2><p>${head}</p><div class="mut">Pulso ${o.pulso}/${o.pmax}${S.scene==='mundano'?'':' · o Pulso gasto na reação só volta no início do seu próximo turno'}.</div>
-    <div class="rcards">${rs.map(i=>{const cd=CARDS[P.hand[i]];return `<div class="rc"><b>${esc(cd.n.split(' / ')[0])}</b><span class="cost">${cd.c}</span><div class="gt">${esc(short(cd.t,170))}</div><button class="pri sm" data-sfx="card" data-rx="${i}">Usar reação</button></div>`}).join('')}</div>
+    <div class="rcards">${rs.map(i=>{const cd=CARDS[P.hand[i]];return `<div class="rc"><b>${esc(cd.n.split(' / ')[0])}</b><span class="cost">${cd.c}</span><div class="gt">${esc(short(cd.t,170))}</div>${S.scene==='mundano'?'':`<div class="mut" style="color:#6b6678">Pulso ${o.pulso} → <b>${o.pulso-cd.c}</b> (só volta no início do seu próximo turno)</div>`}<button class="pri sm" data-sfx="card" data-rx="${i}">Usar reação</button></div>`}).join('')}</div>
     <button class="bad" data-rx="take">Tomar o dano (−${cur.n} Vigor)</button></div>`;SFX.err()}
   else{el.className='bar';el.innerHTML=`<div class="rbar"><span>⏳ ${head} — aguardando reação…</span>${me.seat===0?'<button class="sm bad" data-rx="take">Tomar o dano por ele</button>':''}</div>`}}
 $('#react').addEventListener('click',e=>{const t=e.target.closest('[data-rx]');if(!t)return;const v=t.dataset.rx;act(v==='take'?{t:'react',take:1}:{t:'react',i:+v})});
@@ -1109,32 +1442,32 @@ function handSeat(){if(S.scene!=='combate'||!S.cb){if(me.seat>0)return me.seat;r
 const RORD={comum:0,rara:1,epica:2};
 function renderHand(){const el=$('#handbar'),seat=handSeat(),P=seat&&S.priv[seat],ch=seat&&S.chars['h'+seat];
   if(el.contains(document.activeElement)&&document.activeElement.matches('select'))return;
-  if(!P||!ch||ch.ready===false){el.hidden=true;el.innerHTML='';handKey='';return}
+  if(!P||!ch||ch.ready===false||ch.dead){el.hidden=true;el.innerHTML='';handKey='';return}
   const X=ctxM(ch),fixed=fixedList(ch),n=P.hand.length,CB=X.cb,M=me.seat===0;
   let deal=false;if(CB&&S.tn&&S.tn.id!==dealtTn&&!introPlaying){deal=S.tn.cid===ch.id;dealtTn=S.tn.id}
   const key=JSON.stringify([seat,S.scene,M,P.hand,P.deck.length,P.disc.length,P.disc[P.disc.length-1],ch.pulso,ch.pmax,X.turn,X.pend,hsel,aim&&[aim.i,aim.fx,aim.seat],ch.phase,ch.form,ch.name,introPlaying,M&&Object.keys(S.priv).join()]);
   if(key===handKey&&!el.hidden&&!deal)return;handKey=key;el.hidden=false;if(hsel!==null&&hsel>=n)hsel=null;
   const cardH=(id,i)=>{const c=CARDS[id],req=reqOk(ch,c);let why='';
-    if(c.x)why='Reação: só pode ser usada quando você for atacado';else if(!X.turn)why='Aguarde o seu turno';else if(X.pend)why='Resolva o ataque pendente';else if(!req)why='Vire a carta Tangível/Intangível';else if(X.spend&&ch.pulso<c.c)why='Pulso insuficiente';
+    if(immob(ch))why='☠ Em agonia: você não pode usar cartas';else if(c.x)why='Reação: só pode ser usada quando você for atacado';else if(!X.turn)why='Aguarde o seu turno';else if(X.pend)why='Resolva o ataque pendente';else if(!req)why='Vire a carta Tangível/Intangível';else if(ch.exhOn)why='💤 Exaustão completa: sem cartas';
     const on=(aim&&aim.i===i&&!aim.fx&&!aim.npc&&aim.seat===seat)||hsel===i,rot=CB?(((i*37+3)%13-6)*0.9).toFixed(1):'0',dy=CB?((i*53)%9-3):0,lock=humanLock(ch,c);
-    return `<div class="hc ${c.r}${why?' off':''}${on?' sel':''}${c.x?' rx':''}" data-hi="${i}" data-why="${esc(why)}" style="--r:${rot}deg;--dy:${dy}px"><div class="hh"><span class="cost">${c.c}</span><b>${esc(c.n.split(' / ')[0])}</b><span class="sg s-${c.s}">${SG[c.s]}</span></div>
-      <div class="ht">${esc(lock?'Forma Humana: só 1 de dano desarmado comum.':dtxt(c.t,ch))}</div><div class="hf">${RAR[c.r]}${c.x?' · 🛡 Reação':''}${why&&!c.x?' · '+esc(why):''}</div>
+    return `<div class="hc ${c.r}${why?' off':''}${!why&&!c.x&&X.spend&&ch.pulso<c.c?' ovl':''}${on?' sel':''}${c.x?' rx':''}" data-hi="${i}" data-why="${esc(why)}" style="--r:${rot}deg;--dy:${dy}px"><div class="hh"><span class="cost">${c.c}</span><b>${esc(c.n.split(' / ')[0])}</b><span class="sg s-${c.s}">${SG[c.s]}</span></div>
+      <div class="ht">${esc(lock?'Forma Humana: só 1 de dano desarmado comum.':dtxt(c.t,ch))}</div><div class="hf">${RAR[c.r]}${c.x?' · 🛡 Reação':''}${why&&!c.x?' · '+esc(why):''}${!why&&!c.x&&X.spend&&ch.pulso<c.c?' · ⚡ Sobrecarga':''}</div>
       ${on?(hsel===i?`<button class="pri sm hbtn" data-hplay="${i}">Jogar</button>`:'<div class="hhint">Clique numa casa vermelha</div>'):''}</div>`};
-  const fxH=fixed.map(f=>{if(f.flip){const ph=ch.phase||'tangivel',ok=(!X.spend||ch.pulso>=2)&&X.turn&&!X.pend;return `<div class="hc fx${ok?'':' off'}" data-hflip="1" data-why="${ok?'':'Precisa de 2 Pulso e do seu turno'}"><div class="hh"><span class="cost">2</span><b>${ph==='tangivel'?'☀ Tangível':'☾ Intangível'}</b></div><div class="ht">Carta fixa: virar para ${ph==='tangivel'?'Intangível':'Tangível'}.</div><div class="hf">Fixa</div></div>`}
-    const ok=(!X.spend||ch.pulso>=f.c)&&X.turn&&!X.pend,on=aim&&aim.fx===f.key;return `<div class="hc fx${ok?'':' off'}${on?' sel':''}" data-hfx="${f.key}" data-why="${ok?'':'Aguarde o seu turno / Pulso insuficiente'}"><div class="hh"><span class="cost">${f.c}</span><b>${esc(f.n)}</b></div><div class="ht">${esc(short(f.t,90))}</div><div class="hf">Fixa${on?' · clique numa casa vermelha':''}</div></div>`}).join('');
+  const fxH=fixed.map(f=>{if(f.flip){const ph=ch.phase||'tangivel',ok=!ch.exhOn&&X.turn&&!X.pend;return `<div class="hc fxc${ok?'':' off'}${!ok||!X.spend||ch.pulso>=2?'':' ovl'}${phRecent(ch)?' phflip':''}" data-hflip="1" data-why="${ok?'':'Aguarde o seu turno / Exaustão'}"><div class="hh"><span class="cost">2</span><b>${ph==='tangivel'?'☀ Tangível':'☾ Intangível'}</b></div><div class="ht">Carta fixa: virar para ${ph==='tangivel'?'Intangível':'Tangível'}.</div><div class="hf">Fixa</div></div>`}
+    const ok=!ch.exhOn&&X.turn&&!X.pend,on=aim&&aim.fx===f.key;return `<div class="hc fxc${ok?'':' off'}${ok&&X.spend&&ch.pulso<f.c?' ovl':''}${on?' sel':''}" data-hfx="${f.key}" data-why="${ok?'':'Aguarde o seu turno / Exaustão'}"><div class="hh"><span class="cost">${f.c}</span><b>${esc(f.n)}</b></div><div class="ht">${esc(short(f.t,90))}</div><div class="hf">Fixa${on?' · clique numa casa vermelha':''}</div></div>`}).join('');
   const top=P.disc.length?CARDS[P.disc[P.disc.length-1]]:null;
   const pileD=`<div class="pile d">${top?`<div class="pt"><b>${esc(top.n.split(' / ')[0])}</b></div>`:'<div class="pt mut">vazio</div>'}<span class="pn">${P.disc.length}</span><div class="pl">Descarte</div></div>`;
-  if(CB){
-    el.innerHTML=`<div class="hlab">🃏 Mão de <b>${esc(ch.name)}</b> · ${X.turn?'<b style="color:#ffd24a">SEU TURNO</b>':'aguarde o turno'} · Pulso ${ch.pulso}/${ch.pmax}</div>
+  if(CB&&!ch.fare){
+    el.innerHTML=`<div class="hlab">🃏 Mão de <b>${esc(ch.name)}</b> · ${immob(ch)?'<b style="color:#ff4d5e">☠ EM AGONIA — sem cartas</b>':ch.fare?'<b style="color:#c9a3ff">💀 DESPEDIDA — último turno</b>':X.turn?'<b style="color:#ffd24a">SEU TURNO</b>':'aguarde o turno'} · Pulso ${ch.pulso}/${ch.pmax}</div>
     <div class="hrow"><div class="pile"><div class="pbk"></div><span class="pn">${P.deck.length}</span><div class="pl">Baralho</div></div>
     <div class="hcs">${P.hand.map((id,i)=>cardH(id,i)).join('')||'<span class="mut">Mão vazia</span>'}</div>${fxH?`<div class="hcs fxs">${fxH}</div>`:''}
     ${pileD}</div>`;
     if(deal)dealAnim();return}
   /* Mundano / Missão: baralho completo em fileira, por raridade (comum › rara › épica) */
   const idx=P.hand.map((_,i)=>i).sort((a,b)=>{const A=CARDS[P.hand[a]],B=CARDS[P.hand[b]];return RORD[A.r]-RORD[B.r]||A.c-B.c||A.n.localeCompare(B.n)});
-  const ms=X.SC==='missao',seats=Object.keys(S.priv).map(Number).sort((a,b)=>a-b);
+  const ms=X.SC==='missao'||!!ch.fare,seats=Object.keys(S.priv).map(Number).sort((a,b)=>a-b);
   const sl=M?`<select id="hseat" style="width:auto;padding:2px 6px">${seats.map(k=>`<option value="${k}" ${k===seat?'selected':''}>Jogador ${k}${S.chars['h'+k]&&S.chars['h'+k].name?' · '+esc(S.chars['h'+k].name):''}</option>`).join('')}</select> `:'';
-  el.innerHTML=`<div class="hlab">${sl}🃏 Baralho de <b>${esc(ch.name)}</b> · ${ms?'<b style="color:#5fd0ff">MISSÃO</b> — jogar gasta Pulso e a carta vai ao descarte · Pulso '+ch.pulso+'/'+ch.pmax:'<b style="color:#f0c36a">MUNDANO</b> — uso ilimitado, as cartas não saem da mão'}${ms&&P.disc.length?` <button class="sm" data-hreshuf="1">↺ Recuperar descarte</button>`:''}</div>
+  el.innerHTML=`<div class="hlab">${sl}🃏 Baralho de <b>${esc(ch.name)}</b> · ${ch.fare?'<b style="color:#c9a3ff">💀 DESPEDIDA</b> — baralho completo liberado, Pulso limitado ('+ch.pulso+'/'+ch.pmax+'); ao encerrar o turno você morre':ms?'<b style="color:#5fd0ff">MISSÃO</b> — jogar gasta Pulso e a carta vai ao descarte · Pulso '+ch.pulso+'/'+ch.pmax:'<b style="color:#f0c36a">MUNDANO</b> — uso ilimitado, as cartas não saem da mão'}${ms&&!ch.fare&&P.disc.length?` <button class="sm" data-hreshuf="1">↺ Recuperar descarte</button>`:''}</div>
   <div class="hrow dk"><div class="deckrow" id="deckrow">${fxH}${idx.map(i=>cardH(P.hand[i],i)).join('')||'<span class="mut">Sem cartas. Complete a ficha (Arquétipo, Trilha e Nascimento).</span>'}</div>${ms?pileD:''}</div>`;
   fitDeck()}
 /* ajusta a sobreposição das cartas para a fileira caber na largura (com rolagem se ainda faltar espaço) */
@@ -1178,8 +1511,8 @@ function cellAt(e){const q=[...document.querySelectorAll('#fxl .pr')].map(p=>{co
   const[o,px,py]=q,X=[px[0]-o[0],px[1]-o[1]],Y=[py[0]-o[0],py[1]-o[1]],P=[e.clientX-o[0],e.clientY-o[1]],d=X[0]*Y[1]-X[1]*Y[0];
   if(!d)return[-1,-1];const u=(P[0]*Y[1]-P[1]*Y[0])/d,v=(X[0]*P[1]-X[1]*P[0])/d;return[Math.floor(u*S.n),Math.floor(v*S.n)]}
 
-function renderAll(){renderTabs();renderTools();renderScene();theme();renderBoard();renderInit();renderSheet();renderCards();renderMaster();renderChat();renderReact();renderHand();renderHud();renderWiz()}
-function render(){if(!S)return;if(sel&&!S.chars[sel])sel=null;const sc=sceneEvt();
+function renderAll(){renderTabs();renderTools();renderScene();theme();renderBoard();renderInit();renderSheet();renderCards();renderMaster();renderChat();renderReact();renderHand();renderHud();renderAg();renderWiz()}
+function render(){if(!S)return;if(sel&&!S.chars[sel])sel=null;const sc=sceneEvt();agEvt();xfEvt();phEvt();ovEvt();anEvt();
   if(bnSeen===null)bnSeen=S.banner?S.banner.id:0;
   else if(S.banner&&S.banner.id!==bnSeen){bnSeen=S.banner.id;const b=$('#banner');b.textContent=S.banner.text+'!';b.hidden=true;void b.offsetWidth;b.hidden=false;SFX.err();setTimeout(()=>b.hidden=true,2700)}
   renderAll();if(sc)runScene(sc);turnEvt()}
